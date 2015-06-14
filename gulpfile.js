@@ -27,7 +27,7 @@ gulp.task('css', function () {
         .pipe(gulp.dest('build/'))
 })
 
-gulp.task('serve', ['jspm','html'], function() {
+gulp.task('serve', function() {
     browserSync.init({
         server: {
             baseDir: paths.node.serve
@@ -44,8 +44,8 @@ gulp.task('html', function() {
 })
 
 gulp.task('jspm', function() {
-  return jspm.bundleSFX(paths.jspm.lib + 'main', paths.node.serve + 'app.js', { 
-         sourceMaps: true
+    return jspm.bundleSFX(paths.jspm.lib + 'main', paths.node.serve + 'app.js', { 
+         sourceMaps: false
     })
 })
 

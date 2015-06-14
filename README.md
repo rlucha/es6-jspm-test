@@ -15,5 +15,8 @@ jspm install -y
 gulp serve
 ```
 
+A new browsersync window will appear with your local server. Any changes in /src will be copied to /serve and reloaded.
+
 ###TODO
 - Complete instructions
+- closure compiler full automatization

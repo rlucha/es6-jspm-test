@@ -1,0 +1,1 @@
+java -jar closure-compiler/compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS --js serve/app.js --js_output_file app.compiled.js --externs externs/angular-1.4.js --externs externs/angular-1.4-http-promise_templated.js --externs externs/angular-1.4-mocks.js --externs externs/angular-1.4-q_templated.js

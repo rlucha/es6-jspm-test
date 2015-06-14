@@ -360,8187 +360,11238 @@
 
 (['lib/main'], function(System) {
 
-System.register("npm:angular@1.4.0/angular.min", [], true, function(require, exports, module) {
+System.register("npm:process@0.10.1/browser", [], true, function(require, exports, module) {
   var global = System.global,
       __define = global.define;
   global.define = undefined;
-  "format cjs";
-  (function(N, W, u) {
-    'use strict';
-    function F(b) {
-      return function() {
-        var a = arguments[0],
-            c;
-        c = "[" + (b ? b + ":" : "") + a + "] http://errors.angularjs.org/1.4.0/" + (b ? b + "/" : "") + a;
-        for (a = 1; a < arguments.length; a++) {
-          c = c + (1 == a ? "?" : "&") + "p" + (a - 1) + "=";
-          var d = encodeURIComponent,
-              e;
-          e = arguments[a];
-          e = "function" == typeof e ? e.toString().replace(/ \{[\s\S]*$/, "") : "undefined" == typeof e ? "undefined" : "string" != typeof e ? JSON.stringify(e) : e;
-          c += d(e);
-        }
-        return Error(c);
-      };
+  var process = module.exports = {};
+  var queue = [];
+  var draining = false;
+  function drainQueue() {
+    if (draining) {
+      return ;
     }
-    function Da(b) {
-      if (null == b || Ta(b))
-        return !1;
-      var a = "length" in Object(b) && b.length;
-      return b.nodeType === pa && a ? !0 : L(b) || K(b) || 0 === a || "number" === typeof a && 0 < a && a - 1 in b;
-    }
-    function n(b, a, c) {
-      var d,
-          e;
-      if (b)
-        if (G(b))
-          for (d in b)
-            "prototype" == d || "length" == d || "name" == d || b.hasOwnProperty && !b.hasOwnProperty(d) || a.call(c, b[d], d, b);
-        else if (K(b) || Da(b)) {
-          var f = "object" !== typeof b;
-          d = 0;
-          for (e = b.length; d < e; d++)
-            (f || d in b) && a.call(c, b[d], d, b);
-        } else if (b.forEach && b.forEach !== n)
-          b.forEach(a, c, b);
-        else if (nc(b))
-          for (d in b)
-            a.call(c, b[d], d, b);
-        else if ("function" === typeof b.hasOwnProperty)
-          for (d in b)
-            b.hasOwnProperty(d) && a.call(c, b[d], d, b);
-        else
-          for (d in b)
-            kb.call(b, d) && a.call(c, b[d], d, b);
-      return b;
-    }
-    function oc(b, a, c) {
-      for (var d = Object.keys(b).sort(),
-          e = 0; e < d.length; e++)
-        a.call(c, b[d[e]], d[e]);
-      return d;
-    }
-    function pc(b) {
-      return function(a, c) {
-        b(c, a);
-      };
-    }
-    function Td() {
-      return ++lb;
-    }
-    function qc(b, a) {
-      a ? b.$$hashKey = a : delete b.$$hashKey;
-    }
-    function Nb(b, a, c) {
-      for (var d = b.$$hashKey,
-          e = 0,
-          f = a.length; e < f; ++e) {
-        var g = a[e];
-        if (C(g) || G(g))
-          for (var h = Object.keys(g),
-              l = 0,
-              k = h.length; l < k; l++) {
-            var m = h[l],
-                r = g[m];
-            c && C(r) ? (C(b[m]) || (b[m] = K(r) ? [] : {}), Nb(b[m], [r], !0)) : b[m] = r;
-          }
+    draining = true;
+    var currentQueue;
+    var len = queue.length;
+    while (len) {
+      currentQueue = queue;
+      queue = [];
+      var i = -1;
+      while (++i < len) {
+        currentQueue[i]();
       }
-      qc(b, d);
-      return b;
+      len = queue.length;
     }
-    function Q(b) {
-      return Nb(b, ra.call(arguments, 1), !1);
+    draining = false;
+  }
+  process.nextTick = function(fun) {
+    queue.push(fun);
+    if (!draining) {
+      setTimeout(drainQueue, 0);
     }
-    function Ud(b) {
-      return Nb(b, ra.call(arguments, 1), !0);
-    }
-    function Y(b) {
-      return parseInt(b, 10);
-    }
-    function Ob(b, a) {
-      return Q(Object.create(b), a);
-    }
-    function w() {}
-    function Ua(b) {
-      return b;
-    }
-    function qa(b) {
-      return function() {
-        return b;
-      };
-    }
-    function v(b) {
-      return "undefined" === typeof b;
-    }
-    function y(b) {
-      return "undefined" !== typeof b;
-    }
-    function C(b) {
-      return null !== b && "object" === typeof b;
-    }
-    function nc(b) {
-      return null !== b && "object" === typeof b && !rc(b);
-    }
-    function L(b) {
-      return "string" === typeof b;
-    }
-    function V(b) {
-      return "number" === typeof b;
-    }
-    function da(b) {
-      return "[object Date]" === sa.call(b);
-    }
-    function G(b) {
-      return "function" === typeof b;
-    }
-    function Va(b) {
-      return "[object RegExp]" === sa.call(b);
-    }
-    function Ta(b) {
-      return b && b.window === b;
-    }
-    function Wa(b) {
-      return b && b.$evalAsync && b.$watch;
-    }
-    function Xa(b) {
-      return "boolean" === typeof b;
-    }
-    function sc(b) {
-      return !(!b || !(b.nodeName || b.prop && b.attr && b.find));
-    }
-    function Vd(b) {
-      var a = {};
-      b = b.split(",");
-      var c;
-      for (c = 0; c < b.length; c++)
-        a[b[c]] = !0;
-      return a;
-    }
-    function ta(b) {
-      return E(b.nodeName || b[0] && b[0].nodeName);
-    }
-    function Ya(b, a) {
-      var c = b.indexOf(a);
-      0 <= c && b.splice(c, 1);
-      return c;
-    }
-    function ua(b, a, c, d) {
-      function e(a, b, c, d, e) {
-        var f = ua(b, null, d, e);
-        C(b) && (d.push(b), e.push(f));
-        c[a] = f;
-      }
-      if (Ta(b) || Wa(b))
-        throw Ea("cpws");
-      if (tc.test(sa.call(a)))
-        throw Ea("cpta");
-      if (a) {
-        if (b === a)
-          throw Ea("cpi");
-        c = c || [];
-        d = d || [];
-        if (C(b)) {
-          var f = c.indexOf(b);
-          if (-1 !== f)
-            return d[f];
-          c.push(b);
-          d.push(a);
-        }
-        var g;
-        if (K(b))
-          for (f = a.length = 0; f < b.length; f++)
-            g = ua(b[f], null, c, d), C(b[f]) && (c.push(b[f]), d.push(g)), a.push(g);
-        else {
-          f = a.$$hashKey;
-          K(a) ? a.length = 0 : n(a, function(b, c) {
-            delete a[c];
+  };
+  process.title = 'browser';
+  process.browser = true;
+  process.env = {};
+  process.argv = [];
+  process.version = '';
+  process.versions = {};
+  function noop() {}
+  process.on = noop;
+  process.addListener = noop;
+  process.once = noop;
+  process.off = noop;
+  process.removeListener = noop;
+  process.removeAllListeners = noop;
+  process.emit = noop;
+  process.binding = function(name) {
+    throw new Error('process.binding is not supported');
+  };
+  process.cwd = function() {
+    return '/';
+  };
+  process.chdir = function(dir) {
+    throw new Error('process.chdir is not supported');
+  };
+  process.umask = function() {
+    return 0;
+  };
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:process@0.10.1", ["npm:process@0.10.1/browser"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = require("npm:process@0.10.1/browser");
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("github:jspm/nodelibs-process@0.1.1/index", ["npm:process@0.10.1"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = System._nodeRequire ? process : require("npm:process@0.10.1");
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("github:jspm/nodelibs-process@0.1.1", ["github:jspm/nodelibs-process@0.1.1/index"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = require("github:jspm/nodelibs-process@0.1.1/index");
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:angular@1.4.0/angular", ["github:jspm/nodelibs-process@0.1.1"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  (function(process) {
+    (function(window, document, undefined) {
+      'use strict';
+      function minErr(module, ErrorConstructor) {
+        ErrorConstructor = ErrorConstructor || Error;
+        return function() {
+          var SKIP_INDEXES = 2;
+          var templateArgs = arguments,
+              code = templateArgs[0],
+              message = '[' + (module ? module + ':' : '') + code + '] ',
+              template = templateArgs[1],
+              paramPrefix,
+              i;
+          message += template.replace(/\{\d+\}/g, function(match) {
+            var index = +match.slice(1, -1),
+                shiftedIndex = index + SKIP_INDEXES;
+            if (shiftedIndex < templateArgs.length) {
+              return toDebugString(templateArgs[shiftedIndex]);
+            }
+            return match;
           });
-          if (nc(b))
-            for (g in b)
-              e(g, b[g], a, c, d);
-          else if (b && "function" === typeof b.hasOwnProperty)
-            for (g in b)
-              b.hasOwnProperty(g) && e(g, b[g], a, c, d);
-          else
-            for (g in b)
-              kb.call(b, g) && e(g, b[g], a, c, d);
-          qc(a, f);
+          message += '\nhttp://errors.angularjs.org/1.4.0/' + (module ? module + '/' : '') + code;
+          for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
+            message += paramPrefix + 'p' + (i - SKIP_INDEXES) + '=' + encodeURIComponent(toDebugString(templateArgs[i]));
+          }
+          return new ErrorConstructor(message);
+        };
+      }
+      var REGEX_STRING_REGEXP = /^\/(.+)\/([a-z]*)$/;
+      var VALIDITY_STATE_PROPERTY = 'validity';
+      var lowercase = function(string) {
+        return isString(string) ? string.toLowerCase() : string;
+      };
+      var hasOwnProperty = Object.prototype.hasOwnProperty;
+      var uppercase = function(string) {
+        return isString(string) ? string.toUpperCase() : string;
+      };
+      var manualLowercase = function(s) {
+        return isString(s) ? s.replace(/[A-Z]/g, function(ch) {
+          return String.fromCharCode(ch.charCodeAt(0) | 32);
+        }) : s;
+      };
+      var manualUppercase = function(s) {
+        return isString(s) ? s.replace(/[a-z]/g, function(ch) {
+          return String.fromCharCode(ch.charCodeAt(0) & ~32);
+        }) : s;
+      };
+      if ('i' !== 'I'.toLowerCase()) {
+        lowercase = manualLowercase;
+        uppercase = manualUppercase;
+      }
+      var msie,
+          jqLite,
+          jQuery,
+          slice = [].slice,
+          splice = [].splice,
+          push = [].push,
+          toString = Object.prototype.toString,
+          getPrototypeOf = Object.getPrototypeOf,
+          ngMinErr = minErr('ng'),
+          angular = window.angular || (window.angular = {}),
+          angularModule,
+          uid = 0;
+      msie = document.documentMode;
+      function isArrayLike(obj) {
+        if (obj == null || isWindow(obj)) {
+          return false;
         }
-      } else if (a = b)
-        K(b) ? a = ua(b, [], c, d) : tc.test(sa.call(b)) ? a = new b.constructor(b) : da(b) ? a = new Date(b.getTime()) : Va(b) ? (a = new RegExp(b.source, b.toString().match(/[^\/]*$/)[0]), a.lastIndex = b.lastIndex) : C(b) && (g = Object.create(rc(b)), a = ua(b, g, c, d));
-      return a;
-    }
-    function fa(b, a) {
-      if (K(b)) {
-        a = a || [];
-        for (var c = 0,
-            d = b.length; c < d; c++)
-          a[c] = b[c];
-      } else if (C(b))
-        for (c in a = a || {}, b)
-          if ("$" !== c.charAt(0) || "$" !== c.charAt(1))
-            a[c] = b[c];
-      return a || b;
-    }
-    function ka(b, a) {
-      if (b === a)
-        return !0;
-      if (null === b || null === a)
-        return !1;
-      if (b !== b && a !== a)
-        return !0;
-      var c = typeof b,
-          d;
-      if (c == typeof a && "object" == c)
-        if (K(b)) {
-          if (!K(a))
-            return !1;
-          if ((c = b.length) == a.length) {
-            for (d = 0; d < c; d++)
-              if (!ka(b[d], a[d]))
-                return !1;
-            return !0;
+        var length = "length" in Object(obj) && obj.length;
+        if (obj.nodeType === NODE_TYPE_ELEMENT && length) {
+          return true;
+        }
+        return isString(obj) || isArray(obj) || length === 0 || typeof length === 'number' && length > 0 && (length - 1) in obj;
+      }
+      function forEach(obj, iterator, context) {
+        var key,
+            length;
+        if (obj) {
+          if (isFunction(obj)) {
+            for (key in obj) {
+              if (key != 'prototype' && key != 'length' && key != 'name' && (!obj.hasOwnProperty || obj.hasOwnProperty(key))) {
+                iterator.call(context, obj[key], key, obj);
+              }
+            }
+          } else if (isArray(obj) || isArrayLike(obj)) {
+            var isPrimitive = typeof obj !== 'object';
+            for (key = 0, length = obj.length; key < length; key++) {
+              if (isPrimitive || key in obj) {
+                iterator.call(context, obj[key], key, obj);
+              }
+            }
+          } else if (obj.forEach && obj.forEach !== forEach) {
+            obj.forEach(iterator, context, obj);
+          } else if (isBlankObject(obj)) {
+            for (key in obj) {
+              iterator.call(context, obj[key], key, obj);
+            }
+          } else if (typeof obj.hasOwnProperty === 'function') {
+            for (key in obj) {
+              if (obj.hasOwnProperty(key)) {
+                iterator.call(context, obj[key], key, obj);
+              }
+            }
+          } else {
+            for (key in obj) {
+              if (hasOwnProperty.call(obj, key)) {
+                iterator.call(context, obj[key], key, obj);
+              }
+            }
+          }
+        }
+        return obj;
+      }
+      function forEachSorted(obj, iterator, context) {
+        var keys = Object.keys(obj).sort();
+        for (var i = 0; i < keys.length; i++) {
+          iterator.call(context, obj[keys[i]], keys[i]);
+        }
+        return keys;
+      }
+      function reverseParams(iteratorFn) {
+        return function(value, key) {
+          iteratorFn(key, value);
+        };
+      }
+      function nextUid() {
+        return ++uid;
+      }
+      function setHashKey(obj, h) {
+        if (h) {
+          obj.$$hashKey = h;
+        } else {
+          delete obj.$$hashKey;
+        }
+      }
+      function baseExtend(dst, objs, deep) {
+        var h = dst.$$hashKey;
+        for (var i = 0,
+            ii = objs.length; i < ii; ++i) {
+          var obj = objs[i];
+          if (!isObject(obj) && !isFunction(obj))
+            continue;
+          var keys = Object.keys(obj);
+          for (var j = 0,
+              jj = keys.length; j < jj; j++) {
+            var key = keys[j];
+            var src = obj[key];
+            if (deep && isObject(src)) {
+              if (!isObject(dst[key]))
+                dst[key] = isArray(src) ? [] : {};
+              baseExtend(dst[key], [src], true);
+            } else {
+              dst[key] = src;
+            }
+          }
+        }
+        setHashKey(dst, h);
+        return dst;
+      }
+      function extend(dst) {
+        return baseExtend(dst, slice.call(arguments, 1), false);
+      }
+      function merge(dst) {
+        return baseExtend(dst, slice.call(arguments, 1), true);
+      }
+      function toInt(str) {
+        return parseInt(str, 10);
+      }
+      function inherit(parent, extra) {
+        return extend(Object.create(parent), extra);
+      }
+      function noop() {}
+      noop.$inject = [];
+      function identity($) {
+        return $;
+      }
+      identity.$inject = [];
+      function valueFn(value) {
+        return function() {
+          return value;
+        };
+      }
+      function isUndefined(value) {
+        return typeof value === 'undefined';
+      }
+      function isDefined(value) {
+        return typeof value !== 'undefined';
+      }
+      function isObject(value) {
+        return value !== null && typeof value === 'object';
+      }
+      function isBlankObject(value) {
+        return value !== null && typeof value === 'object' && !getPrototypeOf(value);
+      }
+      function isString(value) {
+        return typeof value === 'string';
+      }
+      function isNumber(value) {
+        return typeof value === 'number';
+      }
+      function isDate(value) {
+        return toString.call(value) === '[object Date]';
+      }
+      var isArray = Array.isArray;
+      function isFunction(value) {
+        return typeof value === 'function';
+      }
+      function isRegExp(value) {
+        return toString.call(value) === '[object RegExp]';
+      }
+      function isWindow(obj) {
+        return obj && obj.window === obj;
+      }
+      function isScope(obj) {
+        return obj && obj.$evalAsync && obj.$watch;
+      }
+      function isFile(obj) {
+        return toString.call(obj) === '[object File]';
+      }
+      function isFormData(obj) {
+        return toString.call(obj) === '[object FormData]';
+      }
+      function isBlob(obj) {
+        return toString.call(obj) === '[object Blob]';
+      }
+      function isBoolean(value) {
+        return typeof value === 'boolean';
+      }
+      function isPromiseLike(obj) {
+        return obj && isFunction(obj.then);
+      }
+      var TYPED_ARRAY_REGEXP = /^\[object (Uint8(Clamped)?)|(Uint16)|(Uint32)|(Int8)|(Int16)|(Int32)|(Float(32)|(64))Array\]$/;
+      function isTypedArray(value) {
+        return TYPED_ARRAY_REGEXP.test(toString.call(value));
+      }
+      var trim = function(value) {
+        return isString(value) ? value.trim() : value;
+      };
+      var escapeForRegexp = function(s) {
+        return s.replace(/([-()\[\]{}+?*.$\^|,:#<!\\])/g, '\\$1').replace(/\x08/g, '\\x08');
+      };
+      function isElement(node) {
+        return !!(node && (node.nodeName || (node.prop && node.attr && node.find)));
+      }
+      function makeMap(str) {
+        var obj = {},
+            items = str.split(","),
+            i;
+        for (i = 0; i < items.length; i++) {
+          obj[items[i]] = true;
+        }
+        return obj;
+      }
+      function nodeName_(element) {
+        return lowercase(element.nodeName || (element[0] && element[0].nodeName));
+      }
+      function includes(array, obj) {
+        return Array.prototype.indexOf.call(array, obj) != -1;
+      }
+      function arrayRemove(array, value) {
+        var index = array.indexOf(value);
+        if (index >= 0) {
+          array.splice(index, 1);
+        }
+        return index;
+      }
+      function copy(source, destination, stackSource, stackDest) {
+        if (isWindow(source) || isScope(source)) {
+          throw ngMinErr('cpws', "Can't copy! Making copies of Window or Scope instances is not supported.");
+        }
+        if (isTypedArray(destination)) {
+          throw ngMinErr('cpta', "Can't copy! TypedArray destination cannot be mutated.");
+        }
+        if (!destination) {
+          destination = source;
+          if (source) {
+            if (isArray(source)) {
+              destination = copy(source, [], stackSource, stackDest);
+            } else if (isTypedArray(source)) {
+              destination = new source.constructor(source);
+            } else if (isDate(source)) {
+              destination = new Date(source.getTime());
+            } else if (isRegExp(source)) {
+              destination = new RegExp(source.source, source.toString().match(/[^\/]*$/)[0]);
+              destination.lastIndex = source.lastIndex;
+            } else if (isObject(source)) {
+              var emptyObject = Object.create(getPrototypeOf(source));
+              destination = copy(source, emptyObject, stackSource, stackDest);
+            }
           }
         } else {
-          if (da(b))
-            return da(a) ? ka(b.getTime(), a.getTime()) : !1;
-          if (Va(b))
-            return Va(a) ? b.toString() == a.toString() : !1;
-          if (Wa(b) || Wa(a) || Ta(b) || Ta(a) || K(a) || da(a) || Va(a))
-            return !1;
-          c = ga();
-          for (d in b)
-            if ("$" !== d.charAt(0) && !G(b[d])) {
-              if (!ka(b[d], a[d]))
-                return !1;
-              c[d] = !0;
+          if (source === destination)
+            throw ngMinErr('cpi', "Can't copy! Source and destination are identical.");
+          stackSource = stackSource || [];
+          stackDest = stackDest || [];
+          if (isObject(source)) {
+            var index = stackSource.indexOf(source);
+            if (index !== -1)
+              return stackDest[index];
+            stackSource.push(source);
+            stackDest.push(destination);
+          }
+          var result,
+              key;
+          if (isArray(source)) {
+            destination.length = 0;
+            for (var i = 0; i < source.length; i++) {
+              result = copy(source[i], null, stackSource, stackDest);
+              if (isObject(source[i])) {
+                stackSource.push(source[i]);
+                stackDest.push(result);
+              }
+              destination.push(result);
             }
-          for (d in a)
-            if (!(d in c || "$" === d.charAt(0) || a[d] === u || G(a[d])))
-              return !1;
-          return !0;
+          } else {
+            var h = destination.$$hashKey;
+            if (isArray(destination)) {
+              destination.length = 0;
+            } else {
+              forEach(destination, function(value, key) {
+                delete destination[key];
+              });
+            }
+            if (isBlankObject(source)) {
+              for (key in source) {
+                putValue(key, source[key], destination, stackSource, stackDest);
+              }
+            } else if (source && typeof source.hasOwnProperty === 'function') {
+              for (key in source) {
+                if (source.hasOwnProperty(key)) {
+                  putValue(key, source[key], destination, stackSource, stackDest);
+                }
+              }
+            } else {
+              for (key in source) {
+                if (hasOwnProperty.call(source, key)) {
+                  putValue(key, source[key], destination, stackSource, stackDest);
+                }
+              }
+            }
+            setHashKey(destination, h);
+          }
         }
-      return !1;
-    }
-    function Za(b, a, c) {
-      return b.concat(ra.call(a, c));
-    }
-    function uc(b, a) {
-      var c = 2 < arguments.length ? ra.call(arguments, 2) : [];
-      return !G(a) || a instanceof RegExp ? a : c.length ? function() {
-        return arguments.length ? a.apply(b, Za(c, arguments, 0)) : a.apply(b, c);
-      } : function() {
-        return arguments.length ? a.apply(b, arguments) : a.call(b);
-      };
-    }
-    function Wd(b, a) {
-      var c = a;
-      "string" === typeof b && "$" === b.charAt(0) && "$" === b.charAt(1) ? c = u : Ta(a) ? c = "$WINDOW" : a && W === a ? c = "$DOCUMENT" : Wa(a) && (c = "$SCOPE");
-      return c;
-    }
-    function $a(b, a) {
-      if ("undefined" === typeof b)
-        return u;
-      V(a) || (a = a ? 2 : null);
-      return JSON.stringify(b, Wd, a);
-    }
-    function vc(b) {
-      return L(b) ? JSON.parse(b) : b;
-    }
-    function wc(b, a) {
-      var c = Date.parse("Jan 01, 1970 00:00:00 " + b) / 6E4;
-      return isNaN(c) ? a : c;
-    }
-    function Pb(b, a, c) {
-      c = c ? -1 : 1;
-      var d = wc(a, b.getTimezoneOffset());
-      a = b;
-      b = c * (d - b.getTimezoneOffset());
-      a = new Date(a.getTime());
-      a.setMinutes(a.getMinutes() + b);
-      return a;
-    }
-    function va(b) {
-      b = z(b).clone();
-      try {
-        b.empty();
-      } catch (a) {}
-      var c = z("<div>").append(b).html();
-      try {
-        return b[0].nodeType === ab ? E(c) : c.match(/^(<[^>]+>)/)[1].replace(/^<([\w\-]+)/, function(a, b) {
-          return "<" + E(b);
-        });
-      } catch (d) {
-        return E(c);
+        return destination;
+        function putValue(key, val, destination, stackSource, stackDest) {
+          var result = copy(val, null, stackSource, stackDest);
+          if (isObject(val)) {
+            stackSource.push(val);
+            stackDest.push(result);
+          }
+          destination[key] = result;
+        }
       }
-    }
-    function xc(b) {
-      try {
-        return decodeURIComponent(b);
-      } catch (a) {}
-    }
-    function yc(b) {
-      var a = {},
-          c,
-          d;
-      n((b || "").split("&"), function(b) {
-        b && (c = b.replace(/\+/g, "%20").split("="), d = xc(c[0]), y(d) && (b = y(c[1]) ? xc(c[1]) : !0, kb.call(a, d) ? K(a[d]) ? a[d].push(b) : a[d] = [a[d], b] : a[d] = b));
-      });
-      return a;
-    }
-    function Qb(b) {
-      var a = [];
-      n(b, function(b, d) {
-        K(b) ? n(b, function(b) {
-          a.push(ia(d, !0) + (!0 === b ? "" : "=" + ia(b, !0)));
-        }) : a.push(ia(d, !0) + (!0 === b ? "" : "=" + ia(b, !0)));
-      });
-      return a.length ? a.join("&") : "";
-    }
-    function mb(b) {
-      return ia(b, !0).replace(/%26/gi, "&").replace(/%3D/gi, "=").replace(/%2B/gi, "+");
-    }
-    function ia(b, a) {
-      return encodeURIComponent(b).replace(/%40/gi, "@").replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%3B/gi, ";").replace(/%20/g, a ? "%20" : "+");
-    }
-    function Xd(b, a) {
-      var c,
-          d,
-          e = Na.length;
-      for (d = 0; d < e; ++d)
-        if (c = Na[d] + a, L(c = b.getAttribute(c)))
-          return c;
-      return null;
-    }
-    function Yd(b, a) {
-      var c,
-          d,
-          e = {};
-      n(Na, function(a) {
-        a += "app";
-        !c && b.hasAttribute && b.hasAttribute(a) && (c = b, d = b.getAttribute(a));
-      });
-      n(Na, function(a) {
-        a += "app";
-        var e;
-        !c && (e = b.querySelector("[" + a.replace(":", "\\:") + "]")) && (c = e, d = e.getAttribute(a));
-      });
-      c && (e.strictDi = null !== Xd(c, "strict-di"), a(c, d ? [d] : [], e));
-    }
-    function zc(b, a, c) {
-      C(c) || (c = {});
-      c = Q({strictDi: !1}, c);
-      var d = function() {
-        b = z(b);
-        if (b.injector()) {
-          var d = b[0] === W ? "document" : va(b);
-          throw Ea("btstrpd", d.replace(/</, "&lt;").replace(/>/, "&gt;"));
+      function shallowCopy(src, dst) {
+        if (isArray(src)) {
+          dst = dst || [];
+          for (var i = 0,
+              ii = src.length; i < ii; i++) {
+            dst[i] = src[i];
+          }
+        } else if (isObject(src)) {
+          dst = dst || {};
+          for (var key in src) {
+            if (!(key.charAt(0) === '$' && key.charAt(1) === '$')) {
+              dst[key] = src[key];
+            }
+          }
         }
-        a = a || [];
-        a.unshift(["$provide", function(a) {
-          a.value("$rootElement", b);
-        }]);
-        c.debugInfoEnabled && a.push(["$compileProvider", function(a) {
-          a.debugInfoEnabled(!0);
-        }]);
-        a.unshift("ng");
-        d = bb(a, c.strictDi);
-        d.invoke(["$rootScope", "$rootElement", "$compile", "$injector", function(a, b, c, d) {
-          a.$apply(function() {
-            b.data("$injector", d);
-            c(b)(a);
+        return dst || src;
+      }
+      function equals(o1, o2) {
+        if (o1 === o2)
+          return true;
+        if (o1 === null || o2 === null)
+          return false;
+        if (o1 !== o1 && o2 !== o2)
+          return true;
+        var t1 = typeof o1,
+            t2 = typeof o2,
+            length,
+            key,
+            keySet;
+        if (t1 == t2) {
+          if (t1 == 'object') {
+            if (isArray(o1)) {
+              if (!isArray(o2))
+                return false;
+              if ((length = o1.length) == o2.length) {
+                for (key = 0; key < length; key++) {
+                  if (!equals(o1[key], o2[key]))
+                    return false;
+                }
+                return true;
+              }
+            } else if (isDate(o1)) {
+              if (!isDate(o2))
+                return false;
+              return equals(o1.getTime(), o2.getTime());
+            } else if (isRegExp(o1)) {
+              return isRegExp(o2) ? o1.toString() == o2.toString() : false;
+            } else {
+              if (isScope(o1) || isScope(o2) || isWindow(o1) || isWindow(o2) || isArray(o2) || isDate(o2) || isRegExp(o2))
+                return false;
+              keySet = createMap();
+              for (key in o1) {
+                if (key.charAt(0) === '$' || isFunction(o1[key]))
+                  continue;
+                if (!equals(o1[key], o2[key]))
+                  return false;
+                keySet[key] = true;
+              }
+              for (key in o2) {
+                if (!(key in keySet) && key.charAt(0) !== '$' && o2[key] !== undefined && !isFunction(o2[key]))
+                  return false;
+              }
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+      var csp = function() {
+        if (isDefined(csp.isActive_))
+          return csp.isActive_;
+        var active = !!(document.querySelector('[ng-csp]') || document.querySelector('[data-ng-csp]'));
+        if (!active) {
+          try {
+            new Function('');
+          } catch (e) {
+            active = true;
+          }
+        }
+        return (csp.isActive_ = active);
+      };
+      var jq = function() {
+        if (isDefined(jq.name_))
+          return jq.name_;
+        var el;
+        var i,
+            ii = ngAttrPrefixes.length,
+            prefix,
+            name;
+        for (i = 0; i < ii; ++i) {
+          prefix = ngAttrPrefixes[i];
+          if (el = document.querySelector('[' + prefix.replace(':', '\\:') + 'jq]')) {
+            name = el.getAttribute(prefix + 'jq');
+            break;
+          }
+        }
+        return (jq.name_ = name);
+      };
+      function concat(array1, array2, index) {
+        return array1.concat(slice.call(array2, index));
+      }
+      function sliceArgs(args, startIndex) {
+        return slice.call(args, startIndex || 0);
+      }
+      function bind(self, fn) {
+        var curryArgs = arguments.length > 2 ? sliceArgs(arguments, 2) : [];
+        if (isFunction(fn) && !(fn instanceof RegExp)) {
+          return curryArgs.length ? function() {
+            return arguments.length ? fn.apply(self, concat(curryArgs, arguments, 0)) : fn.apply(self, curryArgs);
+          } : function() {
+            return arguments.length ? fn.apply(self, arguments) : fn.call(self);
+          };
+        } else {
+          return fn;
+        }
+      }
+      function toJsonReplacer(key, value) {
+        var val = value;
+        if (typeof key === 'string' && key.charAt(0) === '$' && key.charAt(1) === '$') {
+          val = undefined;
+        } else if (isWindow(value)) {
+          val = '$WINDOW';
+        } else if (value && document === value) {
+          val = '$DOCUMENT';
+        } else if (isScope(value)) {
+          val = '$SCOPE';
+        }
+        return val;
+      }
+      function toJson(obj, pretty) {
+        if (typeof obj === 'undefined')
+          return undefined;
+        if (!isNumber(pretty)) {
+          pretty = pretty ? 2 : null;
+        }
+        return JSON.stringify(obj, toJsonReplacer, pretty);
+      }
+      function fromJson(json) {
+        return isString(json) ? JSON.parse(json) : json;
+      }
+      function timezoneToOffset(timezone, fallback) {
+        var requestedTimezoneOffset = Date.parse('Jan 01, 1970 00:00:00 ' + timezone) / 60000;
+        return isNaN(requestedTimezoneOffset) ? fallback : requestedTimezoneOffset;
+      }
+      function addDateMinutes(date, minutes) {
+        date = new Date(date.getTime());
+        date.setMinutes(date.getMinutes() + minutes);
+        return date;
+      }
+      function convertTimezoneToLocal(date, timezone, reverse) {
+        reverse = reverse ? -1 : 1;
+        var timezoneOffset = timezoneToOffset(timezone, date.getTimezoneOffset());
+        return addDateMinutes(date, reverse * (timezoneOffset - date.getTimezoneOffset()));
+      }
+      function startingTag(element) {
+        element = jqLite(element).clone();
+        try {
+          element.empty();
+        } catch (e) {}
+        var elemHtml = jqLite('<div>').append(element).html();
+        try {
+          return element[0].nodeType === NODE_TYPE_TEXT ? lowercase(elemHtml) : elemHtml.match(/^(<[^>]+>)/)[1].replace(/^<([\w\-]+)/, function(match, nodeName) {
+            return '<' + lowercase(nodeName);
           });
-        }]);
-        return d;
-      },
-          e = /^NG_ENABLE_DEBUG_INFO!/,
-          f = /^NG_DEFER_BOOTSTRAP!/;
-      N && e.test(N.name) && (c.debugInfoEnabled = !0, N.name = N.name.replace(e, ""));
-      if (N && !f.test(N.name))
-        return d();
-      N.name = N.name.replace(f, "");
-      aa.resumeBootstrap = function(b) {
-        n(b, function(b) {
-          a.push(b);
+        } catch (e) {
+          return lowercase(elemHtml);
+        }
+      }
+      function tryDecodeURIComponent(value) {
+        try {
+          return decodeURIComponent(value);
+        } catch (e) {}
+      }
+      function parseKeyValue(keyValue) {
+        var obj = {},
+            key_value,
+            key;
+        forEach((keyValue || "").split('&'), function(keyValue) {
+          if (keyValue) {
+            key_value = keyValue.replace(/\+/g, '%20').split('=');
+            key = tryDecodeURIComponent(key_value[0]);
+            if (isDefined(key)) {
+              var val = isDefined(key_value[1]) ? tryDecodeURIComponent(key_value[1]) : true;
+              if (!hasOwnProperty.call(obj, key)) {
+                obj[key] = val;
+              } else if (isArray(obj[key])) {
+                obj[key].push(val);
+              } else {
+                obj[key] = [obj[key], val];
+              }
+            }
+          }
         });
-        return d();
-      };
-      G(aa.resumeDeferredBootstrap) && aa.resumeDeferredBootstrap();
-    }
-    function Zd() {
-      N.name = "NG_ENABLE_DEBUG_INFO!" + N.name;
-      N.location.reload();
-    }
-    function $d(b) {
-      b = aa.element(b).injector();
-      if (!b)
-        throw Ea("test");
-      return b.get("$$testability");
-    }
-    function Ac(b, a) {
-      a = a || "_";
-      return b.replace(ae, function(b, d) {
-        return (d ? a : "") + b.toLowerCase();
-      });
-    }
-    function be() {
-      var b;
-      if (!Bc) {
-        var a = nb();
-        la = N.jQuery;
-        y(a) && (la = null === a ? u : N[a]);
-        la && la.fn.on ? (z = la, Q(la.fn, {
-          scope: Oa.scope,
-          isolateScope: Oa.isolateScope,
-          controller: Oa.controller,
-          injector: Oa.injector,
-          inheritedData: Oa.inheritedData
-        }), b = la.cleanData, la.cleanData = function(a) {
-          var d;
-          if (Rb)
-            Rb = !1;
-          else
-            for (var e = 0,
-                f; null != (f = a[e]); e++)
-              (d = la._data(f, "events")) && d.$destroy && la(f).triggerHandler("$destroy");
-          b(a);
-        }) : z = R;
-        aa.element = z;
-        Bc = !0;
+        return obj;
       }
-    }
-    function Sb(b, a, c) {
-      if (!b)
-        throw Ea("areq", a || "?", c || "required");
-      return b;
-    }
-    function Pa(b, a, c) {
-      c && K(b) && (b = b[b.length - 1]);
-      Sb(G(b), a, "not a function, got " + (b && "object" === typeof b ? b.constructor.name || "Object" : typeof b));
-      return b;
-    }
-    function Qa(b, a) {
-      if ("hasOwnProperty" === b)
-        throw Ea("badname", a);
-    }
-    function Cc(b, a, c) {
-      if (!a)
-        return b;
-      a = a.split(".");
-      for (var d,
-          e = b,
-          f = a.length,
-          g = 0; g < f; g++)
-        d = a[g], b && (b = (e = b)[d]);
-      return !c && G(b) ? uc(e, b) : b;
-    }
-    function ob(b) {
-      var a = b[0];
-      b = b[b.length - 1];
-      var c = [a];
-      do {
-        a = a.nextSibling;
-        if (!a)
-          break;
-        c.push(a);
-      } while (a !== b);
-      return z(c);
-    }
-    function ga() {
-      return Object.create(null);
-    }
-    function ce(b) {
-      function a(a, b, c) {
-        return a[b] || (a[b] = c());
+      function toKeyValue(obj) {
+        var parts = [];
+        forEach(obj, function(value, key) {
+          if (isArray(value)) {
+            forEach(value, function(arrayValue) {
+              parts.push(encodeUriQuery(key, true) + (arrayValue === true ? '' : '=' + encodeUriQuery(arrayValue, true)));
+            });
+          } else {
+            parts.push(encodeUriQuery(key, true) + (value === true ? '' : '=' + encodeUriQuery(value, true)));
+          }
+        });
+        return parts.length ? parts.join('&') : '';
       }
-      var c = F("$injector"),
-          d = F("ng");
-      b = a(b, "angular", Object);
-      b.$$minErr = b.$$minErr || F;
-      return a(b, "module", function() {
-        var b = {};
-        return function(f, g, h) {
-          if ("hasOwnProperty" === f)
-            throw d("badname", "module");
-          g && b.hasOwnProperty(f) && (b[f] = null);
-          return a(b, f, function() {
-            function a(c, d, e, f) {
-              f || (f = b);
-              return function() {
-                f[e || "push"]([c, d, arguments]);
-                return A;
+      function encodeUriSegment(val) {
+        return encodeUriQuery(val, true).replace(/%26/gi, '&').replace(/%3D/gi, '=').replace(/%2B/gi, '+');
+      }
+      function encodeUriQuery(val, pctEncodeSpaces) {
+        return encodeURIComponent(val).replace(/%40/gi, '@').replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%3B/gi, ';').replace(/%20/g, (pctEncodeSpaces ? '%20' : '+'));
+      }
+      var ngAttrPrefixes = ['ng-', 'data-ng-', 'ng:', 'x-ng-'];
+      function getNgAttribute(element, ngAttr) {
+        var attr,
+            i,
+            ii = ngAttrPrefixes.length;
+        for (i = 0; i < ii; ++i) {
+          attr = ngAttrPrefixes[i] + ngAttr;
+          if (isString(attr = element.getAttribute(attr))) {
+            return attr;
+          }
+        }
+        return null;
+      }
+      function angularInit(element, bootstrap) {
+        var appElement,
+            module,
+            config = {};
+        forEach(ngAttrPrefixes, function(prefix) {
+          var name = prefix + 'app';
+          if (!appElement && element.hasAttribute && element.hasAttribute(name)) {
+            appElement = element;
+            module = element.getAttribute(name);
+          }
+        });
+        forEach(ngAttrPrefixes, function(prefix) {
+          var name = prefix + 'app';
+          var candidate;
+          if (!appElement && (candidate = element.querySelector('[' + name.replace(':', '\\:') + ']'))) {
+            appElement = candidate;
+            module = candidate.getAttribute(name);
+          }
+        });
+        if (appElement) {
+          config.strictDi = getNgAttribute(appElement, "strict-di") !== null;
+          bootstrap(appElement, module ? [module] : [], config);
+        }
+      }
+      function bootstrap(element, modules, config) {
+        if (!isObject(config))
+          config = {};
+        var defaultConfig = {strictDi: false};
+        config = extend(defaultConfig, config);
+        var doBootstrap = function() {
+          element = jqLite(element);
+          if (element.injector()) {
+            var tag = (element[0] === document) ? 'document' : startingTag(element);
+            throw ngMinErr('btstrpd', "App Already Bootstrapped with this Element '{0}'", tag.replace(/</, '&lt;').replace(/>/, '&gt;'));
+          }
+          modules = modules || [];
+          modules.unshift(['$provide', function($provide) {
+            $provide.value('$rootElement', element);
+          }]);
+          if (config.debugInfoEnabled) {
+            modules.push(['$compileProvider', function($compileProvider) {
+              $compileProvider.debugInfoEnabled(true);
+            }]);
+          }
+          modules.unshift('ng');
+          var injector = createInjector(modules, config.strictDi);
+          injector.invoke(['$rootScope', '$rootElement', '$compile', '$injector', function bootstrapApply(scope, element, compile, injector) {
+            scope.$apply(function() {
+              element.data('$injector', injector);
+              compile(element)(scope);
+            });
+          }]);
+          return injector;
+        };
+        var NG_ENABLE_DEBUG_INFO = /^NG_ENABLE_DEBUG_INFO!/;
+        var NG_DEFER_BOOTSTRAP = /^NG_DEFER_BOOTSTRAP!/;
+        if (window && NG_ENABLE_DEBUG_INFO.test(window.name)) {
+          config.debugInfoEnabled = true;
+          window.name = window.name.replace(NG_ENABLE_DEBUG_INFO, '');
+        }
+        if (window && !NG_DEFER_BOOTSTRAP.test(window.name)) {
+          return doBootstrap();
+        }
+        window.name = window.name.replace(NG_DEFER_BOOTSTRAP, '');
+        angular.resumeBootstrap = function(extraModules) {
+          forEach(extraModules, function(module) {
+            modules.push(module);
+          });
+          return doBootstrap();
+        };
+        if (isFunction(angular.resumeDeferredBootstrap)) {
+          angular.resumeDeferredBootstrap();
+        }
+      }
+      function reloadWithDebugInfo() {
+        window.name = 'NG_ENABLE_DEBUG_INFO!' + window.name;
+        window.location.reload();
+      }
+      function getTestability(rootElement) {
+        var injector = angular.element(rootElement).injector();
+        if (!injector) {
+          throw ngMinErr('test', 'no injector found for element argument to getTestability');
+        }
+        return injector.get('$$testability');
+      }
+      var SNAKE_CASE_REGEXP = /[A-Z]/g;
+      function snake_case(name, separator) {
+        separator = separator || '_';
+        return name.replace(SNAKE_CASE_REGEXP, function(letter, pos) {
+          return (pos ? separator : '') + letter.toLowerCase();
+        });
+      }
+      var bindJQueryFired = false;
+      var skipDestroyOnNextJQueryCleanData;
+      function bindJQuery() {
+        var originalCleanData;
+        if (bindJQueryFired) {
+          return ;
+        }
+        var jqName = jq();
+        jQuery = window.jQuery;
+        if (isDefined(jqName)) {
+          jQuery = jqName === null ? undefined : window[jqName];
+        }
+        if (jQuery && jQuery.fn.on) {
+          jqLite = jQuery;
+          extend(jQuery.fn, {
+            scope: JQLitePrototype.scope,
+            isolateScope: JQLitePrototype.isolateScope,
+            controller: JQLitePrototype.controller,
+            injector: JQLitePrototype.injector,
+            inheritedData: JQLitePrototype.inheritedData
+          });
+          originalCleanData = jQuery.cleanData;
+          jQuery.cleanData = function(elems) {
+            var events;
+            if (!skipDestroyOnNextJQueryCleanData) {
+              for (var i = 0,
+                  elem; (elem = elems[i]) != null; i++) {
+                events = jQuery._data(elem, "events");
+                if (events && events.$destroy) {
+                  jQuery(elem).triggerHandler('$destroy');
+                }
+              }
+            } else {
+              skipDestroyOnNextJQueryCleanData = false;
+            }
+            originalCleanData(elems);
+          };
+        } else {
+          jqLite = JQLite;
+        }
+        angular.element = jqLite;
+        bindJQueryFired = true;
+      }
+      function assertArg(arg, name, reason) {
+        if (!arg) {
+          throw ngMinErr('areq', "Argument '{0}' is {1}", (name || '?'), (reason || "required"));
+        }
+        return arg;
+      }
+      function assertArgFn(arg, name, acceptArrayAnnotation) {
+        if (acceptArrayAnnotation && isArray(arg)) {
+          arg = arg[arg.length - 1];
+        }
+        assertArg(isFunction(arg), name, 'not a function, got ' + (arg && typeof arg === 'object' ? arg.constructor.name || 'Object' : typeof arg));
+        return arg;
+      }
+      function assertNotHasOwnProperty(name, context) {
+        if (name === 'hasOwnProperty') {
+          throw ngMinErr('badname', "hasOwnProperty is not a valid {0} name", context);
+        }
+      }
+      function getter(obj, path, bindFnToScope) {
+        if (!path)
+          return obj;
+        var keys = path.split('.');
+        var key;
+        var lastInstance = obj;
+        var len = keys.length;
+        for (var i = 0; i < len; i++) {
+          key = keys[i];
+          if (obj) {
+            obj = (lastInstance = obj)[key];
+          }
+        }
+        if (!bindFnToScope && isFunction(obj)) {
+          return bind(lastInstance, obj);
+        }
+        return obj;
+      }
+      function getBlockNodes(nodes) {
+        var node = nodes[0];
+        var endNode = nodes[nodes.length - 1];
+        var blockNodes = [node];
+        do {
+          node = node.nextSibling;
+          if (!node)
+            break;
+          blockNodes.push(node);
+        } while (node !== endNode);
+        return jqLite(blockNodes);
+      }
+      function createMap() {
+        return Object.create(null);
+      }
+      var NODE_TYPE_ELEMENT = 1;
+      var NODE_TYPE_ATTRIBUTE = 2;
+      var NODE_TYPE_TEXT = 3;
+      var NODE_TYPE_COMMENT = 8;
+      var NODE_TYPE_DOCUMENT = 9;
+      var NODE_TYPE_DOCUMENT_FRAGMENT = 11;
+      function setupModuleLoader(window) {
+        var $injectorMinErr = minErr('$injector');
+        var ngMinErr = minErr('ng');
+        function ensure(obj, name, factory) {
+          return obj[name] || (obj[name] = factory());
+        }
+        var angular = ensure(window, 'angular', Object);
+        angular.$$minErr = angular.$$minErr || minErr;
+        return ensure(angular, 'module', function() {
+          var modules = {};
+          return function module(name, requires, configFn) {
+            var assertNotHasOwnProperty = function(name, context) {
+              if (name === 'hasOwnProperty') {
+                throw ngMinErr('badname', 'hasOwnProperty is not a valid {0} name', context);
+              }
+            };
+            assertNotHasOwnProperty(name, 'module');
+            if (requires && modules.hasOwnProperty(name)) {
+              modules[name] = null;
+            }
+            return ensure(modules, name, function() {
+              if (!requires) {
+                throw $injectorMinErr('nomod', "Module '{0}' is not available! You either misspelled " + "the module name or forgot to load it. If registering a module ensure that you " + "specify the dependencies as the second argument.", name);
+              }
+              var invokeQueue = [];
+              var configBlocks = [];
+              var runBlocks = [];
+              var config = invokeLater('$injector', 'invoke', 'push', configBlocks);
+              var moduleInstance = {
+                _invokeQueue: invokeQueue,
+                _configBlocks: configBlocks,
+                _runBlocks: runBlocks,
+                requires: requires,
+                name: name,
+                provider: invokeLater('$provide', 'provider'),
+                factory: invokeLater('$provide', 'factory'),
+                service: invokeLater('$provide', 'service'),
+                value: invokeLater('$provide', 'value'),
+                constant: invokeLater('$provide', 'constant', 'unshift'),
+                decorator: invokeLater('$provide', 'decorator'),
+                animation: invokeLater('$animateProvider', 'register'),
+                filter: invokeLater('$filterProvider', 'register'),
+                controller: invokeLater('$controllerProvider', 'register'),
+                directive: invokeLater('$compileProvider', 'directive'),
+                config: config,
+                run: function(block) {
+                  runBlocks.push(block);
+                  return this;
+                }
               };
-            }
-            if (!g)
-              throw c("nomod", f);
-            var b = [],
-                d = [],
-                e = [],
-                s = a("$injector", "invoke", "push", d),
-                A = {
-                  _invokeQueue: b,
-                  _configBlocks: d,
-                  _runBlocks: e,
-                  requires: g,
-                  name: f,
-                  provider: a("$provide", "provider"),
-                  factory: a("$provide", "factory"),
-                  service: a("$provide", "service"),
-                  value: a("$provide", "value"),
-                  constant: a("$provide", "constant", "unshift"),
-                  decorator: a("$provide", "decorator"),
-                  animation: a("$animateProvider", "register"),
-                  filter: a("$filterProvider", "register"),
-                  controller: a("$controllerProvider", "register"),
-                  directive: a("$compileProvider", "directive"),
-                  config: s,
-                  run: function(a) {
-                    e.push(a);
-                    return this;
-                  }
+              if (configFn) {
+                config(configFn);
+              }
+              return moduleInstance;
+              function invokeLater(provider, method, insertMethod, queue) {
+                if (!queue)
+                  queue = invokeQueue;
+                return function() {
+                  queue[insertMethod || 'push']([provider, method, arguments]);
+                  return moduleInstance;
                 };
-            h && s(h);
-            return A;
-          });
-        };
-      });
-    }
-    function de(b) {
-      Q(b, {
-        bootstrap: zc,
-        copy: ua,
-        extend: Q,
-        merge: Ud,
-        equals: ka,
-        element: z,
-        forEach: n,
-        injector: bb,
-        noop: w,
-        bind: uc,
-        toJson: $a,
-        fromJson: vc,
-        identity: Ua,
-        isUndefined: v,
-        isDefined: y,
-        isString: L,
-        isFunction: G,
-        isObject: C,
-        isNumber: V,
-        isElement: sc,
-        isArray: K,
-        version: ee,
-        isDate: da,
-        lowercase: E,
-        uppercase: pb,
-        callbacks: {counter: 0},
-        getTestability: $d,
-        $$minErr: F,
-        $$csp: cb,
-        reloadWithDebugInfo: Zd
-      });
-      db = ce(N);
-      try {
-        db("ngLocale");
-      } catch (a) {
-        db("ngLocale", []).provider("$locale", fe);
-      }
-      db("ng", ["ngLocale"], ["$provide", function(a) {
-        a.provider({$$sanitizeUri: ge});
-        a.provider("$compile", Dc).directive({
-          a: he,
-          input: Ec,
-          textarea: Ec,
-          form: ie,
-          script: je,
-          select: ke,
-          style: le,
-          option: me,
-          ngBind: ne,
-          ngBindHtml: oe,
-          ngBindTemplate: pe,
-          ngClass: qe,
-          ngClassEven: re,
-          ngClassOdd: se,
-          ngCloak: te,
-          ngController: ue,
-          ngForm: ve,
-          ngHide: we,
-          ngIf: xe,
-          ngInclude: ye,
-          ngInit: ze,
-          ngNonBindable: Ae,
-          ngPluralize: Be,
-          ngRepeat: Ce,
-          ngShow: De,
-          ngStyle: Ee,
-          ngSwitch: Fe,
-          ngSwitchWhen: Ge,
-          ngSwitchDefault: He,
-          ngOptions: Ie,
-          ngTransclude: Je,
-          ngModel: Ke,
-          ngList: Le,
-          ngChange: Me,
-          pattern: Fc,
-          ngPattern: Fc,
-          required: Gc,
-          ngRequired: Gc,
-          minlength: Hc,
-          ngMinlength: Hc,
-          maxlength: Ic,
-          ngMaxlength: Ic,
-          ngValue: Ne,
-          ngModelOptions: Oe
-        }).directive({ngInclude: Pe}).directive(qb).directive(Jc);
-        a.provider({
-          $anchorScroll: Qe,
-          $animate: Re,
-          $$animateQueue: Se,
-          $$AnimateRunner: Te,
-          $browser: Ue,
-          $cacheFactory: Ve,
-          $controller: We,
-          $document: Xe,
-          $exceptionHandler: Ye,
-          $filter: Kc,
-          $interpolate: Ze,
-          $interval: $e,
-          $http: af,
-          $httpParamSerializer: bf,
-          $httpParamSerializerJQLike: cf,
-          $httpBackend: df,
-          $location: ef,
-          $log: ff,
-          $parse: gf,
-          $rootScope: hf,
-          $q: jf,
-          $$q: kf,
-          $sce: lf,
-          $sceDelegate: mf,
-          $sniffer: nf,
-          $templateCache: of,
-          $templateRequest: pf,
-          $$testability: qf,
-          $timeout: rf,
-          $window: sf,
-          $$rAF: tf,
-          $$asyncCallback: uf,
-          $$jqLite: vf,
-          $$HashMap: wf,
-          $$cookieReader: xf
+              }
+            });
+          };
         });
-      }]);
-    }
-    function eb(b) {
-      return b.replace(yf, function(a, b, d, e) {
-        return e ? d.toUpperCase() : d;
-      }).replace(zf, "Moz$1");
-    }
-    function Lc(b) {
-      b = b.nodeType;
-      return b === pa || !b || 9 === b;
-    }
-    function Mc(b, a) {
-      var c,
-          d,
-          e = a.createDocumentFragment(),
-          f = [];
-      if (Tb.test(b)) {
-        c = c || e.appendChild(a.createElement("div"));
-        d = (Af.exec(b) || ["", ""])[1].toLowerCase();
-        d = ma[d] || ma._default;
-        c.innerHTML = d[1] + b.replace(Bf, "<$1></$2>") + d[2];
-        for (d = d[0]; d--; )
-          c = c.lastChild;
-        f = Za(f, c.childNodes);
-        c = e.firstChild;
-        c.textContent = "";
-      } else
-        f.push(a.createTextNode(b));
-      e.textContent = "";
-      e.innerHTML = "";
-      n(f, function(a) {
-        e.appendChild(a);
-      });
-      return e;
-    }
-    function R(b) {
-      if (b instanceof R)
-        return b;
-      var a;
-      L(b) && (b = T(b), a = !0);
-      if (!(this instanceof R)) {
-        if (a && "<" != b.charAt(0))
-          throw Ub("nosel");
-        return new R(b);
       }
-      if (a) {
-        a = W;
-        var c;
-        b = (c = Cf.exec(b)) ? [a.createElement(c[1])] : (c = Mc(b, a)) ? c.childNodes : [];
+      function serializeObject(obj) {
+        var seen = [];
+        return JSON.stringify(obj, function(key, val) {
+          val = toJsonReplacer(key, val);
+          if (isObject(val)) {
+            if (seen.indexOf(val) >= 0)
+              return '<<already seen>>';
+            seen.push(val);
+          }
+          return val;
+        });
       }
-      Nc(this, b);
-    }
-    function Vb(b) {
-      return b.cloneNode(!0);
-    }
-    function rb(b, a) {
-      a || sb(b);
-      if (b.querySelectorAll)
-        for (var c = b.querySelectorAll("*"),
-            d = 0,
-            e = c.length; d < e; d++)
-          sb(c[d]);
-    }
-    function Oc(b, a, c, d) {
-      if (y(d))
-        throw Ub("offargs");
-      var e = (d = tb(b)) && d.events,
-          f = d && d.handle;
-      if (f)
-        if (a)
-          n(a.split(" "), function(a) {
-            if (y(c)) {
-              var d = e[a];
-              Ya(d || [], c);
-              if (d && 0 < d.length)
-                return ;
+      function toDebugString(obj) {
+        if (typeof obj === 'function') {
+          return obj.toString().replace(/ \{[\s\S]*$/, '');
+        } else if (typeof obj === 'undefined') {
+          return 'undefined';
+        } else if (typeof obj !== 'string') {
+          return serializeObject(obj);
+        }
+        return obj;
+      }
+      var version = {
+        full: '1.4.0',
+        major: 1,
+        minor: 4,
+        dot: 0,
+        codeName: 'jaracimrman-existence'
+      };
+      function publishExternalAPI(angular) {
+        extend(angular, {
+          'bootstrap': bootstrap,
+          'copy': copy,
+          'extend': extend,
+          'merge': merge,
+          'equals': equals,
+          'element': jqLite,
+          'forEach': forEach,
+          'injector': createInjector,
+          'noop': noop,
+          'bind': bind,
+          'toJson': toJson,
+          'fromJson': fromJson,
+          'identity': identity,
+          'isUndefined': isUndefined,
+          'isDefined': isDefined,
+          'isString': isString,
+          'isFunction': isFunction,
+          'isObject': isObject,
+          'isNumber': isNumber,
+          'isElement': isElement,
+          'isArray': isArray,
+          'version': version,
+          'isDate': isDate,
+          'lowercase': lowercase,
+          'uppercase': uppercase,
+          'callbacks': {counter: 0},
+          'getTestability': getTestability,
+          '$$minErr': minErr,
+          '$$csp': csp,
+          'reloadWithDebugInfo': reloadWithDebugInfo
+        });
+        angularModule = setupModuleLoader(window);
+        try {
+          angularModule('ngLocale');
+        } catch (e) {
+          angularModule('ngLocale', []).provider('$locale', $LocaleProvider);
+        }
+        angularModule('ng', ['ngLocale'], ['$provide', function ngModule($provide) {
+          $provide.provider({$$sanitizeUri: $$SanitizeUriProvider});
+          $provide.provider('$compile', $CompileProvider).directive({
+            a: htmlAnchorDirective,
+            input: inputDirective,
+            textarea: inputDirective,
+            form: formDirective,
+            script: scriptDirective,
+            select: selectDirective,
+            style: styleDirective,
+            option: optionDirective,
+            ngBind: ngBindDirective,
+            ngBindHtml: ngBindHtmlDirective,
+            ngBindTemplate: ngBindTemplateDirective,
+            ngClass: ngClassDirective,
+            ngClassEven: ngClassEvenDirective,
+            ngClassOdd: ngClassOddDirective,
+            ngCloak: ngCloakDirective,
+            ngController: ngControllerDirective,
+            ngForm: ngFormDirective,
+            ngHide: ngHideDirective,
+            ngIf: ngIfDirective,
+            ngInclude: ngIncludeDirective,
+            ngInit: ngInitDirective,
+            ngNonBindable: ngNonBindableDirective,
+            ngPluralize: ngPluralizeDirective,
+            ngRepeat: ngRepeatDirective,
+            ngShow: ngShowDirective,
+            ngStyle: ngStyleDirective,
+            ngSwitch: ngSwitchDirective,
+            ngSwitchWhen: ngSwitchWhenDirective,
+            ngSwitchDefault: ngSwitchDefaultDirective,
+            ngOptions: ngOptionsDirective,
+            ngTransclude: ngTranscludeDirective,
+            ngModel: ngModelDirective,
+            ngList: ngListDirective,
+            ngChange: ngChangeDirective,
+            pattern: patternDirective,
+            ngPattern: patternDirective,
+            required: requiredDirective,
+            ngRequired: requiredDirective,
+            minlength: minlengthDirective,
+            ngMinlength: minlengthDirective,
+            maxlength: maxlengthDirective,
+            ngMaxlength: maxlengthDirective,
+            ngValue: ngValueDirective,
+            ngModelOptions: ngModelOptionsDirective
+          }).directive({ngInclude: ngIncludeFillContentDirective}).directive(ngAttributeAliasDirectives).directive(ngEventDirectives);
+          $provide.provider({
+            $anchorScroll: $AnchorScrollProvider,
+            $animate: $AnimateProvider,
+            $$animateQueue: $$CoreAnimateQueueProvider,
+            $$AnimateRunner: $$CoreAnimateRunnerProvider,
+            $browser: $BrowserProvider,
+            $cacheFactory: $CacheFactoryProvider,
+            $controller: $ControllerProvider,
+            $document: $DocumentProvider,
+            $exceptionHandler: $ExceptionHandlerProvider,
+            $filter: $FilterProvider,
+            $interpolate: $InterpolateProvider,
+            $interval: $IntervalProvider,
+            $http: $HttpProvider,
+            $httpParamSerializer: $HttpParamSerializerProvider,
+            $httpParamSerializerJQLike: $HttpParamSerializerJQLikeProvider,
+            $httpBackend: $HttpBackendProvider,
+            $location: $LocationProvider,
+            $log: $LogProvider,
+            $parse: $ParseProvider,
+            $rootScope: $RootScopeProvider,
+            $q: $QProvider,
+            $$q: $$QProvider,
+            $sce: $SceProvider,
+            $sceDelegate: $SceDelegateProvider,
+            $sniffer: $SnifferProvider,
+            $templateCache: $TemplateCacheProvider,
+            $templateRequest: $TemplateRequestProvider,
+            $$testability: $$TestabilityProvider,
+            $timeout: $TimeoutProvider,
+            $window: $WindowProvider,
+            $$rAF: $$RAFProvider,
+            $$asyncCallback: $$AsyncCallbackProvider,
+            $$jqLite: $$jqLiteProvider,
+            $$HashMap: $$HashMapProvider,
+            $$cookieReader: $$CookieReaderProvider
+          });
+        }]);
+      }
+      JQLite.expando = 'ng339';
+      var jqCache = JQLite.cache = {},
+          jqId = 1,
+          addEventListenerFn = function(element, type, fn) {
+            element.addEventListener(type, fn, false);
+          },
+          removeEventListenerFn = function(element, type, fn) {
+            element.removeEventListener(type, fn, false);
+          };
+      JQLite._data = function(node) {
+        return this.cache[node[this.expando]] || {};
+      };
+      function jqNextId() {
+        return ++jqId;
+      }
+      var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
+      var MOZ_HACK_REGEXP = /^moz([A-Z])/;
+      var MOUSE_EVENT_MAP = {
+        mouseleave: "mouseout",
+        mouseenter: "mouseover"
+      };
+      var jqLiteMinErr = minErr('jqLite');
+      function camelCase(name) {
+        return name.replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
+          return offset ? letter.toUpperCase() : letter;
+        }).replace(MOZ_HACK_REGEXP, 'Moz$1');
+      }
+      var SINGLE_TAG_REGEXP = /^<(\w+)\s*\/?>(?:<\/\1>|)$/;
+      var HTML_REGEXP = /<|&#?\w+;/;
+      var TAG_NAME_REGEXP = /<([\w:]+)/;
+      var XHTML_TAG_REGEXP = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi;
+      var wrapMap = {
+        'option': [1, '<select multiple="multiple">', '</select>'],
+        'thead': [1, '<table>', '</table>'],
+        'col': [2, '<table><colgroup>', '</colgroup></table>'],
+        'tr': [2, '<table><tbody>', '</tbody></table>'],
+        'td': [3, '<table><tbody><tr>', '</tr></tbody></table>'],
+        '_default': [0, "", ""]
+      };
+      wrapMap.optgroup = wrapMap.option;
+      wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
+      wrapMap.th = wrapMap.td;
+      function jqLiteIsTextNode(html) {
+        return !HTML_REGEXP.test(html);
+      }
+      function jqLiteAcceptsData(node) {
+        var nodeType = node.nodeType;
+        return nodeType === NODE_TYPE_ELEMENT || !nodeType || nodeType === NODE_TYPE_DOCUMENT;
+      }
+      function jqLiteBuildFragment(html, context) {
+        var tmp,
+            tag,
+            wrap,
+            fragment = context.createDocumentFragment(),
+            nodes = [],
+            i;
+        if (jqLiteIsTextNode(html)) {
+          nodes.push(context.createTextNode(html));
+        } else {
+          tmp = tmp || fragment.appendChild(context.createElement("div"));
+          tag = (TAG_NAME_REGEXP.exec(html) || ["", ""])[1].toLowerCase();
+          wrap = wrapMap[tag] || wrapMap._default;
+          tmp.innerHTML = wrap[1] + html.replace(XHTML_TAG_REGEXP, "<$1></$2>") + wrap[2];
+          i = wrap[0];
+          while (i--) {
+            tmp = tmp.lastChild;
+          }
+          nodes = concat(nodes, tmp.childNodes);
+          tmp = fragment.firstChild;
+          tmp.textContent = "";
+        }
+        fragment.textContent = "";
+        fragment.innerHTML = "";
+        forEach(nodes, function(node) {
+          fragment.appendChild(node);
+        });
+        return fragment;
+      }
+      function jqLiteParseHTML(html, context) {
+        context = context || document;
+        var parsed;
+        if ((parsed = SINGLE_TAG_REGEXP.exec(html))) {
+          return [context.createElement(parsed[1])];
+        }
+        if ((parsed = jqLiteBuildFragment(html, context))) {
+          return parsed.childNodes;
+        }
+        return [];
+      }
+      function JQLite(element) {
+        if (element instanceof JQLite) {
+          return element;
+        }
+        var argIsString;
+        if (isString(element)) {
+          element = trim(element);
+          argIsString = true;
+        }
+        if (!(this instanceof JQLite)) {
+          if (argIsString && element.charAt(0) != '<') {
+            throw jqLiteMinErr('nosel', 'Looking up elements via selectors is not supported by jqLite! See: http://docs.angularjs.org/api/angular.element');
+          }
+          return new JQLite(element);
+        }
+        if (argIsString) {
+          jqLiteAddNodes(this, jqLiteParseHTML(element));
+        } else {
+          jqLiteAddNodes(this, element);
+        }
+      }
+      function jqLiteClone(element) {
+        return element.cloneNode(true);
+      }
+      function jqLiteDealoc(element, onlyDescendants) {
+        if (!onlyDescendants)
+          jqLiteRemoveData(element);
+        if (element.querySelectorAll) {
+          var descendants = element.querySelectorAll('*');
+          for (var i = 0,
+              l = descendants.length; i < l; i++) {
+            jqLiteRemoveData(descendants[i]);
+          }
+        }
+      }
+      function jqLiteOff(element, type, fn, unsupported) {
+        if (isDefined(unsupported))
+          throw jqLiteMinErr('offargs', 'jqLite#off() does not support the `selector` argument');
+        var expandoStore = jqLiteExpandoStore(element);
+        var events = expandoStore && expandoStore.events;
+        var handle = expandoStore && expandoStore.handle;
+        if (!handle)
+          return ;
+        if (!type) {
+          for (type in events) {
+            if (type !== '$destroy') {
+              removeEventListenerFn(element, type, handle);
             }
-            b.removeEventListener(a, f, !1);
-            delete e[a];
+            delete events[type];
+          }
+        } else {
+          forEach(type.split(' '), function(type) {
+            if (isDefined(fn)) {
+              var listenerFns = events[type];
+              arrayRemove(listenerFns || [], fn);
+              if (listenerFns && listenerFns.length > 0) {
+                return ;
+              }
+            }
+            removeEventListenerFn(element, type, handle);
+            delete events[type];
           });
-        else
-          for (a in e)
-            "$destroy" !== a && b.removeEventListener(a, f, !1), delete e[a];
-    }
-    function sb(b, a) {
-      var c = b.ng339,
-          d = c && ub[c];
-      d && (a ? delete d.data[a] : (d.handle && (d.events.$destroy && d.handle({}, "$destroy"), Oc(b)), delete ub[c], b.ng339 = u));
-    }
-    function tb(b, a) {
-      var c = b.ng339,
-          c = c && ub[c];
-      a && !c && (b.ng339 = c = ++Df, c = ub[c] = {
-        events: {},
-        data: {},
-        handle: u
-      });
-      return c;
-    }
-    function Wb(b, a, c) {
-      if (Lc(b)) {
-        var d = y(c),
-            e = !d && a && !C(a),
-            f = !a;
-        b = (b = tb(b, !e)) && b.data;
-        if (d)
-          b[a] = c;
-        else {
-          if (f)
-            return b;
-          if (e)
-            return b && b[a];
-          Q(b, a);
         }
       }
-    }
-    function vb(b, a) {
-      return b.getAttribute ? -1 < (" " + (b.getAttribute("class") || "") + " ").replace(/[\n\t]/g, " ").indexOf(" " + a + " ") : !1;
-    }
-    function wb(b, a) {
-      a && b.setAttribute && n(a.split(" "), function(a) {
-        b.setAttribute("class", T((" " + (b.getAttribute("class") || "") + " ").replace(/[\n\t]/g, " ").replace(" " + T(a) + " ", " ")));
-      });
-    }
-    function xb(b, a) {
-      if (a && b.setAttribute) {
-        var c = (" " + (b.getAttribute("class") || "") + " ").replace(/[\n\t]/g, " ");
-        n(a.split(" "), function(a) {
-          a = T(a);
-          -1 === c.indexOf(" " + a + " ") && (c += a + " ");
-        });
-        b.setAttribute("class", T(c));
-      }
-    }
-    function Nc(b, a) {
-      if (a)
-        if (a.nodeType)
-          b[b.length++] = a;
-        else {
-          var c = a.length;
-          if ("number" === typeof c && a.window !== a) {
-            if (c)
-              for (var d = 0; d < c; d++)
-                b[b.length++] = a[d];
-          } else
-            b[b.length++] = a;
+      function jqLiteRemoveData(element, name) {
+        var expandoId = element.ng339;
+        var expandoStore = expandoId && jqCache[expandoId];
+        if (expandoStore) {
+          if (name) {
+            delete expandoStore.data[name];
+            return ;
+          }
+          if (expandoStore.handle) {
+            if (expandoStore.events.$destroy) {
+              expandoStore.handle({}, '$destroy');
+            }
+            jqLiteOff(element);
+          }
+          delete jqCache[expandoId];
+          element.ng339 = undefined;
         }
-    }
-    function Pc(b, a) {
-      return yb(b, "$" + (a || "ngController") + "Controller");
-    }
-    function yb(b, a, c) {
-      9 == b.nodeType && (b = b.documentElement);
-      for (a = K(a) ? a : [a]; b; ) {
-        for (var d = 0,
-            e = a.length; d < e; d++)
-          if ((c = z.data(b, a[d])) !== u)
-            return c;
-        b = b.parentNode || 11 === b.nodeType && b.host;
       }
-    }
-    function Qc(b) {
-      for (rb(b, !0); b.firstChild; )
-        b.removeChild(b.firstChild);
-    }
-    function Xb(b, a) {
-      a || rb(b);
-      var c = b.parentNode;
-      c && c.removeChild(b);
-    }
-    function Ef(b, a) {
-      a = a || N;
-      if ("complete" === a.document.readyState)
-        a.setTimeout(b);
-      else
-        z(a).on("load", b);
-    }
-    function Rc(b, a) {
-      var c = zb[a.toLowerCase()];
-      return c && Sc[ta(b)] && c;
-    }
-    function Ff(b, a) {
-      var c = b.nodeName;
-      return ("INPUT" === c || "TEXTAREA" === c) && Tc[a];
-    }
-    function Gf(b, a) {
-      var c = function(c, e) {
-        c.isDefaultPrevented = function() {
-          return c.defaultPrevented;
+      function jqLiteExpandoStore(element, createIfNecessary) {
+        var expandoId = element.ng339,
+            expandoStore = expandoId && jqCache[expandoId];
+        if (createIfNecessary && !expandoStore) {
+          element.ng339 = expandoId = jqNextId();
+          expandoStore = jqCache[expandoId] = {
+            events: {},
+            data: {},
+            handle: undefined
+          };
+        }
+        return expandoStore;
+      }
+      function jqLiteData(element, key, value) {
+        if (jqLiteAcceptsData(element)) {
+          var isSimpleSetter = isDefined(value);
+          var isSimpleGetter = !isSimpleSetter && key && !isObject(key);
+          var massGetter = !key;
+          var expandoStore = jqLiteExpandoStore(element, !isSimpleGetter);
+          var data = expandoStore && expandoStore.data;
+          if (isSimpleSetter) {
+            data[key] = value;
+          } else {
+            if (massGetter) {
+              return data;
+            } else {
+              if (isSimpleGetter) {
+                return data && data[key];
+              } else {
+                extend(data, key);
+              }
+            }
+          }
+        }
+      }
+      function jqLiteHasClass(element, selector) {
+        if (!element.getAttribute)
+          return false;
+        return ((" " + (element.getAttribute('class') || '') + " ").replace(/[\n\t]/g, " ").indexOf(" " + selector + " ") > -1);
+      }
+      function jqLiteRemoveClass(element, cssClasses) {
+        if (cssClasses && element.setAttribute) {
+          forEach(cssClasses.split(' '), function(cssClass) {
+            element.setAttribute('class', trim((" " + (element.getAttribute('class') || '') + " ").replace(/[\n\t]/g, " ").replace(" " + trim(cssClass) + " ", " ")));
+          });
+        }
+      }
+      function jqLiteAddClass(element, cssClasses) {
+        if (cssClasses && element.setAttribute) {
+          var existingClasses = (' ' + (element.getAttribute('class') || '') + ' ').replace(/[\n\t]/g, " ");
+          forEach(cssClasses.split(' '), function(cssClass) {
+            cssClass = trim(cssClass);
+            if (existingClasses.indexOf(' ' + cssClass + ' ') === -1) {
+              existingClasses += cssClass + ' ';
+            }
+          });
+          element.setAttribute('class', trim(existingClasses));
+        }
+      }
+      function jqLiteAddNodes(root, elements) {
+        if (elements) {
+          if (elements.nodeType) {
+            root[root.length++] = elements;
+          } else {
+            var length = elements.length;
+            if (typeof length === 'number' && elements.window !== elements) {
+              if (length) {
+                for (var i = 0; i < length; i++) {
+                  root[root.length++] = elements[i];
+                }
+              }
+            } else {
+              root[root.length++] = elements;
+            }
+          }
+        }
+      }
+      function jqLiteController(element, name) {
+        return jqLiteInheritedData(element, '$' + (name || 'ngController') + 'Controller');
+      }
+      function jqLiteInheritedData(element, name, value) {
+        if (element.nodeType == NODE_TYPE_DOCUMENT) {
+          element = element.documentElement;
+        }
+        var names = isArray(name) ? name : [name];
+        while (element) {
+          for (var i = 0,
+              ii = names.length; i < ii; i++) {
+            if ((value = jqLite.data(element, names[i])) !== undefined)
+              return value;
+          }
+          element = element.parentNode || (element.nodeType === NODE_TYPE_DOCUMENT_FRAGMENT && element.host);
+        }
+      }
+      function jqLiteEmpty(element) {
+        jqLiteDealoc(element, true);
+        while (element.firstChild) {
+          element.removeChild(element.firstChild);
+        }
+      }
+      function jqLiteRemove(element, keepData) {
+        if (!keepData)
+          jqLiteDealoc(element);
+        var parent = element.parentNode;
+        if (parent)
+          parent.removeChild(element);
+      }
+      function jqLiteDocumentLoaded(action, win) {
+        win = win || window;
+        if (win.document.readyState === 'complete') {
+          win.setTimeout(action);
+        } else {
+          jqLite(win).on('load', action);
+        }
+      }
+      var JQLitePrototype = JQLite.prototype = {
+        ready: function(fn) {
+          var fired = false;
+          function trigger() {
+            if (fired)
+              return ;
+            fired = true;
+            fn();
+          }
+          if (document.readyState === 'complete') {
+            setTimeout(trigger);
+          } else {
+            this.on('DOMContentLoaded', trigger);
+            JQLite(window).on('load', trigger);
+          }
+        },
+        toString: function() {
+          var value = [];
+          forEach(this, function(e) {
+            value.push('' + e);
+          });
+          return '[' + value.join(', ') + ']';
+        },
+        eq: function(index) {
+          return (index >= 0) ? jqLite(this[index]) : jqLite(this[this.length + index]);
+        },
+        length: 0,
+        push: push,
+        sort: [].sort,
+        splice: [].splice
+      };
+      var BOOLEAN_ATTR = {};
+      forEach('multiple,selected,checked,disabled,readOnly,required,open'.split(','), function(value) {
+        BOOLEAN_ATTR[lowercase(value)] = value;
+      });
+      var BOOLEAN_ELEMENTS = {};
+      forEach('input,select,option,textarea,button,form,details'.split(','), function(value) {
+        BOOLEAN_ELEMENTS[value] = true;
+      });
+      var ALIASED_ATTR = {
+        'ngMinlength': 'minlength',
+        'ngMaxlength': 'maxlength',
+        'ngMin': 'min',
+        'ngMax': 'max',
+        'ngPattern': 'pattern'
+      };
+      function getBooleanAttrName(element, name) {
+        var booleanAttr = BOOLEAN_ATTR[name.toLowerCase()];
+        return booleanAttr && BOOLEAN_ELEMENTS[nodeName_(element)] && booleanAttr;
+      }
+      function getAliasedAttrName(element, name) {
+        var nodeName = element.nodeName;
+        return (nodeName === 'INPUT' || nodeName === 'TEXTAREA') && ALIASED_ATTR[name];
+      }
+      forEach({
+        data: jqLiteData,
+        removeData: jqLiteRemoveData
+      }, function(fn, name) {
+        JQLite[name] = fn;
+      });
+      forEach({
+        data: jqLiteData,
+        inheritedData: jqLiteInheritedData,
+        scope: function(element) {
+          return jqLite.data(element, '$scope') || jqLiteInheritedData(element.parentNode || element, ['$isolateScope', '$scope']);
+        },
+        isolateScope: function(element) {
+          return jqLite.data(element, '$isolateScope') || jqLite.data(element, '$isolateScopeNoTemplate');
+        },
+        controller: jqLiteController,
+        injector: function(element) {
+          return jqLiteInheritedData(element, '$injector');
+        },
+        removeAttr: function(element, name) {
+          element.removeAttribute(name);
+        },
+        hasClass: jqLiteHasClass,
+        css: function(element, name, value) {
+          name = camelCase(name);
+          if (isDefined(value)) {
+            element.style[name] = value;
+          } else {
+            return element.style[name];
+          }
+        },
+        attr: function(element, name, value) {
+          var nodeType = element.nodeType;
+          if (nodeType === NODE_TYPE_TEXT || nodeType === NODE_TYPE_ATTRIBUTE || nodeType === NODE_TYPE_COMMENT) {
+            return ;
+          }
+          var lowercasedName = lowercase(name);
+          if (BOOLEAN_ATTR[lowercasedName]) {
+            if (isDefined(value)) {
+              if (!!value) {
+                element[name] = true;
+                element.setAttribute(name, lowercasedName);
+              } else {
+                element[name] = false;
+                element.removeAttribute(lowercasedName);
+              }
+            } else {
+              return (element[name] || (element.attributes.getNamedItem(name) || noop).specified) ? lowercasedName : undefined;
+            }
+          } else if (isDefined(value)) {
+            element.setAttribute(name, value);
+          } else if (element.getAttribute) {
+            var ret = element.getAttribute(name, 2);
+            return ret === null ? undefined : ret;
+          }
+        },
+        prop: function(element, name, value) {
+          if (isDefined(value)) {
+            element[name] = value;
+          } else {
+            return element[name];
+          }
+        },
+        text: (function() {
+          getText.$dv = '';
+          return getText;
+          function getText(element, value) {
+            if (isUndefined(value)) {
+              var nodeType = element.nodeType;
+              return (nodeType === NODE_TYPE_ELEMENT || nodeType === NODE_TYPE_TEXT) ? element.textContent : '';
+            }
+            element.textContent = value;
+          }
+        })(),
+        val: function(element, value) {
+          if (isUndefined(value)) {
+            if (element.multiple && nodeName_(element) === 'select') {
+              var result = [];
+              forEach(element.options, function(option) {
+                if (option.selected) {
+                  result.push(option.value || option.text);
+                }
+              });
+              return result.length === 0 ? null : result;
+            }
+            return element.value;
+          }
+          element.value = value;
+        },
+        html: function(element, value) {
+          if (isUndefined(value)) {
+            return element.innerHTML;
+          }
+          jqLiteDealoc(element, true);
+          element.innerHTML = value;
+        },
+        empty: jqLiteEmpty
+      }, function(fn, name) {
+        JQLite.prototype[name] = function(arg1, arg2) {
+          var i,
+              key;
+          var nodeCount = this.length;
+          if (fn !== jqLiteEmpty && (((fn.length == 2 && (fn !== jqLiteHasClass && fn !== jqLiteController)) ? arg1 : arg2) === undefined)) {
+            if (isObject(arg1)) {
+              for (i = 0; i < nodeCount; i++) {
+                if (fn === jqLiteData) {
+                  fn(this[i], arg1);
+                } else {
+                  for (key in arg1) {
+                    fn(this[i], key, arg1[key]);
+                  }
+                }
+              }
+              return this;
+            } else {
+              var value = fn.$dv;
+              var jj = (value === undefined) ? Math.min(nodeCount, 1) : nodeCount;
+              for (var j = 0; j < jj; j++) {
+                var nodeValue = fn(this[j], arg1, arg2);
+                value = value ? value + nodeValue : nodeValue;
+              }
+              return value;
+            }
+          } else {
+            for (i = 0; i < nodeCount; i++) {
+              fn(this[i], arg1, arg2);
+            }
+            return this;
+          }
         };
-        var f = a[e || c.type],
-            g = f ? f.length : 0;
-        if (g) {
-          if (v(c.immediatePropagationStopped)) {
-            var h = c.stopImmediatePropagation;
-            c.stopImmediatePropagation = function() {
-              c.immediatePropagationStopped = !0;
-              c.stopPropagation && c.stopPropagation();
-              h && h.call(c);
+      });
+      function createEventHandler(element, events) {
+        var eventHandler = function(event, type) {
+          event.isDefaultPrevented = function() {
+            return event.defaultPrevented;
+          };
+          var eventFns = events[type || event.type];
+          var eventFnsLength = eventFns ? eventFns.length : 0;
+          if (!eventFnsLength)
+            return ;
+          if (isUndefined(event.immediatePropagationStopped)) {
+            var originalStopImmediatePropagation = event.stopImmediatePropagation;
+            event.stopImmediatePropagation = function() {
+              event.immediatePropagationStopped = true;
+              if (event.stopPropagation) {
+                event.stopPropagation();
+              }
+              if (originalStopImmediatePropagation) {
+                originalStopImmediatePropagation.call(event);
+              }
             };
           }
-          c.isImmediatePropagationStopped = function() {
-            return !0 === c.immediatePropagationStopped;
+          event.isImmediatePropagationStopped = function() {
+            return event.immediatePropagationStopped === true;
           };
-          1 < g && (f = fa(f));
-          for (var l = 0; l < g; l++)
-            c.isImmediatePropagationStopped() || f[l].call(b, c);
-        }
-      };
-      c.elem = b;
-      return c;
-    }
-    function vf() {
-      this.$get = function() {
-        return Q(R, {
-          hasClass: function(b, a) {
-            b.attr && (b = b[0]);
-            return vb(b, a);
-          },
-          addClass: function(b, a) {
-            b.attr && (b = b[0]);
-            return xb(b, a);
-          },
-          removeClass: function(b, a) {
-            b.attr && (b = b[0]);
-            return wb(b, a);
+          if ((eventFnsLength > 1)) {
+            eventFns = shallowCopy(eventFns);
           }
-        });
-      };
-    }
-    function Fa(b, a) {
-      var c = b && b.$$hashKey;
-      if (c)
-        return "function" === typeof c && (c = b.$$hashKey()), c;
-      c = typeof b;
-      return c = "function" == c || "object" == c && null !== b ? b.$$hashKey = c + ":" + (a || Td)() : c + ":" + b;
-    }
-    function Ra(b, a) {
-      if (a) {
-        var c = 0;
-        this.nextUid = function() {
-          return ++c;
-        };
-      }
-      n(b, this.put, this);
-    }
-    function Hf(b) {
-      return (b = b.toString().replace(Uc, "").match(Vc)) ? "function(" + (b[1] || "").replace(/[\s\r\n]+/, " ") + ")" : "fn";
-    }
-    function bb(b, a) {
-      function c(a) {
-        return function(b, c) {
-          if (C(b))
-            n(b, pc(a));
-          else
-            return a(b, c);
-        };
-      }
-      function d(a, b) {
-        Qa(a, "service");
-        if (G(b) || K(b))
-          b = s.instantiate(b);
-        if (!b.$get)
-          throw Ga("pget", a);
-        return r[a + "Provider"] = b;
-      }
-      function e(a, b) {
-        return function() {
-          var c = H.invoke(b, this);
-          if (v(c))
-            throw Ga("undef", a);
-          return c;
-        };
-      }
-      function f(a, b, c) {
-        return d(a, {$get: !1 !== c ? e(a, b) : b});
-      }
-      function g(a) {
-        var b = [],
-            c;
-        n(a, function(a) {
-          function d(a) {
-            var b,
-                c;
-            b = 0;
-            for (c = a.length; b < c; b++) {
-              var e = a[b],
-                  f = s.get(e[0]);
-              f[e[1]].apply(f, e[2]);
+          for (var i = 0; i < eventFnsLength; i++) {
+            if (!event.isImmediatePropagationStopped()) {
+              eventFns[i].call(element, event);
             }
           }
-          if (!m.get(a)) {
-            m.put(a, !0);
-            try {
-              L(a) ? (c = db(a), b = b.concat(g(c.requires)).concat(c._runBlocks), d(c._invokeQueue), d(c._configBlocks)) : G(a) ? b.push(s.invoke(a)) : K(a) ? b.push(s.invoke(a)) : Pa(a, "module");
-            } catch (e) {
-              throw K(a) && (a = a[a.length - 1]), e.message && e.stack && -1 == e.stack.indexOf(e.message) && (e = e.message + "\n" + e.stack), Ga("modulerr", a, e.stack || e.message || e);
-            }
-          }
-        });
-        return b;
-      }
-      function h(b, c) {
-        function d(a, e) {
-          if (b.hasOwnProperty(a)) {
-            if (b[a] === l)
-              throw Ga("cdep", a + " <- " + k.join(" <- "));
-            return b[a];
-          }
-          try {
-            return k.unshift(a), b[a] = l, b[a] = c(a, e);
-          } catch (f) {
-            throw b[a] === l && delete b[a], f;
-          } finally {
-            k.shift();
-          }
-        }
-        function e(b, c, f, g) {
-          "string" === typeof f && (g = f, f = null);
-          var h = [],
-              k = bb.$$annotate(b, a, g),
-              l,
-              s,
-              m;
-          s = 0;
-          for (l = k.length; s < l; s++) {
-            m = k[s];
-            if ("string" !== typeof m)
-              throw Ga("itkn", m);
-            h.push(f && f.hasOwnProperty(m) ? f[m] : d(m, g));
-          }
-          K(b) && (b = b[l]);
-          return b.apply(c, h);
-        }
-        return {
-          invoke: e,
-          instantiate: function(a, b, c) {
-            var d = Object.create((K(a) ? a[a.length - 1] : a).prototype || null);
-            a = e(a, d, b, c);
-            return C(a) || G(a) ? a : d;
-          },
-          get: d,
-          annotate: bb.$$annotate,
-          has: function(a) {
-            return r.hasOwnProperty(a + "Provider") || b.hasOwnProperty(a);
-          }
         };
+        eventHandler.elem = element;
+        return eventHandler;
       }
-      a = !0 === a;
-      var l = {},
-          k = [],
-          m = new Ra([], !0),
-          r = {$provide: {
-              provider: c(d),
-              factory: c(f),
-              service: c(function(a, b) {
-                return f(a, ["$injector", function(a) {
-                  return a.instantiate(b);
-                }]);
-              }),
-              value: c(function(a, b) {
-                return f(a, qa(b), !1);
-              }),
-              constant: c(function(a, b) {
-                Qa(a, "constant");
-                r[a] = b;
-                A[a] = b;
-              }),
-              decorator: function(a, b) {
-                var c = s.get(a + "Provider"),
-                    d = c.$get;
-                c.$get = function() {
-                  var a = H.invoke(d, c);
-                  return H.invoke(b, null, {$delegate: a});
-                };
-              }
-            }},
-          s = r.$injector = h(r, function(a, b) {
-            aa.isString(b) && k.push(b);
-            throw Ga("unpr", k.join(" <- "));
-          }),
-          A = {},
-          H = A.$injector = h(A, function(a, b) {
-            var c = s.get(a + "Provider", b);
-            return H.invoke(c.$get, c, u, a);
-          });
-      n(g(b), function(a) {
-        H.invoke(a || w);
-      });
-      return H;
-    }
-    function Qe() {
-      var b = !0;
-      this.disableAutoScrolling = function() {
-        b = !1;
-      };
-      this.$get = ["$window", "$location", "$rootScope", function(a, c, d) {
-        function e(a) {
-          var b = null;
-          Array.prototype.some.call(a, function(a) {
-            if ("a" === ta(a))
-              return b = a, !0;
-          });
-          return b;
-        }
-        function f(b) {
-          if (b) {
-            b.scrollIntoView();
-            var c;
-            c = g.yOffset;
-            G(c) ? c = c() : sc(c) ? (c = c[0], c = "fixed" !== a.getComputedStyle(c).position ? 0 : c.getBoundingClientRect().bottom) : V(c) || (c = 0);
-            c && (b = b.getBoundingClientRect().top, a.scrollBy(0, b - c));
-          } else
-            a.scrollTo(0, 0);
-        }
-        function g(a) {
-          a = L(a) ? a : c.hash();
-          var b;
-          a ? (b = h.getElementById(a)) ? f(b) : (b = e(h.getElementsByName(a))) ? f(b) : "top" === a && f(null) : f(null);
-        }
-        var h = a.document;
-        b && d.$watch(function() {
-          return c.hash();
-        }, function(a, b) {
-          a === b && "" === a || Ef(function() {
-            d.$evalAsync(g);
-          });
-        });
-        return g;
-      }];
-    }
-    function fb(b, a) {
-      if (!b && !a)
-        return "";
-      if (!b)
-        return a;
-      if (!a)
-        return b;
-      K(b) && (b = b.join(" "));
-      K(a) && (a = a.join(" "));
-      return b + " " + a;
-    }
-    function If(b) {
-      L(b) && (b = b.split(" "));
-      var a = ga();
-      n(b, function(b) {
-        b.length && (a[b] = !0);
-      });
-      return a;
-    }
-    function Ha(b) {
-      return C(b) ? b : {};
-    }
-    function uf() {
-      this.$get = ["$$rAF", "$timeout", function(b, a) {
-        return b.supported ? function(a) {
-          return b(a);
-        } : function(b) {
-          return a(b, 0, !1);
-        };
-      }];
-    }
-    function Jf(b, a, c, d) {
-      function e(a) {
-        try {
-          a.apply(null, ra.call(arguments, 1));
-        } finally {
-          if (H--, 0 === H)
-            for (; M.length; )
-              try {
-                M.pop()();
-              } catch (b) {
-                c.error(b);
-              }
-        }
-      }
-      function f() {
-        g();
-        h();
-      }
-      function g() {
-        a: {
-          try {
-            t = m.state;
-            break a;
-          } catch (a) {}
-          t = void 0;
-        }
-        t = v(t) ? null : t;
-        ka(t, D) && (t = D);
-        D = t;
-      }
-      function h() {
-        if (x !== l.url() || p !== t)
-          x = l.url(), p = t, n(B, function(a) {
-            a(l.url(), t);
-          });
-      }
-      var l = this,
-          k = b.location,
-          m = b.history,
-          r = b.setTimeout,
-          s = b.clearTimeout,
-          A = {};
-      l.isMock = !1;
-      var H = 0,
-          M = [];
-      l.$$completeOutstandingRequest = e;
-      l.$$incOutstandingRequestCount = function() {
-        H++;
-      };
-      l.notifyWhenNoOutstandingRequests = function(a) {
-        0 === H ? a() : M.push(a);
-      };
-      var t,
-          p,
-          x = k.href,
-          q = a.find("base"),
-          I = null;
-      g();
-      p = t;
-      l.url = function(a, c, e) {
-        v(e) && (e = null);
-        k !== b.location && (k = b.location);
-        m !== b.history && (m = b.history);
-        if (a) {
-          var f = p === e;
-          if (x === a && (!d.history || f))
-            return l;
-          var h = x && Ia(x) === Ia(a);
-          x = a;
-          p = e;
-          !d.history || h && f ? (h || (I = a), c ? k.replace(a) : h ? (c = k, e = a.indexOf("#"), a = -1 === e ? "" : a.substr(e + 1), c.hash = a) : k.href = a) : (m[c ? "replaceState" : "pushState"](e, "", a), g(), p = t);
-          return l;
-        }
-        return I || k.href.replace(/%27/g, "'");
-      };
-      l.state = function() {
-        return t;
-      };
-      var B = [],
-          O = !1,
-          D = null;
-      l.onUrlChange = function(a) {
-        if (!O) {
-          if (d.history)
-            z(b).on("popstate", f);
-          z(b).on("hashchange", f);
-          O = !0;
-        }
-        B.push(a);
-        return a;
-      };
-      l.$$applicationDestroyed = function() {
-        z(b).off("hashchange popstate", f);
-      };
-      l.$$checkUrlChange = h;
-      l.baseHref = function() {
-        var a = q.attr("href");
-        return a ? a.replace(/^(https?\:)?\/\/[^\/]*/, "") : "";
-      };
-      l.defer = function(a, b) {
-        var c;
-        H++;
-        c = r(function() {
-          delete A[c];
-          e(a);
-        }, b || 0);
-        A[c] = !0;
-        return c;
-      };
-      l.defer.cancel = function(a) {
-        return A[a] ? (delete A[a], s(a), e(w), !0) : !1;
-      };
-    }
-    function Ue() {
-      this.$get = ["$window", "$log", "$sniffer", "$document", function(b, a, c, d) {
-        return new Jf(b, d, a, c);
-      }];
-    }
-    function Ve() {
-      this.$get = function() {
-        function b(b, d) {
-          function e(a) {
-            a != r && (s ? s == a && (s = a.n) : s = a, f(a.n, a.p), f(a, r), r = a, r.n = null);
+      forEach({
+        removeData: jqLiteRemoveData,
+        on: function jqLiteOn(element, type, fn, unsupported) {
+          if (isDefined(unsupported))
+            throw jqLiteMinErr('onargs', 'jqLite#on() does not support the `selector` or `eventData` parameters');
+          if (!jqLiteAcceptsData(element)) {
+            return ;
           }
-          function f(a, b) {
-            a != b && (a && (a.p = b), b && (b.n = a));
+          var expandoStore = jqLiteExpandoStore(element, true);
+          var events = expandoStore.events;
+          var handle = expandoStore.handle;
+          if (!handle) {
+            handle = expandoStore.handle = createEventHandler(element, events);
           }
-          if (b in a)
-            throw F("$cacheFactory")("iid", b);
-          var g = 0,
-              h = Q({}, d, {id: b}),
-              l = {},
-              k = d && d.capacity || Number.MAX_VALUE,
-              m = {},
-              r = null,
-              s = null;
-          return a[b] = {
-            put: function(a, b) {
-              if (!v(b)) {
-                if (k < Number.MAX_VALUE) {
-                  var c = m[a] || (m[a] = {key: a});
-                  e(c);
-                }
-                a in l || g++;
-                l[a] = b;
-                g > k && this.remove(s.key);
-                return b;
-              }
-            },
-            get: function(a) {
-              if (k < Number.MAX_VALUE) {
-                var b = m[a];
-                if (!b)
-                  return ;
-                e(b);
-              }
-              return l[a];
-            },
-            remove: function(a) {
-              if (k < Number.MAX_VALUE) {
-                var b = m[a];
-                if (!b)
-                  return ;
-                b == r && (r = b.p);
-                b == s && (s = b.n);
-                f(b.n, b.p);
-                delete m[a];
-              }
-              delete l[a];
-              g--;
-            },
-            removeAll: function() {
-              l = {};
-              g = 0;
-              m = {};
-              r = s = null;
-            },
-            destroy: function() {
-              m = h = l = null;
-              delete a[b];
-            },
-            info: function() {
-              return Q({}, h, {size: g});
-            }
-          };
-        }
-        var a = {};
-        b.info = function() {
-          var b = {};
-          n(a, function(a, e) {
-            b[e] = a.info();
-          });
-          return b;
-        };
-        b.get = function(b) {
-          return a[b];
-        };
-        return b;
-      };
-    }
-    function of() {
-      this.$get = ["$cacheFactory", function(b) {
-        return b("templates");
-      }];
-    }
-    function Dc(b, a) {
-      function c(a, b, c) {
-        var d = /^\s*([@&]|=(\*?))(\??)\s*(\w*)\s*$/,
-            e = {};
-        n(a, function(a, f) {
-          var g = a.match(d);
-          if (!g)
-            throw ea("iscp", b, f, a, c ? "controller bindings definition" : "isolate scope definition");
-          e[f] = {
-            mode: g[1][0],
-            collection: "*" === g[2],
-            optional: "?" === g[3],
-            attrName: g[4] || f
-          };
-        });
-        return e;
-      }
-      function d(a) {
-        var b = a.charAt(0);
-        if (!b || b !== E(b))
-          throw ea("baddir", a);
-        if (a !== a.trim())
-          throw ea("baddir", a);
-      }
-      var e = {},
-          f = /^\s*directive\:\s*([\w\-]+)\s+(.*)$/,
-          g = /(([\w\-]+)(?:\:([^;]+))?;?)/,
-          h = Vd("ngSrc,ngSrcset,src,srcset"),
-          l = /^(?:(\^\^?)?(\?)?(\^\^?)?)?/,
-          k = /^(on[a-z]+|formaction)$/;
-      this.directive = function s(a, f) {
-        Qa(a, "directive");
-        L(a) ? (d(a), Sb(f, "directiveFactory"), e.hasOwnProperty(a) || (e[a] = [], b.factory(a + "Directive", ["$injector", "$exceptionHandler", function(b, d) {
-          var f = [];
-          n(e[a], function(e, g) {
-            try {
-              var h = b.invoke(e);
-              G(h) ? h = {compile: qa(h)} : !h.compile && h.link && (h.compile = qa(h.link));
-              h.priority = h.priority || 0;
-              h.index = g;
-              h.name = h.name || a;
-              h.require = h.require || h.controller && h.name;
-              h.restrict = h.restrict || "EA";
-              var k = h,
-                  l = h,
-                  s = h.name,
-                  m = {
-                    isolateScope: null,
-                    bindToController: null
-                  };
-              C(l.scope) && (!0 === l.bindToController ? (m.bindToController = c(l.scope, s, !0), m.isolateScope = {}) : m.isolateScope = c(l.scope, s, !1));
-              C(l.bindToController) && (m.bindToController = c(l.bindToController, s, !0));
-              if (C(m.bindToController)) {
-                var H = l.controller,
-                    ba = l.controllerAs;
-                if (!H)
-                  throw ea("noctrl", s);
-                var ha;
-                a: if (ba && L(ba))
-                  ha = ba;
-                else {
-                  if (L(H)) {
-                    var n = Wc.exec(H);
-                    if (n) {
-                      ha = n[3];
-                      break a;
-                    }
+          var types = type.indexOf(' ') >= 0 ? type.split(' ') : [type];
+          var i = types.length;
+          while (i--) {
+            type = types[i];
+            var eventFns = events[type];
+            if (!eventFns) {
+              events[type] = [];
+              if (type === 'mouseenter' || type === 'mouseleave') {
+                jqLiteOn(element, MOUSE_EVENT_MAP[type], function(event) {
+                  var target = this,
+                      related = event.relatedTarget;
+                  if (!related || (related !== target && !target.contains(related))) {
+                    handle(event, type);
                   }
-                  ha = void 0;
-                }
-                if (!ha)
-                  throw ea("noident", s);
-              }
-              var q = k.$$bindings = m;
-              C(q.isolateScope) && (h.$$isolateBindings = q.isolateScope);
-              f.push(h);
-            } catch (u) {
-              d(u);
-            }
-          });
-          return f;
-        }])), e[a].push(f)) : n(a, pc(s));
-        return this;
-      };
-      this.aHrefSanitizationWhitelist = function(b) {
-        return y(b) ? (a.aHrefSanitizationWhitelist(b), this) : a.aHrefSanitizationWhitelist();
-      };
-      this.imgSrcSanitizationWhitelist = function(b) {
-        return y(b) ? (a.imgSrcSanitizationWhitelist(b), this) : a.imgSrcSanitizationWhitelist();
-      };
-      var m = !0;
-      this.debugInfoEnabled = function(a) {
-        return y(a) ? (m = a, this) : m;
-      };
-      this.$get = ["$injector", "$interpolate", "$exceptionHandler", "$templateRequest", "$parse", "$controller", "$rootScope", "$document", "$sce", "$animate", "$$sanitizeUri", function(a, b, c, d, t, p, x, q, I, B, O) {
-        function D(a, b) {
-          try {
-            a.addClass(b);
-          } catch (c) {}
-        }
-        function S(a, b, c, d, e) {
-          a instanceof z || (a = z(a));
-          n(a, function(b, c) {
-            b.nodeType == ab && b.nodeValue.match(/\S+/) && (a[c] = z(b).wrap("<span></span>").parent()[0]);
-          });
-          var f = P(a, b, a, c, d, e);
-          S.$$addScopeClass(a);
-          var g = null;
-          return function(b, c, d) {
-            Sb(b, "scope");
-            d = d || {};
-            var e = d.parentBoundTranscludeFn,
-                h = d.transcludeControllers;
-            d = d.futureParentElement;
-            e && e.$$boundTransclude && (e = e.$$boundTransclude);
-            g || (g = (d = d && d[0]) ? "foreignobject" !== ta(d) && d.toString().match(/SVG/) ? "svg" : "html" : "html");
-            d = "html" !== g ? z(Yb(g, z("<div>").append(a).html())) : c ? Oa.clone.call(a) : a;
-            if (h)
-              for (var l in h)
-                d.data("$" + l + "Controller", h[l].instance);
-            S.$$addScopeInfo(d, b);
-            c && c(d, b);
-            f && f(b, d, d, e);
-            return d;
-          };
-        }
-        function P(a, b, c, d, e, f) {
-          function g(a, c, d, e) {
-            var f,
-                l,
-                k,
-                m,
-                s,
-                B,
-                A;
-            if (p)
-              for (A = Array(c.length), m = 0; m < h.length; m += 3)
-                f = h[m], A[f] = c[f];
-            else
-              A = c;
-            m = 0;
-            for (s = h.length; m < s; )
-              if (l = A[h[m++]], c = h[m++], f = h[m++], c) {
-                if (c.scope) {
-                  if (k = a.$new(), S.$$addScopeInfo(z(l), k), B = c.$$destroyBindings)
-                    c.$$destroyBindings = null, k.$on("$destroyed", B);
-                } else
-                  k = a;
-                B = c.transcludeOnThisElement ? ba(a, c.transclude, e, c.elementTranscludeOnThisElement) : !c.templateOnThisElement && e ? e : !e && b ? ba(a, b) : null;
-                c(f, k, l, d, B, c);
-              } else
-                f && f(a, l.childNodes, u, e);
-          }
-          for (var h = [],
-              l,
-              k,
-              m,
-              s,
-              p,
-              B = 0; B < a.length; B++) {
-            l = new aa;
-            k = ha(a[B], [], l, 0 === B ? d : u, e);
-            (f = k.length ? J(k, a[B], l, b, c, null, [], [], f) : null) && f.scope && S.$$addScopeClass(l.$$element);
-            l = f && f.terminal || !(m = a[B].childNodes) || !m.length ? null : P(m, f ? (f.transcludeOnThisElement || !f.templateOnThisElement) && f.transclude : b);
-            if (f || l)
-              h.push(B, f, l), s = !0, p = p || f;
-            f = null;
-          }
-          return s ? g : null;
-        }
-        function ba(a, b, c, d) {
-          return function(d, e, f, g, h) {
-            d || (d = a.$new(!1, h), d.$$transcluded = !0);
-            return b(d, e, {
-              parentBoundTranscludeFn: c,
-              transcludeControllers: f,
-              futureParentElement: g
-            });
-          };
-        }
-        function ha(a, b, c, d, e) {
-          var h = c.$attr,
-              l;
-          switch (a.nodeType) {
-            case pa:
-              v(b, xa(ta(a)), "E", d, e);
-              for (var k,
-                  m,
-                  s,
-                  p = a.attributes,
-                  B = 0,
-                  A = p && p.length; B < A; B++) {
-                var H = !1,
-                    M = !1;
-                k = p[B];
-                l = k.name;
-                m = T(k.value);
-                k = xa(l);
-                if (s = ia.test(k))
-                  l = l.replace(Yc, "").substr(8).replace(/_(.)/g, function(a, b) {
-                    return b.toUpperCase();
-                  });
-                var P = k.replace(/(Start|End)$/, "");
-                F(P) && k === P + "Start" && (H = l, M = l.substr(0, l.length - 5) + "end", l = l.substr(0, l.length - 6));
-                k = xa(l.toLowerCase());
-                h[k] = l;
-                if (s || !c.hasOwnProperty(k))
-                  c[k] = m, Rc(a, k) && (c[k] = !0);
-                V(a, b, m, k, s);
-                v(b, k, "A", d, e, H, M);
-              }
-              a = a.className;
-              C(a) && (a = a.animVal);
-              if (L(a) && "" !== a)
-                for (; l = g.exec(a); )
-                  k = xa(l[2]), v(b, k, "C", d, e) && (c[k] = T(l[3])), a = a.substr(l.index + l[0].length);
-              break;
-            case ab:
-              za(b, a.nodeValue);
-              break;
-            case 8:
-              try {
-                if (l = f.exec(a.nodeValue))
-                  k = xa(l[1]), v(b, k, "M", d, e) && (c[k] = T(l[2]));
-              } catch (O) {}
-          }
-          b.sort(Ja);
-          return b;
-        }
-        function wa(a, b, c) {
-          var d = [],
-              e = 0;
-          if (b && a.hasAttribute && a.hasAttribute(b)) {
-            do {
-              if (!a)
-                throw ea("uterdir", b, c);
-              a.nodeType == pa && (a.hasAttribute(b) && e++, a.hasAttribute(c) && e--);
-              d.push(a);
-              a = a.nextSibling;
-            } while (0 < e);
-          } else
-            d.push(a);
-          return z(d);
-        }
-        function Xc(a, b, c) {
-          return function(d, e, f, g, h) {
-            e = wa(e[0], b, c);
-            return a(d, e, f, g, h);
-          };
-        }
-        function J(a, b, d, e, f, g, h, k, m) {
-          function s(a, b, c, d) {
-            if (a) {
-              c && (a = Xc(a, c, d));
-              a.require = J.require;
-              a.directiveName = w;
-              if (t === J || J.$$isolateScope)
-                a = Z(a, {isolateScope: !0});
-              h.push(a);
-            }
-            if (b) {
-              c && (b = Xc(b, c, d));
-              b.require = J.require;
-              b.directiveName = w;
-              if (t === J || J.$$isolateScope)
-                b = Z(b, {isolateScope: !0});
-              k.push(b);
-            }
-          }
-          function B(a, b, c, d) {
-            var e;
-            if (L(b)) {
-              var f = b.match(l);
-              b = b.substring(f[0].length);
-              var g = f[1] || f[3],
-                  f = "?" === f[2];
-              "^^" === g ? c = c.parent() : e = (e = d && d[b]) && e.instance;
-              e || (d = "$" + b + "Controller", e = g ? c.inheritedData(d) : c.data(d));
-              if (!e && !f)
-                throw ea("ctreq", b, a);
-            } else if (K(b))
-              for (e = [], g = 0, f = b.length; g < f; g++)
-                e[g] = B(a, b[g], c, d);
-            return e || null;
-          }
-          function A(a, b, c, d, e, f) {
-            var g = ga(),
-                h;
-            for (h in d) {
-              var l = d[h],
-                  k = {
-                    $scope: l === t || l.$$isolateScope ? e : f,
-                    $element: a,
-                    $attrs: b,
-                    $transclude: c
-                  },
-                  m = l.controller;
-              "@" == m && (m = b[l.name]);
-              k = p(m, k, !0, l.controllerAs);
-              g[l.name] = k;
-              q || a.data("$" + l.name + "Controller", k.instance);
-            }
-            return g;
-          }
-          function M(a, c, e, f, g, l) {
-            function m(a, b, c) {
-              var d;
-              Wa(a) || (c = b, b = a, a = u);
-              q && (d = n);
-              c || (c = q ? ja.parent() : ja);
-              return g(a, b, d, c, X);
-            }
-            var s,
-                p,
-                H,
-                P,
-                n,
-                ha,
-                ja;
-            b === e ? (f = d, ja = d.$$element) : (ja = z(e), f = new aa(ja, d));
-            t && (P = c.$new(!0));
-            g && (ha = m, ha.$$boundTransclude = g);
-            ba && (n = A(ja, f, ha, ba, P, c));
-            t && (S.$$addScopeInfo(ja, P, !0, !(D && (D === t || D === t.$$originalDirective))), S.$$addScopeClass(ja, !0), P.$$isolateBindings = t.$$isolateBindings, Y(c, f, P, P.$$isolateBindings, t, P));
-            if (n) {
-              var x = t || O,
-                  I;
-              x && n[x.name] && (p = x.$$bindings.bindToController, (H = n[x.name]) && H.identifier && p && (I = H, l.$$destroyBindings = Y(c, f, H.instance, p, x)));
-              for (s in n) {
-                H = n[s];
-                var wa = H();
-                wa !== H.instance && (H.instance = wa, ja.data("$" + J.name + "Controller", wa), H === I && (l.$$destroyBindings(), l.$$destroyBindings = Y(c, f, wa, p, x)));
-              }
-            }
-            s = 0;
-            for (l = h.length; s < l; s++)
-              p = h[s], $(p, p.isolateScope ? P : c, ja, f, p.require && B(p.directiveName, p.require, ja, n), ha);
-            var X = c;
-            t && (t.template || null === t.templateUrl) && (X = P);
-            a && a(X, e.childNodes, u, g);
-            for (s = k.length - 1; 0 <= s; s--)
-              p = k[s], $(p, p.isolateScope ? P : c, ja, f, p.require && B(p.directiveName, p.require, ja, n), ha);
-          }
-          m = m || {};
-          for (var P = -Number.MAX_VALUE,
-              O,
-              ba = m.controllerDirectives,
-              t = m.newIsolateScopeDirective,
-              D = m.templateDirective,
-              n = m.nonTlbTranscludeDirective,
-              x = !1,
-              I = !1,
-              q = m.hasElementTranscludeDirective,
-              X = d.$$element = z(b),
-              J,
-              w,
-              v,
-              Ja = e,
-              za,
-              F = 0,
-              E = a.length; F < E; F++) {
-            J = a[F];
-            var Ab = J.$$start,
-                Q = J.$$end;
-            Ab && (X = wa(b, Ab, Q));
-            v = u;
-            if (P > J.priority)
-              break;
-            if (v = J.scope)
-              J.templateUrl || (C(v) ? (N("new/isolated scope", t || O, J, X), t = J) : N("new/isolated scope", t, J, X)), O = O || J;
-            w = J.name;
-            !J.templateUrl && J.controller && (v = J.controller, ba = ba || ga(), N("'" + w + "' controller", ba[w], J, X), ba[w] = J);
-            if (v = J.transclude)
-              x = !0, J.$$tlb || (N("transclusion", n, J, X), n = J), "element" == v ? (q = !0, P = J.priority, v = X, X = d.$$element = z(W.createComment(" " + w + ": " + d[w] + " ")), b = X[0], U(f, ra.call(v, 0), b), Ja = S(v, e, P, g && g.name, {nonTlbTranscludeDirective: n})) : (v = z(Vb(b)).contents(), X.empty(), Ja = S(v, e));
-            if (J.template)
-              if (I = !0, N("template", D, J, X), D = J, v = G(J.template) ? J.template(X, d) : J.template, v = fa(v), J.replace) {
-                g = J;
-                v = Tb.test(v) ? Zc(Yb(J.templateNamespace, T(v))) : [];
-                b = v[0];
-                if (1 != v.length || b.nodeType !== pa)
-                  throw ea("tplrt", w, "");
-                U(f, X, b);
-                E = {$attr: {}};
-                v = ha(b, [], E);
-                var R = a.splice(F + 1, a.length - (F + 1));
-                t && y(v);
-                a = a.concat(v).concat(R);
-                $c(d, E);
-                E = a.length;
-              } else
-                X.html(v);
-            if (J.templateUrl)
-              I = !0, N("template", D, J, X), D = J, J.replace && (g = J), M = Kf(a.splice(F, a.length - F), X, d, f, x && Ja, h, k, {
-                controllerDirectives: ba,
-                newIsolateScopeDirective: t,
-                templateDirective: D,
-                nonTlbTranscludeDirective: n
-              }), E = a.length;
-            else if (J.compile)
-              try {
-                za = J.compile(X, d, Ja), G(za) ? s(null, za, Ab, Q) : za && s(za.pre, za.post, Ab, Q);
-              } catch (V) {
-                c(V, va(X));
-              }
-            J.terminal && (M.terminal = !0, P = Math.max(P, J.priority));
-          }
-          M.scope = O && !0 === O.scope;
-          M.transcludeOnThisElement = x;
-          M.elementTranscludeOnThisElement = q;
-          M.templateOnThisElement = I;
-          M.transclude = Ja;
-          m.hasElementTranscludeDirective = q;
-          return M;
-        }
-        function y(a) {
-          for (var b = 0,
-              c = a.length; b < c; b++)
-            a[b] = Ob(a[b], {$$isolateScope: !0});
-        }
-        function v(b, d, f, g, h, l, k) {
-          if (d === h)
-            return null;
-          h = null;
-          if (e.hasOwnProperty(d)) {
-            var m;
-            d = a.get(d + "Directive");
-            for (var p = 0,
-                B = d.length; p < B; p++)
-              try {
-                m = d[p], (g === u || g > m.priority) && -1 != m.restrict.indexOf(f) && (l && (m = Ob(m, {
-                  $$start: l,
-                  $$end: k
-                })), b.push(m), h = m);
-              } catch (A) {
-                c(A);
-              }
-          }
-          return h;
-        }
-        function F(b) {
-          if (e.hasOwnProperty(b))
-            for (var c = a.get(b + "Directive"),
-                d = 0,
-                f = c.length; d < f; d++)
-              if (b = c[d], b.multiElement)
-                return !0;
-          return !1;
-        }
-        function $c(a, b) {
-          var c = b.$attr,
-              d = a.$attr,
-              e = a.$$element;
-          n(a, function(d, e) {
-            "$" != e.charAt(0) && (b[e] && b[e] !== d && (d += ("style" === e ? ";" : " ") + b[e]), a.$set(e, d, !0, c[e]));
-          });
-          n(b, function(b, f) {
-            "class" == f ? (D(e, b), a["class"] = (a["class"] ? a["class"] + " " : "") + b) : "style" == f ? (e.attr("style", e.attr("style") + ";" + b), a.style = (a.style ? a.style + ";" : "") + b) : "$" == f.charAt(0) || a.hasOwnProperty(f) || (a[f] = b, d[f] = c[f]);
-          });
-        }
-        function Kf(a, b, c, e, f, g, h, l) {
-          var k = [],
-              m,
-              s,
-              p = b[0],
-              B = a.shift(),
-              A = Ob(B, {
-                templateUrl: null,
-                transclude: null,
-                replace: null,
-                $$originalDirective: B
-              }),
-              H = G(B.templateUrl) ? B.templateUrl(b, c) : B.templateUrl,
-              O = B.templateNamespace;
-          b.empty();
-          d(I.getTrustedResourceUrl(H)).then(function(d) {
-            var M,
-                t;
-            d = fa(d);
-            if (B.replace) {
-              d = Tb.test(d) ? Zc(Yb(O, T(d))) : [];
-              M = d[0];
-              if (1 != d.length || M.nodeType !== pa)
-                throw ea("tplrt", B.name, H);
-              d = {$attr: {}};
-              U(e, b, M);
-              var x = ha(M, [], d);
-              C(B.scope) && y(x);
-              a = x.concat(a);
-              $c(c, d);
-            } else
-              M = p, b.html(d);
-            a.unshift(A);
-            m = J(a, M, c, f, b, B, g, h, l);
-            n(e, function(a, c) {
-              a == M && (e[c] = b[0]);
-            });
-            for (s = P(b[0].childNodes, f); k.length; ) {
-              d = k.shift();
-              t = k.shift();
-              var S = k.shift(),
-                  I = k.shift(),
-                  x = b[0];
-              if (!d.$$destroyed) {
-                if (t !== p) {
-                  var wa = t.className;
-                  l.hasElementTranscludeDirective && B.replace || (x = Vb(M));
-                  U(S, z(t), x);
-                  D(z(x), wa);
-                }
-                t = m.transcludeOnThisElement ? ba(d, m.transclude, I) : I;
-                m(s, d, x, e, t, m);
-              }
-            }
-            k = null;
-          });
-          return function(a, b, c, d, e) {
-            a = e;
-            b.$$destroyed || (k ? k.push(b, c, d, a) : (m.transcludeOnThisElement && (a = ba(b, m.transclude, e)), m(s, b, c, d, a, m)));
-          };
-        }
-        function Ja(a, b) {
-          var c = b.priority - a.priority;
-          return 0 !== c ? c : a.name !== b.name ? a.name < b.name ? -1 : 1 : a.index - b.index;
-        }
-        function N(a, b, c, d) {
-          if (b)
-            throw ea("multidir", b.name, c.name, a, va(d));
-        }
-        function za(a, c) {
-          var d = b(c, !0);
-          d && a.push({
-            priority: 0,
-            compile: function(a) {
-              a = a.parent();
-              var b = !!a.length;
-              b && S.$$addBindingClass(a);
-              return function(a, c) {
-                var e = c.parent();
-                b || S.$$addBindingClass(e);
-                S.$$addBindingInfo(e, d.expressions);
-                a.$watch(d, function(a) {
-                  c[0].nodeValue = a;
                 });
+              } else {
+                if (type !== '$destroy') {
+                  addEventListenerFn(element, type, handle);
+                }
+              }
+              eventFns = events[type];
+            }
+            eventFns.push(fn);
+          }
+        },
+        off: jqLiteOff,
+        one: function(element, type, fn) {
+          element = jqLite(element);
+          element.on(type, function onFn() {
+            element.off(type, fn);
+            element.off(type, onFn);
+          });
+          element.on(type, fn);
+        },
+        replaceWith: function(element, replaceNode) {
+          var index,
+              parent = element.parentNode;
+          jqLiteDealoc(element);
+          forEach(new JQLite(replaceNode), function(node) {
+            if (index) {
+              parent.insertBefore(node, index.nextSibling);
+            } else {
+              parent.replaceChild(node, element);
+            }
+            index = node;
+          });
+        },
+        children: function(element) {
+          var children = [];
+          forEach(element.childNodes, function(element) {
+            if (element.nodeType === NODE_TYPE_ELEMENT) {
+              children.push(element);
+            }
+          });
+          return children;
+        },
+        contents: function(element) {
+          return element.contentDocument || element.childNodes || [];
+        },
+        append: function(element, node) {
+          var nodeType = element.nodeType;
+          if (nodeType !== NODE_TYPE_ELEMENT && nodeType !== NODE_TYPE_DOCUMENT_FRAGMENT)
+            return ;
+          node = new JQLite(node);
+          for (var i = 0,
+              ii = node.length; i < ii; i++) {
+            var child = node[i];
+            element.appendChild(child);
+          }
+        },
+        prepend: function(element, node) {
+          if (element.nodeType === NODE_TYPE_ELEMENT) {
+            var index = element.firstChild;
+            forEach(new JQLite(node), function(child) {
+              element.insertBefore(child, index);
+            });
+          }
+        },
+        wrap: function(element, wrapNode) {
+          wrapNode = jqLite(wrapNode).eq(0).clone()[0];
+          var parent = element.parentNode;
+          if (parent) {
+            parent.replaceChild(wrapNode, element);
+          }
+          wrapNode.appendChild(element);
+        },
+        remove: jqLiteRemove,
+        detach: function(element) {
+          jqLiteRemove(element, true);
+        },
+        after: function(element, newElement) {
+          var index = element,
+              parent = element.parentNode;
+          newElement = new JQLite(newElement);
+          for (var i = 0,
+              ii = newElement.length; i < ii; i++) {
+            var node = newElement[i];
+            parent.insertBefore(node, index.nextSibling);
+            index = node;
+          }
+        },
+        addClass: jqLiteAddClass,
+        removeClass: jqLiteRemoveClass,
+        toggleClass: function(element, selector, condition) {
+          if (selector) {
+            forEach(selector.split(' '), function(className) {
+              var classCondition = condition;
+              if (isUndefined(classCondition)) {
+                classCondition = !jqLiteHasClass(element, className);
+              }
+              (classCondition ? jqLiteAddClass : jqLiteRemoveClass)(element, className);
+            });
+          }
+        },
+        parent: function(element) {
+          var parent = element.parentNode;
+          return parent && parent.nodeType !== NODE_TYPE_DOCUMENT_FRAGMENT ? parent : null;
+        },
+        next: function(element) {
+          return element.nextElementSibling;
+        },
+        find: function(element, selector) {
+          if (element.getElementsByTagName) {
+            return element.getElementsByTagName(selector);
+          } else {
+            return [];
+          }
+        },
+        clone: jqLiteClone,
+        triggerHandler: function(element, event, extraParameters) {
+          var dummyEvent,
+              eventFnsCopy,
+              handlerArgs;
+          var eventName = event.type || event;
+          var expandoStore = jqLiteExpandoStore(element);
+          var events = expandoStore && expandoStore.events;
+          var eventFns = events && events[eventName];
+          if (eventFns) {
+            dummyEvent = {
+              preventDefault: function() {
+                this.defaultPrevented = true;
+              },
+              isDefaultPrevented: function() {
+                return this.defaultPrevented === true;
+              },
+              stopImmediatePropagation: function() {
+                this.immediatePropagationStopped = true;
+              },
+              isImmediatePropagationStopped: function() {
+                return this.immediatePropagationStopped === true;
+              },
+              stopPropagation: noop,
+              type: eventName,
+              target: element
+            };
+            if (event.type) {
+              dummyEvent = extend(dummyEvent, event);
+            }
+            eventFnsCopy = shallowCopy(eventFns);
+            handlerArgs = extraParameters ? [dummyEvent].concat(extraParameters) : [dummyEvent];
+            forEach(eventFnsCopy, function(fn) {
+              if (!dummyEvent.isImmediatePropagationStopped()) {
+                fn.apply(element, handlerArgs);
+              }
+            });
+          }
+        }
+      }, function(fn, name) {
+        JQLite.prototype[name] = function(arg1, arg2, arg3) {
+          var value;
+          for (var i = 0,
+              ii = this.length; i < ii; i++) {
+            if (isUndefined(value)) {
+              value = fn(this[i], arg1, arg2, arg3);
+              if (isDefined(value)) {
+                value = jqLite(value);
+              }
+            } else {
+              jqLiteAddNodes(value, fn(this[i], arg1, arg2, arg3));
+            }
+          }
+          return isDefined(value) ? value : this;
+        };
+        JQLite.prototype.bind = JQLite.prototype.on;
+        JQLite.prototype.unbind = JQLite.prototype.off;
+      });
+      function $$jqLiteProvider() {
+        this.$get = function $$jqLite() {
+          return extend(JQLite, {
+            hasClass: function(node, classes) {
+              if (node.attr)
+                node = node[0];
+              return jqLiteHasClass(node, classes);
+            },
+            addClass: function(node, classes) {
+              if (node.attr)
+                node = node[0];
+              return jqLiteAddClass(node, classes);
+            },
+            removeClass: function(node, classes) {
+              if (node.attr)
+                node = node[0];
+              return jqLiteRemoveClass(node, classes);
+            }
+          });
+        };
+      }
+      function hashKey(obj, nextUidFn) {
+        var key = obj && obj.$$hashKey;
+        if (key) {
+          if (typeof key === 'function') {
+            key = obj.$$hashKey();
+          }
+          return key;
+        }
+        var objType = typeof obj;
+        if (objType == 'function' || (objType == 'object' && obj !== null)) {
+          key = obj.$$hashKey = objType + ':' + (nextUidFn || nextUid)();
+        } else {
+          key = objType + ':' + obj;
+        }
+        return key;
+      }
+      function HashMap(array, isolatedUid) {
+        if (isolatedUid) {
+          var uid = 0;
+          this.nextUid = function() {
+            return ++uid;
+          };
+        }
+        forEach(array, this.put, this);
+      }
+      HashMap.prototype = {
+        put: function(key, value) {
+          this[hashKey(key, this.nextUid)] = value;
+        },
+        get: function(key) {
+          return this[hashKey(key, this.nextUid)];
+        },
+        remove: function(key) {
+          var value = this[key = hashKey(key, this.nextUid)];
+          delete this[key];
+          return value;
+        }
+      };
+      var $$HashMapProvider = [function() {
+        this.$get = [function() {
+          return HashMap;
+        }];
+      }];
+      var FN_ARGS = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
+      var FN_ARG_SPLIT = /,/;
+      var FN_ARG = /^\s*(_?)(\S+?)\1\s*$/;
+      var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+      var $injectorMinErr = minErr('$injector');
+      function anonFn(fn) {
+        var fnText = fn.toString().replace(STRIP_COMMENTS, ''),
+            args = fnText.match(FN_ARGS);
+        if (args) {
+          return 'function(' + (args[1] || '').replace(/[\s\r\n]+/, ' ') + ')';
+        }
+        return 'fn';
+      }
+      function annotate(fn, strictDi, name) {
+        var $inject,
+            fnText,
+            argDecl,
+            last;
+        if (typeof fn === 'function') {
+          if (!($inject = fn.$inject)) {
+            $inject = [];
+            if (fn.length) {
+              if (strictDi) {
+                if (!isString(name) || !name) {
+                  name = fn.name || anonFn(fn);
+                }
+                throw $injectorMinErr('strictdi', '{0} is not using explicit annotation and cannot be invoked in strict mode', name);
+              }
+              fnText = fn.toString().replace(STRIP_COMMENTS, '');
+              argDecl = fnText.match(FN_ARGS);
+              forEach(argDecl[1].split(FN_ARG_SPLIT), function(arg) {
+                arg.replace(FN_ARG, function(all, underscore, name) {
+                  $inject.push(name);
+                });
+              });
+            }
+            fn.$inject = $inject;
+          }
+        } else if (isArray(fn)) {
+          last = fn.length - 1;
+          assertArgFn(fn[last], 'fn');
+          $inject = fn.slice(0, last);
+        } else {
+          assertArgFn(fn, 'fn', true);
+        }
+        return $inject;
+      }
+      function createInjector(modulesToLoad, strictDi) {
+        strictDi = (strictDi === true);
+        var INSTANTIATING = {},
+            providerSuffix = 'Provider',
+            path = [],
+            loadedModules = new HashMap([], true),
+            providerCache = {$provide: {
+                provider: supportObject(provider),
+                factory: supportObject(factory),
+                service: supportObject(service),
+                value: supportObject(value),
+                constant: supportObject(constant),
+                decorator: decorator
+              }},
+            providerInjector = (providerCache.$injector = createInternalInjector(providerCache, function(serviceName, caller) {
+              if (angular.isString(caller)) {
+                path.push(caller);
+              }
+              throw $injectorMinErr('unpr', "Unknown provider: {0}", path.join(' <- '));
+            })),
+            instanceCache = {},
+            instanceInjector = (instanceCache.$injector = createInternalInjector(instanceCache, function(serviceName, caller) {
+              var provider = providerInjector.get(serviceName + providerSuffix, caller);
+              return instanceInjector.invoke(provider.$get, provider, undefined, serviceName);
+            }));
+        forEach(loadModules(modulesToLoad), function(fn) {
+          instanceInjector.invoke(fn || noop);
+        });
+        return instanceInjector;
+        function supportObject(delegate) {
+          return function(key, value) {
+            if (isObject(key)) {
+              forEach(key, reverseParams(delegate));
+            } else {
+              return delegate(key, value);
+            }
+          };
+        }
+        function provider(name, provider_) {
+          assertNotHasOwnProperty(name, 'service');
+          if (isFunction(provider_) || isArray(provider_)) {
+            provider_ = providerInjector.instantiate(provider_);
+          }
+          if (!provider_.$get) {
+            throw $injectorMinErr('pget', "Provider '{0}' must define $get factory method.", name);
+          }
+          return providerCache[name + providerSuffix] = provider_;
+        }
+        function enforceReturnValue(name, factory) {
+          return function enforcedReturnValue() {
+            var result = instanceInjector.invoke(factory, this);
+            if (isUndefined(result)) {
+              throw $injectorMinErr('undef', "Provider '{0}' must return a value from $get factory method.", name);
+            }
+            return result;
+          };
+        }
+        function factory(name, factoryFn, enforce) {
+          return provider(name, {$get: enforce !== false ? enforceReturnValue(name, factoryFn) : factoryFn});
+        }
+        function service(name, constructor) {
+          return factory(name, ['$injector', function($injector) {
+            return $injector.instantiate(constructor);
+          }]);
+        }
+        function value(name, val) {
+          return factory(name, valueFn(val), false);
+        }
+        function constant(name, value) {
+          assertNotHasOwnProperty(name, 'constant');
+          providerCache[name] = value;
+          instanceCache[name] = value;
+        }
+        function decorator(serviceName, decorFn) {
+          var origProvider = providerInjector.get(serviceName + providerSuffix),
+              orig$get = origProvider.$get;
+          origProvider.$get = function() {
+            var origInstance = instanceInjector.invoke(orig$get, origProvider);
+            return instanceInjector.invoke(decorFn, null, {$delegate: origInstance});
+          };
+        }
+        function loadModules(modulesToLoad) {
+          var runBlocks = [],
+              moduleFn;
+          forEach(modulesToLoad, function(module) {
+            if (loadedModules.get(module))
+              return ;
+            loadedModules.put(module, true);
+            function runInvokeQueue(queue) {
+              var i,
+                  ii;
+              for (i = 0, ii = queue.length; i < ii; i++) {
+                var invokeArgs = queue[i],
+                    provider = providerInjector.get(invokeArgs[0]);
+                provider[invokeArgs[1]].apply(provider, invokeArgs[2]);
+              }
+            }
+            try {
+              if (isString(module)) {
+                moduleFn = angularModule(module);
+                runBlocks = runBlocks.concat(loadModules(moduleFn.requires)).concat(moduleFn._runBlocks);
+                runInvokeQueue(moduleFn._invokeQueue);
+                runInvokeQueue(moduleFn._configBlocks);
+              } else if (isFunction(module)) {
+                runBlocks.push(providerInjector.invoke(module));
+              } else if (isArray(module)) {
+                runBlocks.push(providerInjector.invoke(module));
+              } else {
+                assertArgFn(module, 'module');
+              }
+            } catch (e) {
+              if (isArray(module)) {
+                module = module[module.length - 1];
+              }
+              if (e.message && e.stack && e.stack.indexOf(e.message) == -1) {
+                e = e.message + '\n' + e.stack;
+              }
+              throw $injectorMinErr('modulerr', "Failed to instantiate module {0} due to:\n{1}", module, e.stack || e.message || e);
+            }
+          });
+          return runBlocks;
+        }
+        function createInternalInjector(cache, factory) {
+          function getService(serviceName, caller) {
+            if (cache.hasOwnProperty(serviceName)) {
+              if (cache[serviceName] === INSTANTIATING) {
+                throw $injectorMinErr('cdep', 'Circular dependency found: {0}', serviceName + ' <- ' + path.join(' <- '));
+              }
+              return cache[serviceName];
+            } else {
+              try {
+                path.unshift(serviceName);
+                cache[serviceName] = INSTANTIATING;
+                return cache[serviceName] = factory(serviceName, caller);
+              } catch (err) {
+                if (cache[serviceName] === INSTANTIATING) {
+                  delete cache[serviceName];
+                }
+                throw err;
+              } finally {
+                path.shift();
+              }
+            }
+          }
+          function invoke(fn, self, locals, serviceName) {
+            if (typeof locals === 'string') {
+              serviceName = locals;
+              locals = null;
+            }
+            var args = [],
+                $inject = createInjector.$$annotate(fn, strictDi, serviceName),
+                length,
+                i,
+                key;
+            for (i = 0, length = $inject.length; i < length; i++) {
+              key = $inject[i];
+              if (typeof key !== 'string') {
+                throw $injectorMinErr('itkn', 'Incorrect injection token! Expected service name as string, got {0}', key);
+              }
+              args.push(locals && locals.hasOwnProperty(key) ? locals[key] : getService(key, serviceName));
+            }
+            if (isArray(fn)) {
+              fn = fn[length];
+            }
+            return fn.apply(self, args);
+          }
+          function instantiate(Type, locals, serviceName) {
+            var instance = Object.create((isArray(Type) ? Type[Type.length - 1] : Type).prototype || null);
+            var returnedValue = invoke(Type, instance, locals, serviceName);
+            return isObject(returnedValue) || isFunction(returnedValue) ? returnedValue : instance;
+          }
+          return {
+            invoke: invoke,
+            instantiate: instantiate,
+            get: getService,
+            annotate: createInjector.$$annotate,
+            has: function(name) {
+              return providerCache.hasOwnProperty(name + providerSuffix) || cache.hasOwnProperty(name);
+            }
+          };
+        }
+      }
+      createInjector.$$annotate = annotate;
+      function $AnchorScrollProvider() {
+        var autoScrollingEnabled = true;
+        this.disableAutoScrolling = function() {
+          autoScrollingEnabled = false;
+        };
+        this.$get = ['$window', '$location', '$rootScope', function($window, $location, $rootScope) {
+          var document = $window.document;
+          function getFirstAnchor(list) {
+            var result = null;
+            Array.prototype.some.call(list, function(element) {
+              if (nodeName_(element) === 'a') {
+                result = element;
+                return true;
+              }
+            });
+            return result;
+          }
+          function getYOffset() {
+            var offset = scroll.yOffset;
+            if (isFunction(offset)) {
+              offset = offset();
+            } else if (isElement(offset)) {
+              var elem = offset[0];
+              var style = $window.getComputedStyle(elem);
+              if (style.position !== 'fixed') {
+                offset = 0;
+              } else {
+                offset = elem.getBoundingClientRect().bottom;
+              }
+            } else if (!isNumber(offset)) {
+              offset = 0;
+            }
+            return offset;
+          }
+          function scrollTo(elem) {
+            if (elem) {
+              elem.scrollIntoView();
+              var offset = getYOffset();
+              if (offset) {
+                var elemTop = elem.getBoundingClientRect().top;
+                $window.scrollBy(0, elemTop - offset);
+              }
+            } else {
+              $window.scrollTo(0, 0);
+            }
+          }
+          function scroll(hash) {
+            hash = isString(hash) ? hash : $location.hash();
+            var elm;
+            if (!hash)
+              scrollTo(null);
+            else if ((elm = document.getElementById(hash)))
+              scrollTo(elm);
+            else if ((elm = getFirstAnchor(document.getElementsByName(hash))))
+              scrollTo(elm);
+            else if (hash === 'top')
+              scrollTo(null);
+          }
+          if (autoScrollingEnabled) {
+            $rootScope.$watch(function autoScrollWatch() {
+              return $location.hash();
+            }, function autoScrollWatchAction(newVal, oldVal) {
+              if (newVal === oldVal && newVal === '')
+                return ;
+              jqLiteDocumentLoaded(function() {
+                $rootScope.$evalAsync(scroll);
+              });
+            });
+          }
+          return scroll;
+        }];
+      }
+      var $animateMinErr = minErr('$animate');
+      var ELEMENT_NODE = 1;
+      var NG_ANIMATE_CLASSNAME = 'ng-animate';
+      function mergeClasses(a, b) {
+        if (!a && !b)
+          return '';
+        if (!a)
+          return b;
+        if (!b)
+          return a;
+        if (isArray(a))
+          a = a.join(' ');
+        if (isArray(b))
+          b = b.join(' ');
+        return a + ' ' + b;
+      }
+      function extractElementNode(element) {
+        for (var i = 0; i < element.length; i++) {
+          var elm = element[i];
+          if (elm.nodeType === ELEMENT_NODE) {
+            return elm;
+          }
+        }
+      }
+      function splitClasses(classes) {
+        if (isString(classes)) {
+          classes = classes.split(' ');
+        }
+        var obj = createMap();
+        forEach(classes, function(klass) {
+          if (klass.length) {
+            obj[klass] = true;
+          }
+        });
+        return obj;
+      }
+      function prepareAnimateOptions(options) {
+        return isObject(options) ? options : {};
+      }
+      var $$CoreAnimateRunnerProvider = function() {
+        this.$get = ['$q', '$$rAF', function($q, $$rAF) {
+          function AnimateRunner() {}
+          AnimateRunner.all = noop;
+          AnimateRunner.chain = noop;
+          AnimateRunner.prototype = {
+            end: noop,
+            cancel: noop,
+            resume: noop,
+            pause: noop,
+            complete: noop,
+            then: function(pass, fail) {
+              return $q(function(resolve) {
+                $$rAF(function() {
+                  resolve();
+                });
+              }).then(pass, fail);
+            }
+          };
+          return AnimateRunner;
+        }];
+      };
+      var $$CoreAnimateQueueProvider = function() {
+        var postDigestQueue = new HashMap();
+        var postDigestElements = [];
+        this.$get = ['$$AnimateRunner', '$rootScope', function($$AnimateRunner, $rootScope) {
+          return {
+            enabled: noop,
+            on: noop,
+            off: noop,
+            pin: noop,
+            push: function(element, event, options, domOperation) {
+              domOperation && domOperation();
+              options = options || {};
+              options.from && element.css(options.from);
+              options.to && element.css(options.to);
+              if (options.addClass || options.removeClass) {
+                addRemoveClassesPostDigest(element, options.addClass, options.removeClass);
+              }
+              return new $$AnimateRunner();
+            }
+          };
+          function addRemoveClassesPostDigest(element, add, remove) {
+            var data = postDigestQueue.get(element);
+            var classVal;
+            if (!data) {
+              postDigestQueue.put(element, data = {});
+              postDigestElements.push(element);
+            }
+            if (add) {
+              forEach(add.split(' '), function(className) {
+                if (className) {
+                  data[className] = true;
+                }
+              });
+            }
+            if (remove) {
+              forEach(remove.split(' '), function(className) {
+                if (className) {
+                  data[className] = false;
+                }
+              });
+            }
+            if (postDigestElements.length > 1)
+              return ;
+            $rootScope.$$postDigest(function() {
+              forEach(postDigestElements, function(element) {
+                var data = postDigestQueue.get(element);
+                if (data) {
+                  var existing = splitClasses(element.attr('class'));
+                  var toAdd = '';
+                  var toRemove = '';
+                  forEach(data, function(status, className) {
+                    var hasClass = !!existing[className];
+                    if (status !== hasClass) {
+                      if (status) {
+                        toAdd += (toAdd.length ? ' ' : '') + className;
+                      } else {
+                        toRemove += (toRemove.length ? ' ' : '') + className;
+                      }
+                    }
+                  });
+                  forEach(element, function(elm) {
+                    toAdd && jqLiteAddClass(elm, toAdd);
+                    toRemove && jqLiteRemoveClass(elm, toRemove);
+                  });
+                  postDigestQueue.remove(element);
+                }
+              });
+              postDigestElements.length = 0;
+            });
+          }
+        }];
+      };
+      var $AnimateProvider = ['$provide', function($provide) {
+        var provider = this;
+        this.$$registeredAnimations = Object.create(null);
+        this.register = function(name, factory) {
+          if (name && name.charAt(0) !== '.') {
+            throw $animateMinErr('notcsel', "Expecting class selector starting with '.' got '{0}'.", name);
+          }
+          var key = name + '-animation';
+          provider.$$registeredAnimations[name.substr(1)] = key;
+          $provide.factory(key, factory);
+        };
+        this.classNameFilter = function(expression) {
+          if (arguments.length === 1) {
+            this.$$classNameFilter = (expression instanceof RegExp) ? expression : null;
+            if (this.$$classNameFilter) {
+              var reservedRegex = new RegExp("(\\s+|\\/)" + NG_ANIMATE_CLASSNAME + "(\\s+|\\/)");
+              if (reservedRegex.test(this.$$classNameFilter.toString())) {
+                throw $animateMinErr('nongcls', '$animateProvider.classNameFilter(regex) prohibits accepting a regex value which matches/contains the "{0}" CSS class.', NG_ANIMATE_CLASSNAME);
+              }
+            }
+          }
+          return this.$$classNameFilter;
+        };
+        this.$get = ['$$animateQueue', function($$animateQueue) {
+          function domInsert(element, parentElement, afterElement) {
+            if (afterElement) {
+              var afterNode = extractElementNode(afterElement);
+              if (afterNode && !afterNode.parentNode && !afterNode.previousElementSibling) {
+                afterElement = null;
+              }
+            }
+            afterElement ? afterElement.after(element) : parentElement.prepend(element);
+          }
+          return {
+            on: $$animateQueue.on,
+            off: $$animateQueue.off,
+            pin: $$animateQueue.pin,
+            enabled: $$animateQueue.enabled,
+            cancel: function(runner) {
+              runner.end && runner.end();
+            },
+            enter: function(element, parent, after, options) {
+              parent = parent && jqLite(parent);
+              after = after && jqLite(after);
+              parent = parent || after.parent();
+              domInsert(element, parent, after);
+              return $$animateQueue.push(element, 'enter', prepareAnimateOptions(options));
+            },
+            move: function(element, parent, after, options) {
+              parent = parent && jqLite(parent);
+              after = after && jqLite(after);
+              parent = parent || after.parent();
+              domInsert(element, parent, after);
+              return $$animateQueue.push(element, 'move', prepareAnimateOptions(options));
+            },
+            leave: function(element, options) {
+              return $$animateQueue.push(element, 'leave', prepareAnimateOptions(options), function() {
+                element.remove();
+              });
+            },
+            addClass: function(element, className, options) {
+              options = prepareAnimateOptions(options);
+              options.addClass = mergeClasses(options.addclass, className);
+              return $$animateQueue.push(element, 'addClass', options);
+            },
+            removeClass: function(element, className, options) {
+              options = prepareAnimateOptions(options);
+              options.removeClass = mergeClasses(options.removeClass, className);
+              return $$animateQueue.push(element, 'removeClass', options);
+            },
+            setClass: function(element, add, remove, options) {
+              options = prepareAnimateOptions(options);
+              options.addClass = mergeClasses(options.addClass, add);
+              options.removeClass = mergeClasses(options.removeClass, remove);
+              return $$animateQueue.push(element, 'setClass', options);
+            },
+            animate: function(element, from, to, className, options) {
+              options = prepareAnimateOptions(options);
+              options.from = options.from ? extend(options.from, from) : from;
+              options.to = options.to ? extend(options.to, to) : to;
+              className = className || 'ng-inline-animate';
+              options.tempClasses = mergeClasses(options.tempClasses, className);
+              return $$animateQueue.push(element, 'animate', options);
+            }
+          };
+        }];
+      }];
+      function $$AsyncCallbackProvider() {
+        this.$get = ['$$rAF', '$timeout', function($$rAF, $timeout) {
+          return $$rAF.supported ? function(fn) {
+            return $$rAF(fn);
+          } : function(fn) {
+            return $timeout(fn, 0, false);
+          };
+        }];
+      }
+      function Browser(window, document, $log, $sniffer) {
+        var self = this,
+            rawDocument = document[0],
+            location = window.location,
+            history = window.history,
+            setTimeout = window.setTimeout,
+            clearTimeout = window.clearTimeout,
+            pendingDeferIds = {};
+        self.isMock = false;
+        var outstandingRequestCount = 0;
+        var outstandingRequestCallbacks = [];
+        self.$$completeOutstandingRequest = completeOutstandingRequest;
+        self.$$incOutstandingRequestCount = function() {
+          outstandingRequestCount++;
+        };
+        function completeOutstandingRequest(fn) {
+          try {
+            fn.apply(null, sliceArgs(arguments, 1));
+          } finally {
+            outstandingRequestCount--;
+            if (outstandingRequestCount === 0) {
+              while (outstandingRequestCallbacks.length) {
+                try {
+                  outstandingRequestCallbacks.pop()();
+                } catch (e) {
+                  $log.error(e);
+                }
+              }
+            }
+          }
+        }
+        function getHash(url) {
+          var index = url.indexOf('#');
+          return index === -1 ? '' : url.substr(index + 1);
+        }
+        self.notifyWhenNoOutstandingRequests = function(callback) {
+          if (outstandingRequestCount === 0) {
+            callback();
+          } else {
+            outstandingRequestCallbacks.push(callback);
+          }
+        };
+        var cachedState,
+            lastHistoryState,
+            lastBrowserUrl = location.href,
+            baseElement = document.find('base'),
+            reloadLocation = null;
+        cacheState();
+        lastHistoryState = cachedState;
+        self.url = function(url, replace, state) {
+          if (isUndefined(state)) {
+            state = null;
+          }
+          if (location !== window.location)
+            location = window.location;
+          if (history !== window.history)
+            history = window.history;
+          if (url) {
+            var sameState = lastHistoryState === state;
+            if (lastBrowserUrl === url && (!$sniffer.history || sameState)) {
+              return self;
+            }
+            var sameBase = lastBrowserUrl && stripHash(lastBrowserUrl) === stripHash(url);
+            lastBrowserUrl = url;
+            lastHistoryState = state;
+            if ($sniffer.history && (!sameBase || !sameState)) {
+              history[replace ? 'replaceState' : 'pushState'](state, '', url);
+              cacheState();
+              lastHistoryState = cachedState;
+            } else {
+              if (!sameBase) {
+                reloadLocation = url;
+              }
+              if (replace) {
+                location.replace(url);
+              } else if (!sameBase) {
+                location.href = url;
+              } else {
+                location.hash = getHash(url);
+              }
+            }
+            return self;
+          } else {
+            return reloadLocation || location.href.replace(/%27/g, "'");
+          }
+        };
+        self.state = function() {
+          return cachedState;
+        };
+        var urlChangeListeners = [],
+            urlChangeInit = false;
+        function cacheStateAndFireUrlChange() {
+          cacheState();
+          fireUrlChange();
+        }
+        function getCurrentState() {
+          try {
+            return history.state;
+          } catch (e) {}
+        }
+        var lastCachedState = null;
+        function cacheState() {
+          cachedState = getCurrentState();
+          cachedState = isUndefined(cachedState) ? null : cachedState;
+          if (equals(cachedState, lastCachedState)) {
+            cachedState = lastCachedState;
+          }
+          lastCachedState = cachedState;
+        }
+        function fireUrlChange() {
+          if (lastBrowserUrl === self.url() && lastHistoryState === cachedState) {
+            return ;
+          }
+          lastBrowserUrl = self.url();
+          lastHistoryState = cachedState;
+          forEach(urlChangeListeners, function(listener) {
+            listener(self.url(), cachedState);
+          });
+        }
+        self.onUrlChange = function(callback) {
+          if (!urlChangeInit) {
+            if ($sniffer.history)
+              jqLite(window).on('popstate', cacheStateAndFireUrlChange);
+            jqLite(window).on('hashchange', cacheStateAndFireUrlChange);
+            urlChangeInit = true;
+          }
+          urlChangeListeners.push(callback);
+          return callback;
+        };
+        self.$$applicationDestroyed = function() {
+          jqLite(window).off('hashchange popstate', cacheStateAndFireUrlChange);
+        };
+        self.$$checkUrlChange = fireUrlChange;
+        self.baseHref = function() {
+          var href = baseElement.attr('href');
+          return href ? href.replace(/^(https?\:)?\/\/[^\/]*/, '') : '';
+        };
+        self.defer = function(fn, delay) {
+          var timeoutId;
+          outstandingRequestCount++;
+          timeoutId = setTimeout(function() {
+            delete pendingDeferIds[timeoutId];
+            completeOutstandingRequest(fn);
+          }, delay || 0);
+          pendingDeferIds[timeoutId] = true;
+          return timeoutId;
+        };
+        self.defer.cancel = function(deferId) {
+          if (pendingDeferIds[deferId]) {
+            delete pendingDeferIds[deferId];
+            clearTimeout(deferId);
+            completeOutstandingRequest(noop);
+            return true;
+          }
+          return false;
+        };
+      }
+      function $BrowserProvider() {
+        this.$get = ['$window', '$log', '$sniffer', '$document', function($window, $log, $sniffer, $document) {
+          return new Browser($window, $document, $log, $sniffer);
+        }];
+      }
+      function $CacheFactoryProvider() {
+        this.$get = function() {
+          var caches = {};
+          function cacheFactory(cacheId, options) {
+            if (cacheId in caches) {
+              throw minErr('$cacheFactory')('iid', "CacheId '{0}' is already taken!", cacheId);
+            }
+            var size = 0,
+                stats = extend({}, options, {id: cacheId}),
+                data = {},
+                capacity = (options && options.capacity) || Number.MAX_VALUE,
+                lruHash = {},
+                freshEnd = null,
+                staleEnd = null;
+            return caches[cacheId] = {
+              put: function(key, value) {
+                if (isUndefined(value))
+                  return ;
+                if (capacity < Number.MAX_VALUE) {
+                  var lruEntry = lruHash[key] || (lruHash[key] = {key: key});
+                  refresh(lruEntry);
+                }
+                if (!(key in data))
+                  size++;
+                data[key] = value;
+                if (size > capacity) {
+                  this.remove(staleEnd.key);
+                }
+                return value;
+              },
+              get: function(key) {
+                if (capacity < Number.MAX_VALUE) {
+                  var lruEntry = lruHash[key];
+                  if (!lruEntry)
+                    return ;
+                  refresh(lruEntry);
+                }
+                return data[key];
+              },
+              remove: function(key) {
+                if (capacity < Number.MAX_VALUE) {
+                  var lruEntry = lruHash[key];
+                  if (!lruEntry)
+                    return ;
+                  if (lruEntry == freshEnd)
+                    freshEnd = lruEntry.p;
+                  if (lruEntry == staleEnd)
+                    staleEnd = lruEntry.n;
+                  link(lruEntry.n, lruEntry.p);
+                  delete lruHash[key];
+                }
+                delete data[key];
+                size--;
+              },
+              removeAll: function() {
+                data = {};
+                size = 0;
+                lruHash = {};
+                freshEnd = staleEnd = null;
+              },
+              destroy: function() {
+                data = null;
+                stats = null;
+                lruHash = null;
+                delete caches[cacheId];
+              },
+              info: function() {
+                return extend({}, stats, {size: size});
+              }
+            };
+            function refresh(entry) {
+              if (entry != freshEnd) {
+                if (!staleEnd) {
+                  staleEnd = entry;
+                } else if (staleEnd == entry) {
+                  staleEnd = entry.n;
+                }
+                link(entry.n, entry.p);
+                link(entry, freshEnd);
+                freshEnd = entry;
+                freshEnd.n = null;
+              }
+            }
+            function link(nextEntry, prevEntry) {
+              if (nextEntry != prevEntry) {
+                if (nextEntry)
+                  nextEntry.p = prevEntry;
+                if (prevEntry)
+                  prevEntry.n = nextEntry;
+              }
+            }
+          }
+          cacheFactory.info = function() {
+            var info = {};
+            forEach(caches, function(cache, cacheId) {
+              info[cacheId] = cache.info();
+            });
+            return info;
+          };
+          cacheFactory.get = function(cacheId) {
+            return caches[cacheId];
+          };
+          return cacheFactory;
+        };
+      }
+      function $TemplateCacheProvider() {
+        this.$get = ['$cacheFactory', function($cacheFactory) {
+          return $cacheFactory('templates');
+        }];
+      }
+      var $compileMinErr = minErr('$compile');
+      $CompileProvider.$inject = ['$provide', '$$sanitizeUriProvider'];
+      function $CompileProvider($provide, $$sanitizeUriProvider) {
+        var hasDirectives = {},
+            Suffix = 'Directive',
+            COMMENT_DIRECTIVE_REGEXP = /^\s*directive\:\s*([\w\-]+)\s+(.*)$/,
+            CLASS_DIRECTIVE_REGEXP = /(([\w\-]+)(?:\:([^;]+))?;?)/,
+            ALL_OR_NOTHING_ATTRS = makeMap('ngSrc,ngSrcset,src,srcset'),
+            REQUIRE_PREFIX_REGEXP = /^(?:(\^\^?)?(\?)?(\^\^?)?)?/;
+        var EVENT_HANDLER_ATTR_REGEXP = /^(on[a-z]+|formaction)$/;
+        function parseIsolateBindings(scope, directiveName, isController) {
+          var LOCAL_REGEXP = /^\s*([@&]|=(\*?))(\??)\s*(\w*)\s*$/;
+          var bindings = {};
+          forEach(scope, function(definition, scopeName) {
+            var match = definition.match(LOCAL_REGEXP);
+            if (!match) {
+              throw $compileMinErr('iscp', "Invalid {3} for directive '{0}'." + " Definition: {... {1}: '{2}' ...}", directiveName, scopeName, definition, (isController ? "controller bindings definition" : "isolate scope definition"));
+            }
+            bindings[scopeName] = {
+              mode: match[1][0],
+              collection: match[2] === '*',
+              optional: match[3] === '?',
+              attrName: match[4] || scopeName
+            };
+          });
+          return bindings;
+        }
+        function parseDirectiveBindings(directive, directiveName) {
+          var bindings = {
+            isolateScope: null,
+            bindToController: null
+          };
+          if (isObject(directive.scope)) {
+            if (directive.bindToController === true) {
+              bindings.bindToController = parseIsolateBindings(directive.scope, directiveName, true);
+              bindings.isolateScope = {};
+            } else {
+              bindings.isolateScope = parseIsolateBindings(directive.scope, directiveName, false);
+            }
+          }
+          if (isObject(directive.bindToController)) {
+            bindings.bindToController = parseIsolateBindings(directive.bindToController, directiveName, true);
+          }
+          if (isObject(bindings.bindToController)) {
+            var controller = directive.controller;
+            var controllerAs = directive.controllerAs;
+            if (!controller) {
+              throw $compileMinErr('noctrl', "Cannot bind to controller without directive '{0}'s controller.", directiveName);
+            } else if (!identifierForController(controller, controllerAs)) {
+              throw $compileMinErr('noident', "Cannot bind to controller without identifier for directive '{0}'.", directiveName);
+            }
+          }
+          return bindings;
+        }
+        function assertValidDirectiveName(name) {
+          var letter = name.charAt(0);
+          if (!letter || letter !== lowercase(letter)) {
+            throw $compileMinErr('baddir', "Directive name '{0}' is invalid. The first character must be a lowercase letter", name);
+          }
+          if (name !== name.trim()) {
+            throw $compileMinErr('baddir', "Directive name '{0}' is invalid. The name should not contain leading or trailing whitespaces", name);
+          }
+        }
+        this.directive = function registerDirective(name, directiveFactory) {
+          assertNotHasOwnProperty(name, 'directive');
+          if (isString(name)) {
+            assertValidDirectiveName(name);
+            assertArg(directiveFactory, 'directiveFactory');
+            if (!hasDirectives.hasOwnProperty(name)) {
+              hasDirectives[name] = [];
+              $provide.factory(name + Suffix, ['$injector', '$exceptionHandler', function($injector, $exceptionHandler) {
+                var directives = [];
+                forEach(hasDirectives[name], function(directiveFactory, index) {
+                  try {
+                    var directive = $injector.invoke(directiveFactory);
+                    if (isFunction(directive)) {
+                      directive = {compile: valueFn(directive)};
+                    } else if (!directive.compile && directive.link) {
+                      directive.compile = valueFn(directive.link);
+                    }
+                    directive.priority = directive.priority || 0;
+                    directive.index = index;
+                    directive.name = directive.name || name;
+                    directive.require = directive.require || (directive.controller && directive.name);
+                    directive.restrict = directive.restrict || 'EA';
+                    var bindings = directive.$$bindings = parseDirectiveBindings(directive, directive.name);
+                    if (isObject(bindings.isolateScope)) {
+                      directive.$$isolateBindings = bindings.isolateScope;
+                    }
+                    directives.push(directive);
+                  } catch (e) {
+                    $exceptionHandler(e);
+                  }
+                });
+                return directives;
+              }]);
+            }
+            hasDirectives[name].push(directiveFactory);
+          } else {
+            forEach(name, reverseParams(registerDirective));
+          }
+          return this;
+        };
+        this.aHrefSanitizationWhitelist = function(regexp) {
+          if (isDefined(regexp)) {
+            $$sanitizeUriProvider.aHrefSanitizationWhitelist(regexp);
+            return this;
+          } else {
+            return $$sanitizeUriProvider.aHrefSanitizationWhitelist();
+          }
+        };
+        this.imgSrcSanitizationWhitelist = function(regexp) {
+          if (isDefined(regexp)) {
+            $$sanitizeUriProvider.imgSrcSanitizationWhitelist(regexp);
+            return this;
+          } else {
+            return $$sanitizeUriProvider.imgSrcSanitizationWhitelist();
+          }
+        };
+        var debugInfoEnabled = true;
+        this.debugInfoEnabled = function(enabled) {
+          if (isDefined(enabled)) {
+            debugInfoEnabled = enabled;
+            return this;
+          }
+          return debugInfoEnabled;
+        };
+        this.$get = ['$injector', '$interpolate', '$exceptionHandler', '$templateRequest', '$parse', '$controller', '$rootScope', '$document', '$sce', '$animate', '$$sanitizeUri', function($injector, $interpolate, $exceptionHandler, $templateRequest, $parse, $controller, $rootScope, $document, $sce, $animate, $$sanitizeUri) {
+          var Attributes = function(element, attributesToCopy) {
+            if (attributesToCopy) {
+              var keys = Object.keys(attributesToCopy);
+              var i,
+                  l,
+                  key;
+              for (i = 0, l = keys.length; i < l; i++) {
+                key = keys[i];
+                this[key] = attributesToCopy[key];
+              }
+            } else {
+              this.$attr = {};
+            }
+            this.$$element = element;
+          };
+          Attributes.prototype = {
+            $normalize: directiveNormalize,
+            $addClass: function(classVal) {
+              if (classVal && classVal.length > 0) {
+                $animate.addClass(this.$$element, classVal);
+              }
+            },
+            $removeClass: function(classVal) {
+              if (classVal && classVal.length > 0) {
+                $animate.removeClass(this.$$element, classVal);
+              }
+            },
+            $updateClass: function(newClasses, oldClasses) {
+              var toAdd = tokenDifference(newClasses, oldClasses);
+              if (toAdd && toAdd.length) {
+                $animate.addClass(this.$$element, toAdd);
+              }
+              var toRemove = tokenDifference(oldClasses, newClasses);
+              if (toRemove && toRemove.length) {
+                $animate.removeClass(this.$$element, toRemove);
+              }
+            },
+            $set: function(key, value, writeAttr, attrName) {
+              var node = this.$$element[0],
+                  booleanKey = getBooleanAttrName(node, key),
+                  aliasedKey = getAliasedAttrName(node, key),
+                  observer = key,
+                  nodeName;
+              if (booleanKey) {
+                this.$$element.prop(key, value);
+                attrName = booleanKey;
+              } else if (aliasedKey) {
+                this[aliasedKey] = value;
+                observer = aliasedKey;
+              }
+              this[key] = value;
+              if (attrName) {
+                this.$attr[key] = attrName;
+              } else {
+                attrName = this.$attr[key];
+                if (!attrName) {
+                  this.$attr[key] = attrName = snake_case(key, '-');
+                }
+              }
+              nodeName = nodeName_(this.$$element);
+              if ((nodeName === 'a' && key === 'href') || (nodeName === 'img' && key === 'src')) {
+                this[key] = value = $$sanitizeUri(value, key === 'src');
+              } else if (nodeName === 'img' && key === 'srcset') {
+                var result = "";
+                var trimmedSrcset = trim(value);
+                var srcPattern = /(\s+\d+x\s*,|\s+\d+w\s*,|\s+,|,\s+)/;
+                var pattern = /\s/.test(trimmedSrcset) ? srcPattern : /(,)/;
+                var rawUris = trimmedSrcset.split(pattern);
+                var nbrUrisWith2parts = Math.floor(rawUris.length / 2);
+                for (var i = 0; i < nbrUrisWith2parts; i++) {
+                  var innerIdx = i * 2;
+                  result += $$sanitizeUri(trim(rawUris[innerIdx]), true);
+                  result += (" " + trim(rawUris[innerIdx + 1]));
+                }
+                var lastTuple = trim(rawUris[i * 2]).split(/\s/);
+                result += $$sanitizeUri(trim(lastTuple[0]), true);
+                if (lastTuple.length === 2) {
+                  result += (" " + trim(lastTuple[1]));
+                }
+                this[key] = value = result;
+              }
+              if (writeAttr !== false) {
+                if (value === null || value === undefined) {
+                  this.$$element.removeAttr(attrName);
+                } else {
+                  this.$$element.attr(attrName, value);
+                }
+              }
+              var $$observers = this.$$observers;
+              $$observers && forEach($$observers[observer], function(fn) {
+                try {
+                  fn(value);
+                } catch (e) {
+                  $exceptionHandler(e);
+                }
+              });
+            },
+            $observe: function(key, fn) {
+              var attrs = this,
+                  $$observers = (attrs.$$observers || (attrs.$$observers = createMap())),
+                  listeners = ($$observers[key] || ($$observers[key] = []));
+              listeners.push(fn);
+              $rootScope.$evalAsync(function() {
+                if (!listeners.$$inter && attrs.hasOwnProperty(key)) {
+                  fn(attrs[key]);
+                }
+              });
+              return function() {
+                arrayRemove(listeners, fn);
               };
             }
-          });
-        }
-        function Yb(a, b) {
-          a = E(a || "html");
-          switch (a) {
-            case "svg":
-            case "math":
-              var c = W.createElement("div");
-              c.innerHTML = "<" + a + ">" + b + "</" + a + ">";
-              return c.childNodes[0].childNodes;
-            default:
-              return b;
+          };
+          function safeAddClass($element, className) {
+            try {
+              $element.addClass(className);
+            } catch (e) {}
           }
-        }
-        function R(a, b) {
-          if ("srcdoc" == b)
-            return I.HTML;
-          var c = ta(a);
-          if ("xlinkHref" == b || "form" == c && "action" == b || "img" != c && ("src" == b || "ngSrc" == b))
-            return I.RESOURCE_URL;
-        }
-        function V(a, c, d, e, f) {
-          var g = R(a, e);
-          f = h[e] || f;
-          var l = b(d, !0, g, f);
-          if (l) {
-            if ("multiple" === e && "select" === ta(a))
-              throw ea("selmulti", va(a));
-            c.push({
+          var startSymbol = $interpolate.startSymbol(),
+              endSymbol = $interpolate.endSymbol(),
+              denormalizeTemplate = (startSymbol == '{{' || endSymbol == '}}') ? identity : function denormalizeTemplate(template) {
+                return template.replace(/\{\{/g, startSymbol).replace(/}}/g, endSymbol);
+              },
+              NG_ATTR_BINDING = /^ngAttr[A-Z]/;
+          compile.$$addBindingInfo = debugInfoEnabled ? function $$addBindingInfo($element, binding) {
+            var bindings = $element.data('$binding') || [];
+            if (isArray(binding)) {
+              bindings = bindings.concat(binding);
+            } else {
+              bindings.push(binding);
+            }
+            $element.data('$binding', bindings);
+          } : noop;
+          compile.$$addBindingClass = debugInfoEnabled ? function $$addBindingClass($element) {
+            safeAddClass($element, 'ng-binding');
+          } : noop;
+          compile.$$addScopeInfo = debugInfoEnabled ? function $$addScopeInfo($element, scope, isolated, noTemplate) {
+            var dataName = isolated ? (noTemplate ? '$isolateScopeNoTemplate' : '$isolateScope') : '$scope';
+            $element.data(dataName, scope);
+          } : noop;
+          compile.$$addScopeClass = debugInfoEnabled ? function $$addScopeClass($element, isolated) {
+            safeAddClass($element, isolated ? 'ng-isolate-scope' : 'ng-scope');
+          } : noop;
+          return compile;
+          function compile($compileNodes, transcludeFn, maxPriority, ignoreDirective, previousCompileContext) {
+            if (!($compileNodes instanceof jqLite)) {
+              $compileNodes = jqLite($compileNodes);
+            }
+            forEach($compileNodes, function(node, index) {
+              if (node.nodeType == NODE_TYPE_TEXT && node.nodeValue.match(/\S+/)) {
+                $compileNodes[index] = jqLite(node).wrap('<span></span>').parent()[0];
+              }
+            });
+            var compositeLinkFn = compileNodes($compileNodes, transcludeFn, $compileNodes, maxPriority, ignoreDirective, previousCompileContext);
+            compile.$$addScopeClass($compileNodes);
+            var namespace = null;
+            return function publicLinkFn(scope, cloneConnectFn, options) {
+              assertArg(scope, 'scope');
+              options = options || {};
+              var parentBoundTranscludeFn = options.parentBoundTranscludeFn,
+                  transcludeControllers = options.transcludeControllers,
+                  futureParentElement = options.futureParentElement;
+              if (parentBoundTranscludeFn && parentBoundTranscludeFn.$$boundTransclude) {
+                parentBoundTranscludeFn = parentBoundTranscludeFn.$$boundTransclude;
+              }
+              if (!namespace) {
+                namespace = detectNamespaceForChildElements(futureParentElement);
+              }
+              var $linkNode;
+              if (namespace !== 'html') {
+                $linkNode = jqLite(wrapTemplate(namespace, jqLite('<div>').append($compileNodes).html()));
+              } else if (cloneConnectFn) {
+                $linkNode = JQLitePrototype.clone.call($compileNodes);
+              } else {
+                $linkNode = $compileNodes;
+              }
+              if (transcludeControllers) {
+                for (var controllerName in transcludeControllers) {
+                  $linkNode.data('$' + controllerName + 'Controller', transcludeControllers[controllerName].instance);
+                }
+              }
+              compile.$$addScopeInfo($linkNode, scope);
+              if (cloneConnectFn)
+                cloneConnectFn($linkNode, scope);
+              if (compositeLinkFn)
+                compositeLinkFn(scope, $linkNode, $linkNode, parentBoundTranscludeFn);
+              return $linkNode;
+            };
+          }
+          function detectNamespaceForChildElements(parentElement) {
+            var node = parentElement && parentElement[0];
+            if (!node) {
+              return 'html';
+            } else {
+              return nodeName_(node) !== 'foreignobject' && node.toString().match(/SVG/) ? 'svg' : 'html';
+            }
+          }
+          function compileNodes(nodeList, transcludeFn, $rootElement, maxPriority, ignoreDirective, previousCompileContext) {
+            var linkFns = [],
+                attrs,
+                directives,
+                nodeLinkFn,
+                childNodes,
+                childLinkFn,
+                linkFnFound,
+                nodeLinkFnFound;
+            for (var i = 0; i < nodeList.length; i++) {
+              attrs = new Attributes();
+              directives = collectDirectives(nodeList[i], [], attrs, i === 0 ? maxPriority : undefined, ignoreDirective);
+              nodeLinkFn = (directives.length) ? applyDirectivesToNode(directives, nodeList[i], attrs, transcludeFn, $rootElement, null, [], [], previousCompileContext) : null;
+              if (nodeLinkFn && nodeLinkFn.scope) {
+                compile.$$addScopeClass(attrs.$$element);
+              }
+              childLinkFn = (nodeLinkFn && nodeLinkFn.terminal || !(childNodes = nodeList[i].childNodes) || !childNodes.length) ? null : compileNodes(childNodes, nodeLinkFn ? ((nodeLinkFn.transcludeOnThisElement || !nodeLinkFn.templateOnThisElement) && nodeLinkFn.transclude) : transcludeFn);
+              if (nodeLinkFn || childLinkFn) {
+                linkFns.push(i, nodeLinkFn, childLinkFn);
+                linkFnFound = true;
+                nodeLinkFnFound = nodeLinkFnFound || nodeLinkFn;
+              }
+              previousCompileContext = null;
+            }
+            return linkFnFound ? compositeLinkFn : null;
+            function compositeLinkFn(scope, nodeList, $rootElement, parentBoundTranscludeFn) {
+              var nodeLinkFn,
+                  childLinkFn,
+                  node,
+                  childScope,
+                  i,
+                  ii,
+                  idx,
+                  childBoundTranscludeFn;
+              var stableNodeList;
+              if (nodeLinkFnFound) {
+                var nodeListLength = nodeList.length;
+                stableNodeList = new Array(nodeListLength);
+                for (i = 0; i < linkFns.length; i += 3) {
+                  idx = linkFns[i];
+                  stableNodeList[idx] = nodeList[idx];
+                }
+              } else {
+                stableNodeList = nodeList;
+              }
+              for (i = 0, ii = linkFns.length; i < ii; ) {
+                node = stableNodeList[linkFns[i++]];
+                nodeLinkFn = linkFns[i++];
+                childLinkFn = linkFns[i++];
+                if (nodeLinkFn) {
+                  if (nodeLinkFn.scope) {
+                    childScope = scope.$new();
+                    compile.$$addScopeInfo(jqLite(node), childScope);
+                    var destroyBindings = nodeLinkFn.$$destroyBindings;
+                    if (destroyBindings) {
+                      nodeLinkFn.$$destroyBindings = null;
+                      childScope.$on('$destroyed', destroyBindings);
+                    }
+                  } else {
+                    childScope = scope;
+                  }
+                  if (nodeLinkFn.transcludeOnThisElement) {
+                    childBoundTranscludeFn = createBoundTranscludeFn(scope, nodeLinkFn.transclude, parentBoundTranscludeFn, nodeLinkFn.elementTranscludeOnThisElement);
+                  } else if (!nodeLinkFn.templateOnThisElement && parentBoundTranscludeFn) {
+                    childBoundTranscludeFn = parentBoundTranscludeFn;
+                  } else if (!parentBoundTranscludeFn && transcludeFn) {
+                    childBoundTranscludeFn = createBoundTranscludeFn(scope, transcludeFn);
+                  } else {
+                    childBoundTranscludeFn = null;
+                  }
+                  nodeLinkFn(childLinkFn, childScope, node, $rootElement, childBoundTranscludeFn, nodeLinkFn);
+                } else if (childLinkFn) {
+                  childLinkFn(scope, node.childNodes, undefined, parentBoundTranscludeFn);
+                }
+              }
+            }
+          }
+          function createBoundTranscludeFn(scope, transcludeFn, previousBoundTranscludeFn, elementTransclusion) {
+            var boundTranscludeFn = function(transcludedScope, cloneFn, controllers, futureParentElement, containingScope) {
+              if (!transcludedScope) {
+                transcludedScope = scope.$new(false, containingScope);
+                transcludedScope.$$transcluded = true;
+              }
+              return transcludeFn(transcludedScope, cloneFn, {
+                parentBoundTranscludeFn: previousBoundTranscludeFn,
+                transcludeControllers: controllers,
+                futureParentElement: futureParentElement
+              });
+            };
+            return boundTranscludeFn;
+          }
+          function collectDirectives(node, directives, attrs, maxPriority, ignoreDirective) {
+            var nodeType = node.nodeType,
+                attrsMap = attrs.$attr,
+                match,
+                className;
+            switch (nodeType) {
+              case NODE_TYPE_ELEMENT:
+                addDirective(directives, directiveNormalize(nodeName_(node)), 'E', maxPriority, ignoreDirective);
+                for (var attr,
+                    name,
+                    nName,
+                    ngAttrName,
+                    value,
+                    isNgAttr,
+                    nAttrs = node.attributes,
+                    j = 0,
+                    jj = nAttrs && nAttrs.length; j < jj; j++) {
+                  var attrStartName = false;
+                  var attrEndName = false;
+                  attr = nAttrs[j];
+                  name = attr.name;
+                  value = trim(attr.value);
+                  ngAttrName = directiveNormalize(name);
+                  if (isNgAttr = NG_ATTR_BINDING.test(ngAttrName)) {
+                    name = name.replace(PREFIX_REGEXP, '').substr(8).replace(/_(.)/g, function(match, letter) {
+                      return letter.toUpperCase();
+                    });
+                  }
+                  var directiveNName = ngAttrName.replace(/(Start|End)$/, '');
+                  if (directiveIsMultiElement(directiveNName)) {
+                    if (ngAttrName === directiveNName + 'Start') {
+                      attrStartName = name;
+                      attrEndName = name.substr(0, name.length - 5) + 'end';
+                      name = name.substr(0, name.length - 6);
+                    }
+                  }
+                  nName = directiveNormalize(name.toLowerCase());
+                  attrsMap[nName] = name;
+                  if (isNgAttr || !attrs.hasOwnProperty(nName)) {
+                    attrs[nName] = value;
+                    if (getBooleanAttrName(node, nName)) {
+                      attrs[nName] = true;
+                    }
+                  }
+                  addAttrInterpolateDirective(node, directives, value, nName, isNgAttr);
+                  addDirective(directives, nName, 'A', maxPriority, ignoreDirective, attrStartName, attrEndName);
+                }
+                className = node.className;
+                if (isObject(className)) {
+                  className = className.animVal;
+                }
+                if (isString(className) && className !== '') {
+                  while (match = CLASS_DIRECTIVE_REGEXP.exec(className)) {
+                    nName = directiveNormalize(match[2]);
+                    if (addDirective(directives, nName, 'C', maxPriority, ignoreDirective)) {
+                      attrs[nName] = trim(match[3]);
+                    }
+                    className = className.substr(match.index + match[0].length);
+                  }
+                }
+                break;
+              case NODE_TYPE_TEXT:
+                addTextInterpolateDirective(directives, node.nodeValue);
+                break;
+              case NODE_TYPE_COMMENT:
+                try {
+                  match = COMMENT_DIRECTIVE_REGEXP.exec(node.nodeValue);
+                  if (match) {
+                    nName = directiveNormalize(match[1]);
+                    if (addDirective(directives, nName, 'M', maxPriority, ignoreDirective)) {
+                      attrs[nName] = trim(match[2]);
+                    }
+                  }
+                } catch (e) {}
+                break;
+            }
+            directives.sort(byPriority);
+            return directives;
+          }
+          function groupScan(node, attrStart, attrEnd) {
+            var nodes = [];
+            var depth = 0;
+            if (attrStart && node.hasAttribute && node.hasAttribute(attrStart)) {
+              do {
+                if (!node) {
+                  throw $compileMinErr('uterdir', "Unterminated attribute, found '{0}' but no matching '{1}' found.", attrStart, attrEnd);
+                }
+                if (node.nodeType == NODE_TYPE_ELEMENT) {
+                  if (node.hasAttribute(attrStart))
+                    depth++;
+                  if (node.hasAttribute(attrEnd))
+                    depth--;
+                }
+                nodes.push(node);
+                node = node.nextSibling;
+              } while (depth > 0);
+            } else {
+              nodes.push(node);
+            }
+            return jqLite(nodes);
+          }
+          function groupElementsLinkFnWrapper(linkFn, attrStart, attrEnd) {
+            return function(scope, element, attrs, controllers, transcludeFn) {
+              element = groupScan(element[0], attrStart, attrEnd);
+              return linkFn(scope, element, attrs, controllers, transcludeFn);
+            };
+          }
+          function applyDirectivesToNode(directives, compileNode, templateAttrs, transcludeFn, jqCollection, originalReplaceDirective, preLinkFns, postLinkFns, previousCompileContext) {
+            previousCompileContext = previousCompileContext || {};
+            var terminalPriority = -Number.MAX_VALUE,
+                newScopeDirective,
+                controllerDirectives = previousCompileContext.controllerDirectives,
+                newIsolateScopeDirective = previousCompileContext.newIsolateScopeDirective,
+                templateDirective = previousCompileContext.templateDirective,
+                nonTlbTranscludeDirective = previousCompileContext.nonTlbTranscludeDirective,
+                hasTranscludeDirective = false,
+                hasTemplate = false,
+                hasElementTranscludeDirective = previousCompileContext.hasElementTranscludeDirective,
+                $compileNode = templateAttrs.$$element = jqLite(compileNode),
+                directive,
+                directiveName,
+                $template,
+                replaceDirective = originalReplaceDirective,
+                childTranscludeFn = transcludeFn,
+                linkFn,
+                directiveValue;
+            for (var i = 0,
+                ii = directives.length; i < ii; i++) {
+              directive = directives[i];
+              var attrStart = directive.$$start;
+              var attrEnd = directive.$$end;
+              if (attrStart) {
+                $compileNode = groupScan(compileNode, attrStart, attrEnd);
+              }
+              $template = undefined;
+              if (terminalPriority > directive.priority) {
+                break;
+              }
+              if (directiveValue = directive.scope) {
+                if (!directive.templateUrl) {
+                  if (isObject(directiveValue)) {
+                    assertNoDuplicate('new/isolated scope', newIsolateScopeDirective || newScopeDirective, directive, $compileNode);
+                    newIsolateScopeDirective = directive;
+                  } else {
+                    assertNoDuplicate('new/isolated scope', newIsolateScopeDirective, directive, $compileNode);
+                  }
+                }
+                newScopeDirective = newScopeDirective || directive;
+              }
+              directiveName = directive.name;
+              if (!directive.templateUrl && directive.controller) {
+                directiveValue = directive.controller;
+                controllerDirectives = controllerDirectives || createMap();
+                assertNoDuplicate("'" + directiveName + "' controller", controllerDirectives[directiveName], directive, $compileNode);
+                controllerDirectives[directiveName] = directive;
+              }
+              if (directiveValue = directive.transclude) {
+                hasTranscludeDirective = true;
+                if (!directive.$$tlb) {
+                  assertNoDuplicate('transclusion', nonTlbTranscludeDirective, directive, $compileNode);
+                  nonTlbTranscludeDirective = directive;
+                }
+                if (directiveValue == 'element') {
+                  hasElementTranscludeDirective = true;
+                  terminalPriority = directive.priority;
+                  $template = $compileNode;
+                  $compileNode = templateAttrs.$$element = jqLite(document.createComment(' ' + directiveName + ': ' + templateAttrs[directiveName] + ' '));
+                  compileNode = $compileNode[0];
+                  replaceWith(jqCollection, sliceArgs($template), compileNode);
+                  childTranscludeFn = compile($template, transcludeFn, terminalPriority, replaceDirective && replaceDirective.name, {nonTlbTranscludeDirective: nonTlbTranscludeDirective});
+                } else {
+                  $template = jqLite(jqLiteClone(compileNode)).contents();
+                  $compileNode.empty();
+                  childTranscludeFn = compile($template, transcludeFn);
+                }
+              }
+              if (directive.template) {
+                hasTemplate = true;
+                assertNoDuplicate('template', templateDirective, directive, $compileNode);
+                templateDirective = directive;
+                directiveValue = (isFunction(directive.template)) ? directive.template($compileNode, templateAttrs) : directive.template;
+                directiveValue = denormalizeTemplate(directiveValue);
+                if (directive.replace) {
+                  replaceDirective = directive;
+                  if (jqLiteIsTextNode(directiveValue)) {
+                    $template = [];
+                  } else {
+                    $template = removeComments(wrapTemplate(directive.templateNamespace, trim(directiveValue)));
+                  }
+                  compileNode = $template[0];
+                  if ($template.length != 1 || compileNode.nodeType !== NODE_TYPE_ELEMENT) {
+                    throw $compileMinErr('tplrt', "Template for directive '{0}' must have exactly one root element. {1}", directiveName, '');
+                  }
+                  replaceWith(jqCollection, $compileNode, compileNode);
+                  var newTemplateAttrs = {$attr: {}};
+                  var templateDirectives = collectDirectives(compileNode, [], newTemplateAttrs);
+                  var unprocessedDirectives = directives.splice(i + 1, directives.length - (i + 1));
+                  if (newIsolateScopeDirective) {
+                    markDirectivesAsIsolate(templateDirectives);
+                  }
+                  directives = directives.concat(templateDirectives).concat(unprocessedDirectives);
+                  mergeTemplateAttributes(templateAttrs, newTemplateAttrs);
+                  ii = directives.length;
+                } else {
+                  $compileNode.html(directiveValue);
+                }
+              }
+              if (directive.templateUrl) {
+                hasTemplate = true;
+                assertNoDuplicate('template', templateDirective, directive, $compileNode);
+                templateDirective = directive;
+                if (directive.replace) {
+                  replaceDirective = directive;
+                }
+                nodeLinkFn = compileTemplateUrl(directives.splice(i, directives.length - i), $compileNode, templateAttrs, jqCollection, hasTranscludeDirective && childTranscludeFn, preLinkFns, postLinkFns, {
+                  controllerDirectives: controllerDirectives,
+                  newIsolateScopeDirective: newIsolateScopeDirective,
+                  templateDirective: templateDirective,
+                  nonTlbTranscludeDirective: nonTlbTranscludeDirective
+                });
+                ii = directives.length;
+              } else if (directive.compile) {
+                try {
+                  linkFn = directive.compile($compileNode, templateAttrs, childTranscludeFn);
+                  if (isFunction(linkFn)) {
+                    addLinkFns(null, linkFn, attrStart, attrEnd);
+                  } else if (linkFn) {
+                    addLinkFns(linkFn.pre, linkFn.post, attrStart, attrEnd);
+                  }
+                } catch (e) {
+                  $exceptionHandler(e, startingTag($compileNode));
+                }
+              }
+              if (directive.terminal) {
+                nodeLinkFn.terminal = true;
+                terminalPriority = Math.max(terminalPriority, directive.priority);
+              }
+            }
+            nodeLinkFn.scope = newScopeDirective && newScopeDirective.scope === true;
+            nodeLinkFn.transcludeOnThisElement = hasTranscludeDirective;
+            nodeLinkFn.elementTranscludeOnThisElement = hasElementTranscludeDirective;
+            nodeLinkFn.templateOnThisElement = hasTemplate;
+            nodeLinkFn.transclude = childTranscludeFn;
+            previousCompileContext.hasElementTranscludeDirective = hasElementTranscludeDirective;
+            return nodeLinkFn;
+            function addLinkFns(pre, post, attrStart, attrEnd) {
+              if (pre) {
+                if (attrStart)
+                  pre = groupElementsLinkFnWrapper(pre, attrStart, attrEnd);
+                pre.require = directive.require;
+                pre.directiveName = directiveName;
+                if (newIsolateScopeDirective === directive || directive.$$isolateScope) {
+                  pre = cloneAndAnnotateFn(pre, {isolateScope: true});
+                }
+                preLinkFns.push(pre);
+              }
+              if (post) {
+                if (attrStart)
+                  post = groupElementsLinkFnWrapper(post, attrStart, attrEnd);
+                post.require = directive.require;
+                post.directiveName = directiveName;
+                if (newIsolateScopeDirective === directive || directive.$$isolateScope) {
+                  post = cloneAndAnnotateFn(post, {isolateScope: true});
+                }
+                postLinkFns.push(post);
+              }
+            }
+            function getControllers(directiveName, require, $element, elementControllers) {
+              var value;
+              if (isString(require)) {
+                var match = require.match(REQUIRE_PREFIX_REGEXP);
+                var name = require.substring(match[0].length);
+                var inheritType = match[1] || match[3];
+                var optional = match[2] === '?';
+                if (inheritType === '^^') {
+                  $element = $element.parent();
+                } else {
+                  value = elementControllers && elementControllers[name];
+                  value = value && value.instance;
+                }
+                if (!value) {
+                  var dataName = '$' + name + 'Controller';
+                  value = inheritType ? $element.inheritedData(dataName) : $element.data(dataName);
+                }
+                if (!value && !optional) {
+                  throw $compileMinErr('ctreq', "Controller '{0}', required by directive '{1}', can't be found!", name, directiveName);
+                }
+              } else if (isArray(require)) {
+                value = [];
+                for (var i = 0,
+                    ii = require.length; i < ii; i++) {
+                  value[i] = getControllers(directiveName, require[i], $element, elementControllers);
+                }
+              }
+              return value || null;
+            }
+            function setupControllers($element, attrs, transcludeFn, controllerDirectives, isolateScope, scope) {
+              var elementControllers = createMap();
+              for (var controllerKey in controllerDirectives) {
+                var directive = controllerDirectives[controllerKey];
+                var locals = {
+                  $scope: directive === newIsolateScopeDirective || directive.$$isolateScope ? isolateScope : scope,
+                  $element: $element,
+                  $attrs: attrs,
+                  $transclude: transcludeFn
+                };
+                var controller = directive.controller;
+                if (controller == '@') {
+                  controller = attrs[directive.name];
+                }
+                var controllerInstance = $controller(controller, locals, true, directive.controllerAs);
+                elementControllers[directive.name] = controllerInstance;
+                if (!hasElementTranscludeDirective) {
+                  $element.data('$' + directive.name + 'Controller', controllerInstance.instance);
+                }
+              }
+              return elementControllers;
+            }
+            function nodeLinkFn(childLinkFn, scope, linkNode, $rootElement, boundTranscludeFn, thisLinkFn) {
+              var i,
+                  ii,
+                  linkFn,
+                  controller,
+                  isolateScope,
+                  elementControllers,
+                  transcludeFn,
+                  $element,
+                  attrs;
+              if (compileNode === linkNode) {
+                attrs = templateAttrs;
+                $element = templateAttrs.$$element;
+              } else {
+                $element = jqLite(linkNode);
+                attrs = new Attributes($element, templateAttrs);
+              }
+              if (newIsolateScopeDirective) {
+                isolateScope = scope.$new(true);
+              }
+              if (boundTranscludeFn) {
+                transcludeFn = controllersBoundTransclude;
+                transcludeFn.$$boundTransclude = boundTranscludeFn;
+              }
+              if (controllerDirectives) {
+                elementControllers = setupControllers($element, attrs, transcludeFn, controllerDirectives, isolateScope, scope);
+              }
+              if (newIsolateScopeDirective) {
+                compile.$$addScopeInfo($element, isolateScope, true, !(templateDirective && (templateDirective === newIsolateScopeDirective || templateDirective === newIsolateScopeDirective.$$originalDirective)));
+                compile.$$addScopeClass($element, true);
+                isolateScope.$$isolateBindings = newIsolateScopeDirective.$$isolateBindings;
+                initializeDirectiveBindings(scope, attrs, isolateScope, isolateScope.$$isolateBindings, newIsolateScopeDirective, isolateScope);
+              }
+              if (elementControllers) {
+                var scopeDirective = newIsolateScopeDirective || newScopeDirective;
+                var bindings;
+                var controllerForBindings;
+                if (scopeDirective && elementControllers[scopeDirective.name]) {
+                  bindings = scopeDirective.$$bindings.bindToController;
+                  controller = elementControllers[scopeDirective.name];
+                  if (controller && controller.identifier && bindings) {
+                    controllerForBindings = controller;
+                    thisLinkFn.$$destroyBindings = initializeDirectiveBindings(scope, attrs, controller.instance, bindings, scopeDirective);
+                  }
+                }
+                for (i in elementControllers) {
+                  controller = elementControllers[i];
+                  var controllerResult = controller();
+                  if (controllerResult !== controller.instance) {
+                    controller.instance = controllerResult;
+                    $element.data('$' + directive.name + 'Controller', controllerResult);
+                    if (controller === controllerForBindings) {
+                      thisLinkFn.$$destroyBindings();
+                      thisLinkFn.$$destroyBindings = initializeDirectiveBindings(scope, attrs, controllerResult, bindings, scopeDirective);
+                    }
+                  }
+                }
+              }
+              for (i = 0, ii = preLinkFns.length; i < ii; i++) {
+                linkFn = preLinkFns[i];
+                invokeLinkFn(linkFn, linkFn.isolateScope ? isolateScope : scope, $element, attrs, linkFn.require && getControllers(linkFn.directiveName, linkFn.require, $element, elementControllers), transcludeFn);
+              }
+              var scopeToChild = scope;
+              if (newIsolateScopeDirective && (newIsolateScopeDirective.template || newIsolateScopeDirective.templateUrl === null)) {
+                scopeToChild = isolateScope;
+              }
+              childLinkFn && childLinkFn(scopeToChild, linkNode.childNodes, undefined, boundTranscludeFn);
+              for (i = postLinkFns.length - 1; i >= 0; i--) {
+                linkFn = postLinkFns[i];
+                invokeLinkFn(linkFn, linkFn.isolateScope ? isolateScope : scope, $element, attrs, linkFn.require && getControllers(linkFn.directiveName, linkFn.require, $element, elementControllers), transcludeFn);
+              }
+              function controllersBoundTransclude(scope, cloneAttachFn, futureParentElement) {
+                var transcludeControllers;
+                if (!isScope(scope)) {
+                  futureParentElement = cloneAttachFn;
+                  cloneAttachFn = scope;
+                  scope = undefined;
+                }
+                if (hasElementTranscludeDirective) {
+                  transcludeControllers = elementControllers;
+                }
+                if (!futureParentElement) {
+                  futureParentElement = hasElementTranscludeDirective ? $element.parent() : $element;
+                }
+                return boundTranscludeFn(scope, cloneAttachFn, transcludeControllers, futureParentElement, scopeToChild);
+              }
+            }
+          }
+          function markDirectivesAsIsolate(directives) {
+            for (var j = 0,
+                jj = directives.length; j < jj; j++) {
+              directives[j] = inherit(directives[j], {$$isolateScope: true});
+            }
+          }
+          function addDirective(tDirectives, name, location, maxPriority, ignoreDirective, startAttrName, endAttrName) {
+            if (name === ignoreDirective)
+              return null;
+            var match = null;
+            if (hasDirectives.hasOwnProperty(name)) {
+              for (var directive,
+                  directives = $injector.get(name + Suffix),
+                  i = 0,
+                  ii = directives.length; i < ii; i++) {
+                try {
+                  directive = directives[i];
+                  if ((maxPriority === undefined || maxPriority > directive.priority) && directive.restrict.indexOf(location) != -1) {
+                    if (startAttrName) {
+                      directive = inherit(directive, {
+                        $$start: startAttrName,
+                        $$end: endAttrName
+                      });
+                    }
+                    tDirectives.push(directive);
+                    match = directive;
+                  }
+                } catch (e) {
+                  $exceptionHandler(e);
+                }
+              }
+            }
+            return match;
+          }
+          function directiveIsMultiElement(name) {
+            if (hasDirectives.hasOwnProperty(name)) {
+              for (var directive,
+                  directives = $injector.get(name + Suffix),
+                  i = 0,
+                  ii = directives.length; i < ii; i++) {
+                directive = directives[i];
+                if (directive.multiElement) {
+                  return true;
+                }
+              }
+            }
+            return false;
+          }
+          function mergeTemplateAttributes(dst, src) {
+            var srcAttr = src.$attr,
+                dstAttr = dst.$attr,
+                $element = dst.$$element;
+            forEach(dst, function(value, key) {
+              if (key.charAt(0) != '$') {
+                if (src[key] && src[key] !== value) {
+                  value += (key === 'style' ? ';' : ' ') + src[key];
+                }
+                dst.$set(key, value, true, srcAttr[key]);
+              }
+            });
+            forEach(src, function(value, key) {
+              if (key == 'class') {
+                safeAddClass($element, value);
+                dst['class'] = (dst['class'] ? dst['class'] + ' ' : '') + value;
+              } else if (key == 'style') {
+                $element.attr('style', $element.attr('style') + ';' + value);
+                dst['style'] = (dst['style'] ? dst['style'] + ';' : '') + value;
+              } else if (key.charAt(0) != '$' && !dst.hasOwnProperty(key)) {
+                dst[key] = value;
+                dstAttr[key] = srcAttr[key];
+              }
+            });
+          }
+          function compileTemplateUrl(directives, $compileNode, tAttrs, $rootElement, childTranscludeFn, preLinkFns, postLinkFns, previousCompileContext) {
+            var linkQueue = [],
+                afterTemplateNodeLinkFn,
+                afterTemplateChildLinkFn,
+                beforeTemplateCompileNode = $compileNode[0],
+                origAsyncDirective = directives.shift(),
+                derivedSyncDirective = inherit(origAsyncDirective, {
+                  templateUrl: null,
+                  transclude: null,
+                  replace: null,
+                  $$originalDirective: origAsyncDirective
+                }),
+                templateUrl = (isFunction(origAsyncDirective.templateUrl)) ? origAsyncDirective.templateUrl($compileNode, tAttrs) : origAsyncDirective.templateUrl,
+                templateNamespace = origAsyncDirective.templateNamespace;
+            $compileNode.empty();
+            $templateRequest($sce.getTrustedResourceUrl(templateUrl)).then(function(content) {
+              var compileNode,
+                  tempTemplateAttrs,
+                  $template,
+                  childBoundTranscludeFn;
+              content = denormalizeTemplate(content);
+              if (origAsyncDirective.replace) {
+                if (jqLiteIsTextNode(content)) {
+                  $template = [];
+                } else {
+                  $template = removeComments(wrapTemplate(templateNamespace, trim(content)));
+                }
+                compileNode = $template[0];
+                if ($template.length != 1 || compileNode.nodeType !== NODE_TYPE_ELEMENT) {
+                  throw $compileMinErr('tplrt', "Template for directive '{0}' must have exactly one root element. {1}", origAsyncDirective.name, templateUrl);
+                }
+                tempTemplateAttrs = {$attr: {}};
+                replaceWith($rootElement, $compileNode, compileNode);
+                var templateDirectives = collectDirectives(compileNode, [], tempTemplateAttrs);
+                if (isObject(origAsyncDirective.scope)) {
+                  markDirectivesAsIsolate(templateDirectives);
+                }
+                directives = templateDirectives.concat(directives);
+                mergeTemplateAttributes(tAttrs, tempTemplateAttrs);
+              } else {
+                compileNode = beforeTemplateCompileNode;
+                $compileNode.html(content);
+              }
+              directives.unshift(derivedSyncDirective);
+              afterTemplateNodeLinkFn = applyDirectivesToNode(directives, compileNode, tAttrs, childTranscludeFn, $compileNode, origAsyncDirective, preLinkFns, postLinkFns, previousCompileContext);
+              forEach($rootElement, function(node, i) {
+                if (node == compileNode) {
+                  $rootElement[i] = $compileNode[0];
+                }
+              });
+              afterTemplateChildLinkFn = compileNodes($compileNode[0].childNodes, childTranscludeFn);
+              while (linkQueue.length) {
+                var scope = linkQueue.shift(),
+                    beforeTemplateLinkNode = linkQueue.shift(),
+                    linkRootElement = linkQueue.shift(),
+                    boundTranscludeFn = linkQueue.shift(),
+                    linkNode = $compileNode[0];
+                if (scope.$$destroyed)
+                  continue;
+                if (beforeTemplateLinkNode !== beforeTemplateCompileNode) {
+                  var oldClasses = beforeTemplateLinkNode.className;
+                  if (!(previousCompileContext.hasElementTranscludeDirective && origAsyncDirective.replace)) {
+                    linkNode = jqLiteClone(compileNode);
+                  }
+                  replaceWith(linkRootElement, jqLite(beforeTemplateLinkNode), linkNode);
+                  safeAddClass(jqLite(linkNode), oldClasses);
+                }
+                if (afterTemplateNodeLinkFn.transcludeOnThisElement) {
+                  childBoundTranscludeFn = createBoundTranscludeFn(scope, afterTemplateNodeLinkFn.transclude, boundTranscludeFn);
+                } else {
+                  childBoundTranscludeFn = boundTranscludeFn;
+                }
+                afterTemplateNodeLinkFn(afterTemplateChildLinkFn, scope, linkNode, $rootElement, childBoundTranscludeFn, afterTemplateNodeLinkFn);
+              }
+              linkQueue = null;
+            });
+            return function delayedNodeLinkFn(ignoreChildLinkFn, scope, node, rootElement, boundTranscludeFn) {
+              var childBoundTranscludeFn = boundTranscludeFn;
+              if (scope.$$destroyed)
+                return ;
+              if (linkQueue) {
+                linkQueue.push(scope, node, rootElement, childBoundTranscludeFn);
+              } else {
+                if (afterTemplateNodeLinkFn.transcludeOnThisElement) {
+                  childBoundTranscludeFn = createBoundTranscludeFn(scope, afterTemplateNodeLinkFn.transclude, boundTranscludeFn);
+                }
+                afterTemplateNodeLinkFn(afterTemplateChildLinkFn, scope, node, rootElement, childBoundTranscludeFn, afterTemplateNodeLinkFn);
+              }
+            };
+          }
+          function byPriority(a, b) {
+            var diff = b.priority - a.priority;
+            if (diff !== 0)
+              return diff;
+            if (a.name !== b.name)
+              return (a.name < b.name) ? -1 : 1;
+            return a.index - b.index;
+          }
+          function assertNoDuplicate(what, previousDirective, directive, element) {
+            if (previousDirective) {
+              throw $compileMinErr('multidir', 'Multiple directives [{0}, {1}] asking for {2} on: {3}', previousDirective.name, directive.name, what, startingTag(element));
+            }
+          }
+          function addTextInterpolateDirective(directives, text) {
+            var interpolateFn = $interpolate(text, true);
+            if (interpolateFn) {
+              directives.push({
+                priority: 0,
+                compile: function textInterpolateCompileFn(templateNode) {
+                  var templateNodeParent = templateNode.parent(),
+                      hasCompileParent = !!templateNodeParent.length;
+                  if (hasCompileParent)
+                    compile.$$addBindingClass(templateNodeParent);
+                  return function textInterpolateLinkFn(scope, node) {
+                    var parent = node.parent();
+                    if (!hasCompileParent)
+                      compile.$$addBindingClass(parent);
+                    compile.$$addBindingInfo(parent, interpolateFn.expressions);
+                    scope.$watch(interpolateFn, function interpolateFnWatchAction(value) {
+                      node[0].nodeValue = value;
+                    });
+                  };
+                }
+              });
+            }
+          }
+          function wrapTemplate(type, template) {
+            type = lowercase(type || 'html');
+            switch (type) {
+              case 'svg':
+              case 'math':
+                var wrapper = document.createElement('div');
+                wrapper.innerHTML = '<' + type + '>' + template + '</' + type + '>';
+                return wrapper.childNodes[0].childNodes;
+              default:
+                return template;
+            }
+          }
+          function getTrustedContext(node, attrNormalizedName) {
+            if (attrNormalizedName == "srcdoc") {
+              return $sce.HTML;
+            }
+            var tag = nodeName_(node);
+            if (attrNormalizedName == "xlinkHref" || (tag == "form" && attrNormalizedName == "action") || (tag != "img" && (attrNormalizedName == "src" || attrNormalizedName == "ngSrc"))) {
+              return $sce.RESOURCE_URL;
+            }
+          }
+          function addAttrInterpolateDirective(node, directives, value, name, allOrNothing) {
+            var trustedContext = getTrustedContext(node, name);
+            allOrNothing = ALL_OR_NOTHING_ATTRS[name] || allOrNothing;
+            var interpolateFn = $interpolate(value, true, trustedContext, allOrNothing);
+            if (!interpolateFn)
+              return ;
+            if (name === "multiple" && nodeName_(node) === "select") {
+              throw $compileMinErr("selmulti", "Binding to the 'multiple' attribute is not supported. Element: {0}", startingTag(node));
+            }
+            directives.push({
               priority: 100,
               compile: function() {
-                return {pre: function(a, c, h) {
-                    c = h.$$observers || (h.$$observers = {});
-                    if (k.test(e))
-                      throw ea("nodomevents");
-                    var m = h[e];
-                    m !== d && (l = m && b(m, !0, g, f), d = m);
-                    l && (h[e] = l(a), (c[e] || (c[e] = [])).$$inter = !0, (h.$$observers && h.$$observers[e].$$scope || a).$watch(l, function(a, b) {
-                      "class" === e && a != b ? h.$updateClass(a, b) : h.$set(e, a);
-                    }));
+                return {pre: function attrInterpolatePreLinkFn(scope, element, attr) {
+                    var $$observers = (attr.$$observers || (attr.$$observers = {}));
+                    if (EVENT_HANDLER_ATTR_REGEXP.test(name)) {
+                      throw $compileMinErr('nodomevents', "Interpolations for HTML DOM event attributes are disallowed.  Please use the " + "ng- versions (such as ng-click instead of onclick) instead.");
+                    }
+                    var newValue = attr[name];
+                    if (newValue !== value) {
+                      interpolateFn = newValue && $interpolate(newValue, true, trustedContext, allOrNothing);
+                      value = newValue;
+                    }
+                    if (!interpolateFn)
+                      return ;
+                    attr[name] = interpolateFn(scope);
+                    ($$observers[name] || ($$observers[name] = [])).$$inter = true;
+                    (attr.$$observers && attr.$$observers[name].$$scope || scope).$watch(interpolateFn, function interpolateFnWatchAction(newValue, oldValue) {
+                      if (name === 'class' && newValue != oldValue) {
+                        attr.$updateClass(newValue, oldValue);
+                      } else {
+                        attr.$set(name, newValue);
+                      }
+                    });
                   }};
               }
             });
           }
-        }
-        function U(a, b, c) {
-          var d = b[0],
-              e = b.length,
-              f = d.parentNode,
-              g,
-              h;
-          if (a)
-            for (g = 0, h = a.length; g < h; g++)
-              if (a[g] == d) {
-                a[g++] = c;
-                h = g + e - 1;
-                for (var l = a.length; g < l; g++, h++)
-                  h < l ? a[g] = a[h] : delete a[g];
-                a.length -= e - 1;
-                a.context === d && (a.context = c);
-                break;
-              }
-          f && f.replaceChild(c, d);
-          a = W.createDocumentFragment();
-          a.appendChild(d);
-          z(c).data(z(d).data());
-          la ? (Rb = !0, la.cleanData([d])) : delete z.cache[d[z.expando]];
-          d = 1;
-          for (e = b.length; d < e; d++)
-            f = b[d], z(f).remove(), a.appendChild(f), delete b[d];
-          b[0] = c;
-          b.length = 1;
-        }
-        function Z(a, b) {
-          return Q(function() {
-            return a.apply(null, arguments);
-          }, a, b);
-        }
-        function $(a, b, d, e, f, g) {
-          try {
-            a(b, d, e, f, g);
-          } catch (h) {
-            c(h, va(d));
-          }
-        }
-        function Y(a, c, d, e, f, g) {
-          var h;
-          n(e, function(e, g) {
-            var l = e.attrName,
-                k = e.optional,
-                m,
-                s,
-                p,
-                B;
-            switch (e.mode) {
-              case "@":
-                c.$observe(l, function(a) {
-                  d[g] = a;
-                });
-                c.$$observers[l].$$scope = a;
-                c[l] && (d[g] = b(c[l])(a));
-                break;
-              case "=":
-                if (k && !c[l])
+          function replaceWith($rootElement, elementsToRemove, newNode) {
+            var firstElementToRemove = elementsToRemove[0],
+                removeCount = elementsToRemove.length,
+                parent = firstElementToRemove.parentNode,
+                i,
+                ii;
+            if ($rootElement) {
+              for (i = 0, ii = $rootElement.length; i < ii; i++) {
+                if ($rootElement[i] == firstElementToRemove) {
+                  $rootElement[i++] = newNode;
+                  for (var j = i,
+                      j2 = j + removeCount - 1,
+                      jj = $rootElement.length; j < jj; j++, j2++) {
+                    if (j2 < jj) {
+                      $rootElement[j] = $rootElement[j2];
+                    } else {
+                      delete $rootElement[j];
+                    }
+                  }
+                  $rootElement.length -= removeCount - 1;
+                  if ($rootElement.context === firstElementToRemove) {
+                    $rootElement.context = newNode;
+                  }
                   break;
-                s = t(c[l]);
-                B = s.literal ? ka : function(a, b) {
-                  return a === b || a !== a && b !== b;
-                };
-                p = s.assign || function() {
-                  m = d[g] = s(a);
-                  throw ea("nonassign", c[l], f.name);
-                };
-                m = d[g] = s(a);
-                k = function(b) {
-                  B(b, d[g]) || (B(b, m) ? p(a, b = d[g]) : d[g] = b);
-                  return m = b;
-                };
-                k.$stateful = !0;
-                k = e.collection ? a.$watchCollection(c[l], k) : a.$watch(t(c[l], k), null, s.literal);
-                h = h || [];
-                h.push(k);
-                break;
-              case "&":
-                if (!c.hasOwnProperty(l) && k)
-                  break;
-                s = t(c[l]);
-                if (s === w && k)
-                  break;
-                d[g] = function(b) {
-                  return s(a, b);
-                };
-            }
-          });
-          e = h ? function() {
-            for (var a = 0,
-                b = h.length; a < b; ++a)
-              h[a]();
-          } : w;
-          return g && e !== w ? (g.$on("$destroy", e), w) : e;
-        }
-        var aa = function(a, b) {
-          if (b) {
-            var c = Object.keys(b),
-                d,
-                e,
-                f;
-            d = 0;
-            for (e = c.length; d < e; d++)
-              f = c[d], this[f] = b[f];
-          } else
-            this.$attr = {};
-          this.$$element = a;
-        };
-        aa.prototype = {
-          $normalize: xa,
-          $addClass: function(a) {
-            a && 0 < a.length && B.addClass(this.$$element, a);
-          },
-          $removeClass: function(a) {
-            a && 0 < a.length && B.removeClass(this.$$element, a);
-          },
-          $updateClass: function(a, b) {
-            var c = ad(a, b);
-            c && c.length && B.addClass(this.$$element, c);
-            (c = ad(b, a)) && c.length && B.removeClass(this.$$element, c);
-          },
-          $set: function(a, b, d, e) {
-            var f = this.$$element[0],
-                g = Rc(f, a),
-                h = Ff(f, a),
-                f = a;
-            g ? (this.$$element.prop(a, b), e = g) : h && (this[h] = b, f = h);
-            this[a] = b;
-            e ? this.$attr[a] = e : (e = this.$attr[a]) || (this.$attr[a] = e = Ac(a, "-"));
-            g = ta(this.$$element);
-            if ("a" === g && "href" === a || "img" === g && "src" === a)
-              this[a] = b = O(b, "src" === a);
-            else if ("img" === g && "srcset" === a) {
-              for (var g = "",
-                  h = T(b),
-                  l = /(\s+\d+x\s*,|\s+\d+w\s*,|\s+,|,\s+)/,
-                  l = /\s/.test(h) ? l : /(,)/,
-                  h = h.split(l),
-                  l = Math.floor(h.length / 2),
-                  k = 0; k < l; k++)
-                var m = 2 * k,
-                    g = g + O(T(h[m]), !0),
-                    g = g + (" " + T(h[m + 1]));
-              h = T(h[2 * k]).split(/\s/);
-              g += O(T(h[0]), !0);
-              2 === h.length && (g += " " + T(h[1]));
-              this[a] = b = g;
-            }
-            !1 !== d && (null === b || b === u ? this.$$element.removeAttr(e) : this.$$element.attr(e, b));
-            (a = this.$$observers) && n(a[f], function(a) {
-              try {
-                a(b);
-              } catch (d) {
-                c(d);
-              }
-            });
-          },
-          $observe: function(a, b) {
-            var c = this,
-                d = c.$$observers || (c.$$observers = ga()),
-                e = d[a] || (d[a] = []);
-            e.push(b);
-            x.$evalAsync(function() {
-              !e.$$inter && c.hasOwnProperty(a) && b(c[a]);
-            });
-            return function() {
-              Ya(e, b);
-            };
-          }
-        };
-        var ca = b.startSymbol(),
-            da = b.endSymbol(),
-            fa = "{{" == ca || "}}" == da ? Ua : function(a) {
-              return a.replace(/\{\{/g, ca).replace(/}}/g, da);
-            },
-            ia = /^ngAttr[A-Z]/;
-        S.$$addBindingInfo = m ? function(a, b) {
-          var c = a.data("$binding") || [];
-          K(b) ? c = c.concat(b) : c.push(b);
-          a.data("$binding", c);
-        } : w;
-        S.$$addBindingClass = m ? function(a) {
-          D(a, "ng-binding");
-        } : w;
-        S.$$addScopeInfo = m ? function(a, b, c, d) {
-          a.data(c ? d ? "$isolateScopeNoTemplate" : "$isolateScope" : "$scope", b);
-        } : w;
-        S.$$addScopeClass = m ? function(a, b) {
-          D(a, b ? "ng-isolate-scope" : "ng-scope");
-        } : w;
-        return S;
-      }];
-    }
-    function xa(b) {
-      return eb(b.replace(Yc, ""));
-    }
-    function ad(b, a) {
-      var c = "",
-          d = b.split(/\s+/),
-          e = a.split(/\s+/),
-          f = 0;
-      a: for (; f < d.length; f++) {
-        for (var g = d[f],
-            h = 0; h < e.length; h++)
-          if (g == e[h])
-            continue a;
-        c += (0 < c.length ? " " : "") + g;
-      }
-      return c;
-    }
-    function Zc(b) {
-      b = z(b);
-      var a = b.length;
-      if (1 >= a)
-        return b;
-      for (; a--; )
-        8 === b[a].nodeType && Lf.call(b, a, 1);
-      return b;
-    }
-    function We() {
-      var b = {},
-          a = !1;
-      this.register = function(a, d) {
-        Qa(a, "controller");
-        C(a) ? Q(b, a) : b[a] = d;
-      };
-      this.allowGlobals = function() {
-        a = !0;
-      };
-      this.$get = ["$injector", "$window", function(c, d) {
-        function e(a, b, c, d) {
-          if (!a || !C(a.$scope))
-            throw F("$controller")("noscp", d, b);
-          a.$scope[b] = c;
-        }
-        return function(f, g, h, l) {
-          var k,
-              m,
-              r;
-          h = !0 === h;
-          l && L(l) && (r = l);
-          if (L(f)) {
-            l = f.match(Wc);
-            if (!l)
-              throw Mf("ctrlfmt", f);
-            m = l[1];
-            r = r || l[3];
-            f = b.hasOwnProperty(m) ? b[m] : Cc(g.$scope, m, !0) || (a ? Cc(d, m, !0) : u);
-            Pa(f, m, !0);
-          }
-          if (h)
-            return h = (K(f) ? f[f.length - 1] : f).prototype, k = Object.create(h || null), r && e(g, r, k, m || f.name), Q(function() {
-              var a = c.invoke(f, k, g, m);
-              a !== k && (C(a) || G(a)) && (k = a, r && e(g, r, k, m || f.name));
-              return k;
-            }, {
-              instance: k,
-              identifier: r
-            });
-          k = c.instantiate(f, g, m);
-          r && e(g, r, k, m || f.name);
-          return k;
-        };
-      }];
-    }
-    function Xe() {
-      this.$get = ["$window", function(b) {
-        return z(b.document);
-      }];
-    }
-    function Ye() {
-      this.$get = ["$log", function(b) {
-        return function(a, c) {
-          b.error.apply(b, arguments);
-        };
-      }];
-    }
-    function Zb(b) {
-      return C(b) ? da(b) ? b.toISOString() : $a(b) : b;
-    }
-    function bf() {
-      this.$get = function() {
-        return function(b) {
-          if (!b)
-            return "";
-          var a = [];
-          oc(b, function(b, d) {
-            null === b || v(b) || (K(b) ? n(b, function(b, c) {
-              a.push(ia(d) + "=" + ia(Zb(b)));
-            }) : a.push(ia(d) + "=" + ia(Zb(b))));
-          });
-          return a.join("&");
-        };
-      };
-    }
-    function cf() {
-      this.$get = function() {
-        return function(b) {
-          function a(b, e, f) {
-            null === b || v(b) || (K(b) ? n(b, function(b) {
-              a(b, e + "[]");
-            }) : C(b) && !da(b) ? oc(b, function(b, c) {
-              a(b, e + (f ? "" : "[") + c + (f ? "" : "]"));
-            }) : c.push(ia(e) + "=" + ia(Zb(b))));
-          }
-          if (!b)
-            return "";
-          var c = [];
-          a(b, "", !0);
-          return c.join("&");
-        };
-      };
-    }
-    function $b(b, a) {
-      if (L(b)) {
-        var c = b.replace(Nf, "").trim();
-        if (c) {
-          var d = a("Content-Type");
-          (d = d && 0 === d.indexOf(bd)) || (d = (d = c.match(Of)) && Pf[d[0]].test(c));
-          d && (b = vc(c));
-        }
-      }
-      return b;
-    }
-    function cd(b) {
-      var a = ga(),
-          c;
-      L(b) ? n(b.split("\n"), function(b) {
-        c = b.indexOf(":");
-        var e = E(T(b.substr(0, c)));
-        b = T(b.substr(c + 1));
-        e && (a[e] = a[e] ? a[e] + ", " + b : b);
-      }) : C(b) && n(b, function(b, c) {
-        var f = E(c),
-            g = T(b);
-        f && (a[f] = a[f] ? a[f] + ", " + g : g);
-      });
-      return a;
-    }
-    function dd(b) {
-      var a;
-      return function(c) {
-        a || (a = cd(b));
-        return c ? (c = a[E(c)], void 0 === c && (c = null), c) : a;
-      };
-    }
-    function ed(b, a, c, d) {
-      if (G(d))
-        return d(b, a, c);
-      n(d, function(d) {
-        b = d(b, a, c);
-      });
-      return b;
-    }
-    function af() {
-      var b = this.defaults = {
-        transformResponse: [$b],
-        transformRequest: [function(a) {
-          return C(a) && "[object File]" !== sa.call(a) && "[object Blob]" !== sa.call(a) && "[object FormData]" !== sa.call(a) ? $a(a) : a;
-        }],
-        headers: {
-          common: {Accept: "application/json, text/plain, */*"},
-          post: fa(ac),
-          put: fa(ac),
-          patch: fa(ac)
-        },
-        xsrfCookieName: "XSRF-TOKEN",
-        xsrfHeaderName: "X-XSRF-TOKEN",
-        paramSerializer: "$httpParamSerializer"
-      },
-          a = !1;
-      this.useApplyAsync = function(b) {
-        return y(b) ? (a = !!b, this) : a;
-      };
-      var c = this.interceptors = [];
-      this.$get = ["$httpBackend", "$$cookieReader", "$cacheFactory", "$rootScope", "$q", "$injector", function(d, e, f, g, h, l) {
-        function k(a) {
-          function c(a) {
-            var b = Q({}, a);
-            b.data = a.data ? ed(a.data, a.headers, a.status, e.transformResponse) : a.data;
-            a = a.status;
-            return 200 <= a && 300 > a ? b : h.reject(b);
-          }
-          function d(a, b) {
-            var c,
-                e = {};
-            n(a, function(a, d) {
-              G(a) ? (c = a(b), null != c && (e[d] = c)) : e[d] = a;
-            });
-            return e;
-          }
-          if (!aa.isObject(a))
-            throw F("$http")("badreq", a);
-          var e = Q({
-            method: "get",
-            transformRequest: b.transformRequest,
-            transformResponse: b.transformResponse,
-            paramSerializer: b.paramSerializer
-          }, a);
-          e.headers = function(a) {
-            var c = b.headers,
-                e = Q({}, a.headers),
-                f,
-                g,
-                h,
-                c = Q({}, c.common, c[E(a.method)]);
-            a: for (f in c) {
-              g = E(f);
-              for (h in e)
-                if (E(h) === g)
-                  continue a;
-              e[f] = c[f];
-            }
-            return d(e, fa(a));
-          }(a);
-          e.method = pb(e.method);
-          e.paramSerializer = L(e.paramSerializer) ? l.get(e.paramSerializer) : e.paramSerializer;
-          var f = [function(a) {
-            var d = a.headers,
-                e = ed(a.data, dd(d), u, a.transformRequest);
-            v(e) && n(d, function(a, b) {
-              "content-type" === E(b) && delete d[b];
-            });
-            v(a.withCredentials) && !v(b.withCredentials) && (a.withCredentials = b.withCredentials);
-            return m(a, e).then(c, c);
-          }, u],
-              g = h.when(e);
-          for (n(A, function(a) {
-            (a.request || a.requestError) && f.unshift(a.request, a.requestError);
-            (a.response || a.responseError) && f.push(a.response, a.responseError);
-          }); f.length; ) {
-            a = f.shift();
-            var k = f.shift(),
-                g = g.then(a, k);
-          }
-          g.success = function(a) {
-            Pa(a, "fn");
-            g.then(function(b) {
-              a(b.data, b.status, b.headers, e);
-            });
-            return g;
-          };
-          g.error = function(a) {
-            Pa(a, "fn");
-            g.then(null, function(b) {
-              a(b.data, b.status, b.headers, e);
-            });
-            return g;
-          };
-          return g;
-        }
-        function m(c, f) {
-          function l(b, c, d, e) {
-            function f() {
-              m(c, b, d, e);
-            }
-            O && (200 <= b && 300 > b ? O.put(P, [b, c, cd(d), e]) : O.remove(P));
-            a ? g.$applyAsync(f) : (f(), g.$$phase || g.$apply());
-          }
-          function m(a, b, d, e) {
-            b = Math.max(b, 0);
-            (200 <= b && 300 > b ? I.resolve : I.reject)({
-              data: a,
-              status: b,
-              headers: dd(d),
-              config: c,
-              statusText: e
-            });
-          }
-          function A(a) {
-            m(a.data, a.status, fa(a.headers()), a.statusText);
-          }
-          function n() {
-            var a = k.pendingRequests.indexOf(c);
-            -1 !== a && k.pendingRequests.splice(a, 1);
-          }
-          var I = h.defer(),
-              B = I.promise,
-              O,
-              D,
-              S = c.headers,
-              P = r(c.url, c.paramSerializer(c.params));
-          k.pendingRequests.push(c);
-          B.then(n, n);
-          !c.cache && !b.cache || !1 === c.cache || "GET" !== c.method && "JSONP" !== c.method || (O = C(c.cache) ? c.cache : C(b.cache) ? b.cache : s);
-          O && (D = O.get(P), y(D) ? D && G(D.then) ? D.then(A, A) : K(D) ? m(D[1], D[0], fa(D[2]), D[3]) : m(D, 200, {}, "OK") : O.put(P, B));
-          v(D) && ((D = fd(c.url) ? e()[c.xsrfCookieName || b.xsrfCookieName] : u) && (S[c.xsrfHeaderName || b.xsrfHeaderName] = D), d(c.method, P, f, l, S, c.timeout, c.withCredentials, c.responseType));
-          return B;
-        }
-        function r(a, b) {
-          0 < b.length && (a += (-1 == a.indexOf("?") ? "?" : "&") + b);
-          return a;
-        }
-        var s = f("$http");
-        b.paramSerializer = L(b.paramSerializer) ? l.get(b.paramSerializer) : b.paramSerializer;
-        var A = [];
-        n(c, function(a) {
-          A.unshift(L(a) ? l.get(a) : l.invoke(a));
-        });
-        k.pendingRequests = [];
-        (function(a) {
-          n(arguments, function(a) {
-            k[a] = function(b, c) {
-              return k(Q({}, c || {}, {
-                method: a,
-                url: b
-              }));
-            };
-          });
-        })("get", "delete", "head", "jsonp");
-        (function(a) {
-          n(arguments, function(a) {
-            k[a] = function(b, c, d) {
-              return k(Q({}, d || {}, {
-                method: a,
-                url: b,
-                data: c
-              }));
-            };
-          });
-        })("post", "put", "patch");
-        k.defaults = b;
-        return k;
-      }];
-    }
-    function Qf() {
-      return new N.XMLHttpRequest;
-    }
-    function df() {
-      this.$get = ["$browser", "$window", "$document", function(b, a, c) {
-        return Rf(b, Qf, b.defer, a.angular.callbacks, c[0]);
-      }];
-    }
-    function Rf(b, a, c, d, e) {
-      function f(a, b, c) {
-        var f = e.createElement("script"),
-            m = null;
-        f.type = "text/javascript";
-        f.src = a;
-        f.async = !0;
-        m = function(a) {
-          f.removeEventListener("load", m, !1);
-          f.removeEventListener("error", m, !1);
-          e.body.removeChild(f);
-          f = null;
-          var g = -1,
-              A = "unknown";
-          a && ("load" !== a.type || d[b].called || (a = {type: "error"}), A = a.type, g = "error" === a.type ? 404 : 200);
-          c && c(g, A);
-        };
-        f.addEventListener("load", m, !1);
-        f.addEventListener("error", m, !1);
-        e.body.appendChild(f);
-        return m;
-      }
-      return function(e, h, l, k, m, r, s, A) {
-        function H() {
-          p && p();
-          x && x.abort();
-        }
-        function M(a, d, e, f, g) {
-          I !== u && c.cancel(I);
-          p = x = null;
-          a(d, e, f, g);
-          b.$$completeOutstandingRequest(w);
-        }
-        b.$$incOutstandingRequestCount();
-        h = h || b.url();
-        if ("jsonp" == E(e)) {
-          var t = "_" + (d.counter++).toString(36);
-          d[t] = function(a) {
-            d[t].data = a;
-            d[t].called = !0;
-          };
-          var p = f(h.replace("JSON_CALLBACK", "angular.callbacks." + t), t, function(a, b) {
-            M(k, a, d[t].data, "", b);
-            d[t] = w;
-          });
-        } else {
-          var x = a();
-          x.open(e, h, !0);
-          n(m, function(a, b) {
-            y(a) && x.setRequestHeader(b, a);
-          });
-          x.onload = function() {
-            var a = x.statusText || "",
-                b = "response" in x ? x.response : x.responseText,
-                c = 1223 === x.status ? 204 : x.status;
-            0 === c && (c = b ? 200 : "file" == Aa(h).protocol ? 404 : 0);
-            M(k, c, b, x.getAllResponseHeaders(), a);
-          };
-          e = function() {
-            M(k, -1, null, null, "");
-          };
-          x.onerror = e;
-          x.onabort = e;
-          s && (x.withCredentials = !0);
-          if (A)
-            try {
-              x.responseType = A;
-            } catch (q) {
-              if ("json" !== A)
-                throw q;
-            }
-          x.send(l);
-        }
-        if (0 < r)
-          var I = c(H, r);
-        else
-          r && G(r.then) && r.then(H);
-      };
-    }
-    function Ze() {
-      var b = "{{",
-          a = "}}";
-      this.startSymbol = function(a) {
-        return a ? (b = a, this) : b;
-      };
-      this.endSymbol = function(b) {
-        return b ? (a = b, this) : a;
-      };
-      this.$get = ["$parse", "$exceptionHandler", "$sce", function(c, d, e) {
-        function f(a) {
-          return "\\\\\\" + a;
-        }
-        function g(c) {
-          return c.replace(m, b).replace(r, a);
-        }
-        function h(f, h, m, r) {
-          function t(a) {
-            try {
-              var b = a;
-              a = m ? e.getTrusted(m, b) : e.valueOf(b);
-              var c;
-              if (r && !y(a))
-                c = a;
-              else if (null == a)
-                c = "";
-              else {
-                switch (typeof a) {
-                  case "string":
-                    break;
-                  case "number":
-                    a = "" + a;
-                    break;
-                  default:
-                    a = $a(a);
                 }
-                c = a;
               }
-              return c;
-            } catch (g) {
-              d(Ka.interr(f, g));
             }
-          }
-          r = !!r;
-          for (var p,
-              n,
-              q = 0,
-              I = [],
-              B = [],
-              O = f.length,
-              D = [],
-              S = []; q < O; )
-            if (-1 != (p = f.indexOf(b, q)) && -1 != (n = f.indexOf(a, p + l)))
-              q !== p && D.push(g(f.substring(q, p))), q = f.substring(p + l, n), I.push(q), B.push(c(q, t)), q = n + k, S.push(D.length), D.push("");
-            else {
-              q !== O && D.push(g(f.substring(q)));
-              break;
+            if (parent) {
+              parent.replaceChild(newNode, firstElementToRemove);
             }
-          m && 1 < D.length && Ka.throwNoconcat(f);
-          if (!h || I.length) {
-            var P = function(a) {
-              for (var b = 0,
-                  c = I.length; b < c; b++) {
-                if (r && v(a[b]))
-                  return ;
-                D[S[b]] = a[b];
-              }
-              return D.join("");
-            };
-            return Q(function(a) {
-              var b = 0,
-                  c = I.length,
-                  e = Array(c);
-              try {
-                for (; b < c; b++)
-                  e[b] = B[b](a);
-                return P(e);
-              } catch (g) {
-                d(Ka.interr(f, g));
-              }
-            }, {
-              exp: f,
-              expressions: I,
-              $$watchDelegate: function(a, b) {
-                var c;
-                return a.$watchGroup(B, function(d, e) {
-                  var f = P(d);
-                  G(b) && b.call(this, f, d !== e ? c : f, a);
-                  c = f;
-                });
-              }
-            });
-          }
-        }
-        var l = b.length,
-            k = a.length,
-            m = new RegExp(b.replace(/./g, f), "g"),
-            r = new RegExp(a.replace(/./g, f), "g");
-        h.startSymbol = function() {
-          return b;
-        };
-        h.endSymbol = function() {
-          return a;
-        };
-        return h;
-      }];
-    }
-    function $e() {
-      this.$get = ["$rootScope", "$window", "$q", "$$q", function(b, a, c, d) {
-        function e(e, h, l, k) {
-          var m = 4 < arguments.length,
-              r = m ? ra.call(arguments, 4) : [],
-              s = a.setInterval,
-              A = a.clearInterval,
-              H = 0,
-              M = y(k) && !k,
-              t = (M ? d : c).defer(),
-              p = t.promise;
-          l = y(l) ? l : 0;
-          p.then(null, null, m ? function() {
-            e.apply(null, r);
-          } : e);
-          p.$$intervalId = s(function() {
-            t.notify(H++);
-            0 < l && H >= l && (t.resolve(H), A(p.$$intervalId), delete f[p.$$intervalId]);
-            M || b.$apply();
-          }, h);
-          f[p.$$intervalId] = t;
-          return p;
-        }
-        var f = {};
-        e.cancel = function(b) {
-          return b && b.$$intervalId in f ? (f[b.$$intervalId].reject("canceled"), a.clearInterval(b.$$intervalId), delete f[b.$$intervalId], !0) : !1;
-        };
-        return e;
-      }];
-    }
-    function fe() {
-      this.$get = function() {
-        return {
-          id: "en-us",
-          NUMBER_FORMATS: {
-            DECIMAL_SEP: ".",
-            GROUP_SEP: ",",
-            PATTERNS: [{
-              minInt: 1,
-              minFrac: 0,
-              maxFrac: 3,
-              posPre: "",
-              posSuf: "",
-              negPre: "-",
-              negSuf: "",
-              gSize: 3,
-              lgSize: 3
-            }, {
-              minInt: 1,
-              minFrac: 2,
-              maxFrac: 2,
-              posPre: "\u00a4",
-              posSuf: "",
-              negPre: "(\u00a4",
-              negSuf: ")",
-              gSize: 3,
-              lgSize: 3
-            }],
-            CURRENCY_SYM: "$"
-          },
-          DATETIME_FORMATS: {
-            MONTH: "January February March April May June July August September October November December".split(" "),
-            SHORTMONTH: "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" "),
-            DAY: "Sunday Monday Tuesday Wednesday Thursday Friday Saturday".split(" "),
-            SHORTDAY: "Sun Mon Tue Wed Thu Fri Sat".split(" "),
-            AMPMS: ["AM", "PM"],
-            medium: "MMM d, y h:mm:ss a",
-            "short": "M/d/yy h:mm a",
-            fullDate: "EEEE, MMMM d, y",
-            longDate: "MMMM d, y",
-            mediumDate: "MMM d, y",
-            shortDate: "M/d/yy",
-            mediumTime: "h:mm:ss a",
-            shortTime: "h:mm a",
-            ERANAMES: ["Before Christ", "Anno Domini"],
-            ERAS: ["BC", "AD"]
-          },
-          pluralCat: function(b) {
-            return 1 === b ? "one" : "other";
-          }
-        };
-      };
-    }
-    function bc(b) {
-      b = b.split("/");
-      for (var a = b.length; a--; )
-        b[a] = mb(b[a]);
-      return b.join("/");
-    }
-    function gd(b, a) {
-      var c = Aa(b);
-      a.$$protocol = c.protocol;
-      a.$$host = c.hostname;
-      a.$$port = Y(c.port) || Sf[c.protocol] || null;
-    }
-    function hd(b, a) {
-      var c = "/" !== b.charAt(0);
-      c && (b = "/" + b);
-      var d = Aa(b);
-      a.$$path = decodeURIComponent(c && "/" === d.pathname.charAt(0) ? d.pathname.substring(1) : d.pathname);
-      a.$$search = yc(d.search);
-      a.$$hash = decodeURIComponent(d.hash);
-      a.$$path && "/" != a.$$path.charAt(0) && (a.$$path = "/" + a.$$path);
-    }
-    function ya(b, a) {
-      if (0 === a.indexOf(b))
-        return a.substr(b.length);
-    }
-    function Ia(b) {
-      var a = b.indexOf("#");
-      return -1 == a ? b : b.substr(0, a);
-    }
-    function Bb(b) {
-      return b.replace(/(#.+)|#$/, "$1");
-    }
-    function cc(b) {
-      return b.substr(0, Ia(b).lastIndexOf("/") + 1);
-    }
-    function dc(b, a) {
-      this.$$html5 = !0;
-      a = a || "";
-      var c = cc(b);
-      gd(b, this);
-      this.$$parse = function(a) {
-        var b = ya(c, a);
-        if (!L(b))
-          throw Cb("ipthprfx", a, c);
-        hd(b, this);
-        this.$$path || (this.$$path = "/");
-        this.$$compose();
-      };
-      this.$$compose = function() {
-        var a = Qb(this.$$search),
-            b = this.$$hash ? "#" + mb(this.$$hash) : "";
-        this.$$url = bc(this.$$path) + (a ? "?" + a : "") + b;
-        this.$$absUrl = c + this.$$url.substr(1);
-      };
-      this.$$parseLinkUrl = function(d, e) {
-        if (e && "#" === e[0])
-          return this.hash(e.slice(1)), !0;
-        var f,
-            g;
-        (f = ya(b, d)) !== u ? (g = f, g = (f = ya(a, f)) !== u ? c + (ya("/", f) || f) : b + g) : (f = ya(c, d)) !== u ? g = c + f : c == d + "/" && (g = c);
-        g && this.$$parse(g);
-        return !!g;
-      };
-    }
-    function ec(b, a) {
-      var c = cc(b);
-      gd(b, this);
-      this.$$parse = function(d) {
-        d = ya(b, d) || ya(c, d);
-        var e;
-        "#" === d.charAt(0) ? (e = ya(a, d), v(e) && (e = d)) : e = this.$$html5 ? d : "";
-        hd(e, this);
-        d = this.$$path;
-        var f = /^\/[A-Z]:(\/.*)/;
-        0 === e.indexOf(b) && (e = e.replace(b, ""));
-        f.exec(e) || (d = (e = f.exec(d)) ? e[1] : d);
-        this.$$path = d;
-        this.$$compose();
-      };
-      this.$$compose = function() {
-        var c = Qb(this.$$search),
-            e = this.$$hash ? "#" + mb(this.$$hash) : "";
-        this.$$url = bc(this.$$path) + (c ? "?" + c : "") + e;
-        this.$$absUrl = b + (this.$$url ? a + this.$$url : "");
-      };
-      this.$$parseLinkUrl = function(a, c) {
-        return Ia(b) == Ia(a) ? (this.$$parse(a), !0) : !1;
-      };
-    }
-    function id(b, a) {
-      this.$$html5 = !0;
-      ec.apply(this, arguments);
-      var c = cc(b);
-      this.$$parseLinkUrl = function(d, e) {
-        if (e && "#" === e[0])
-          return this.hash(e.slice(1)), !0;
-        var f,
-            g;
-        b == Ia(d) ? f = d : (g = ya(c, d)) ? f = b + a + g : c === d + "/" && (f = c);
-        f && this.$$parse(f);
-        return !!f;
-      };
-      this.$$compose = function() {
-        var c = Qb(this.$$search),
-            e = this.$$hash ? "#" + mb(this.$$hash) : "";
-        this.$$url = bc(this.$$path) + (c ? "?" + c : "") + e;
-        this.$$absUrl = b + a + this.$$url;
-      };
-    }
-    function Db(b) {
-      return function() {
-        return this[b];
-      };
-    }
-    function jd(b, a) {
-      return function(c) {
-        if (v(c))
-          return this[b];
-        this[b] = a(c);
-        this.$$compose();
-        return this;
-      };
-    }
-    function ef() {
-      var b = "",
-          a = {
-            enabled: !1,
-            requireBase: !0,
-            rewriteLinks: !0
-          };
-      this.hashPrefix = function(a) {
-        return y(a) ? (b = a, this) : b;
-      };
-      this.html5Mode = function(b) {
-        return Xa(b) ? (a.enabled = b, this) : C(b) ? (Xa(b.enabled) && (a.enabled = b.enabled), Xa(b.requireBase) && (a.requireBase = b.requireBase), Xa(b.rewriteLinks) && (a.rewriteLinks = b.rewriteLinks), this) : a;
-      };
-      this.$get = ["$rootScope", "$browser", "$sniffer", "$rootElement", "$window", function(c, d, e, f, g) {
-        function h(a, b, c) {
-          var e = k.url(),
-              f = k.$$state;
-          try {
-            d.url(a, b, c), k.$$state = d.state();
-          } catch (g) {
-            throw k.url(e), k.$$state = f, g;
-          }
-        }
-        function l(a, b) {
-          c.$broadcast("$locationChangeSuccess", k.absUrl(), a, k.$$state, b);
-        }
-        var k,
-            m;
-        m = d.baseHref();
-        var r = d.url(),
-            s;
-        if (a.enabled) {
-          if (!m && a.requireBase)
-            throw Cb("nobase");
-          s = r.substring(0, r.indexOf("/", r.indexOf("//") + 2)) + (m || "/");
-          m = e.history ? dc : id;
-        } else
-          s = Ia(r), m = ec;
-        k = new m(s, "#" + b);
-        k.$$parseLinkUrl(r, r);
-        k.$$state = d.state();
-        var A = /^\s*(javascript|mailto):/i;
-        f.on("click", function(b) {
-          if (a.rewriteLinks && !b.ctrlKey && !b.metaKey && !b.shiftKey && 2 != b.which && 2 != b.button) {
-            for (var e = z(b.target); "a" !== ta(e[0]); )
-              if (e[0] === f[0] || !(e = e.parent())[0])
-                return ;
-            var h = e.prop("href"),
-                l = e.attr("href") || e.attr("xlink:href");
-            C(h) && "[object SVGAnimatedString]" === h.toString() && (h = Aa(h.animVal).href);
-            A.test(h) || !h || e.attr("target") || b.isDefaultPrevented() || !k.$$parseLinkUrl(h, l) || (b.preventDefault(), k.absUrl() != d.url() && (c.$apply(), g.angular["ff-684208-preventDefault"] = !0));
-          }
-        });
-        Bb(k.absUrl()) != Bb(r) && d.url(k.absUrl(), !0);
-        var H = !0;
-        d.onUrlChange(function(a, b) {
-          c.$evalAsync(function() {
-            var d = k.absUrl(),
-                e = k.$$state,
-                f;
-            k.$$parse(a);
-            k.$$state = b;
-            f = c.$broadcast("$locationChangeStart", a, d, b, e).defaultPrevented;
-            k.absUrl() === a && (f ? (k.$$parse(d), k.$$state = e, h(d, !1, e)) : (H = !1, l(d, e)));
-          });
-          c.$$phase || c.$digest();
-        });
-        c.$watch(function() {
-          var a = Bb(d.url()),
-              b = Bb(k.absUrl()),
-              f = d.state(),
-              g = k.$$replace,
-              m = a !== b || k.$$html5 && e.history && f !== k.$$state;
-          if (H || m)
-            H = !1, c.$evalAsync(function() {
-              var b = k.absUrl(),
-                  d = c.$broadcast("$locationChangeStart", b, a, k.$$state, f).defaultPrevented;
-              k.absUrl() === b && (d ? (k.$$parse(a), k.$$state = f) : (m && h(b, g, f === k.$$state ? null : k.$$state), l(a, f)));
-            });
-          k.$$replace = !1;
-        });
-        return k;
-      }];
-    }
-    function ff() {
-      var b = !0,
-          a = this;
-      this.debugEnabled = function(a) {
-        return y(a) ? (b = a, this) : b;
-      };
-      this.$get = ["$window", function(c) {
-        function d(a) {
-          a instanceof Error && (a.stack ? a = a.message && -1 === a.stack.indexOf(a.message) ? "Error: " + a.message + "\n" + a.stack : a.stack : a.sourceURL && (a = a.message + "\n" + a.sourceURL + ":" + a.line));
-          return a;
-        }
-        function e(a) {
-          var b = c.console || {},
-              e = b[a] || b.log || w;
-          a = !1;
-          try {
-            a = !!e.apply;
-          } catch (l) {}
-          return a ? function() {
-            var a = [];
-            n(arguments, function(b) {
-              a.push(d(b));
-            });
-            return e.apply(b, a);
-          } : function(a, b) {
-            e(a, null == b ? "" : b);
-          };
-        }
-        return {
-          log: e("log"),
-          info: e("info"),
-          warn: e("warn"),
-          error: e("error"),
-          debug: function() {
-            var c = e("debug");
-            return function() {
-              b && c.apply(a, arguments);
-            };
-          }()
-        };
-      }];
-    }
-    function Ba(b, a) {
-      if ("__defineGetter__" === b || "__defineSetter__" === b || "__lookupGetter__" === b || "__lookupSetter__" === b || "__proto__" === b)
-        throw ca("isecfld", a);
-      return b;
-    }
-    function na(b, a) {
-      if (b) {
-        if (b.constructor === b)
-          throw ca("isecfn", a);
-        if (b.window === b)
-          throw ca("isecwindow", a);
-        if (b.children && (b.nodeName || b.prop && b.attr && b.find))
-          throw ca("isecdom", a);
-        if (b === Object)
-          throw ca("isecobj", a);
-      }
-      return b;
-    }
-    function kd(b, a) {
-      if (b) {
-        if (b.constructor === b)
-          throw ca("isecfn", a);
-        if (b === Tf || b === Uf || b === Vf)
-          throw ca("isecff", a);
-      }
-    }
-    function Wf(b, a) {
-      return "undefined" !== typeof b ? b : a;
-    }
-    function ld(b, a) {
-      return "undefined" === typeof b ? a : "undefined" === typeof a ? b : b + a;
-    }
-    function U(b, a) {
-      var c,
-          d;
-      switch (b.type) {
-        case q.Program:
-          c = !0;
-          n(b.body, function(b) {
-            U(b.expression, a);
-            c = c && b.expression.constant;
-          });
-          b.constant = c;
-          break;
-        case q.Literal:
-          b.constant = !0;
-          b.toWatch = [];
-          break;
-        case q.UnaryExpression:
-          U(b.argument, a);
-          b.constant = b.argument.constant;
-          b.toWatch = b.argument.toWatch;
-          break;
-        case q.BinaryExpression:
-          U(b.left, a);
-          U(b.right, a);
-          b.constant = b.left.constant && b.right.constant;
-          b.toWatch = b.left.toWatch.concat(b.right.toWatch);
-          break;
-        case q.LogicalExpression:
-          U(b.left, a);
-          U(b.right, a);
-          b.constant = b.left.constant && b.right.constant;
-          b.toWatch = b.constant ? [] : [b];
-          break;
-        case q.ConditionalExpression:
-          U(b.test, a);
-          U(b.alternate, a);
-          U(b.consequent, a);
-          b.constant = b.test.constant && b.alternate.constant && b.consequent.constant;
-          b.toWatch = b.constant ? [] : [b];
-          break;
-        case q.Identifier:
-          b.constant = !1;
-          b.toWatch = [b];
-          break;
-        case q.MemberExpression:
-          U(b.object, a);
-          b.computed && U(b.property, a);
-          b.constant = b.object.constant && (!b.computed || b.property.constant);
-          b.toWatch = [b];
-          break;
-        case q.CallExpression:
-          c = b.filter ? !a(b.callee.name).$stateful : !1;
-          d = [];
-          n(b.arguments, function(b) {
-            U(b, a);
-            c = c && b.constant;
-            b.constant || d.push.apply(d, b.toWatch);
-          });
-          b.constant = c;
-          b.toWatch = b.filter && !a(b.callee.name).$stateful ? d : [b];
-          break;
-        case q.AssignmentExpression:
-          U(b.left, a);
-          U(b.right, a);
-          b.constant = b.left.constant && b.right.constant;
-          b.toWatch = [b];
-          break;
-        case q.ArrayExpression:
-          c = !0;
-          d = [];
-          n(b.elements, function(b) {
-            U(b, a);
-            c = c && b.constant;
-            b.constant || d.push.apply(d, b.toWatch);
-          });
-          b.constant = c;
-          b.toWatch = d;
-          break;
-        case q.ObjectExpression:
-          c = !0;
-          d = [];
-          n(b.properties, function(b) {
-            U(b.value, a);
-            c = c && b.value.constant;
-            b.value.constant || d.push.apply(d, b.value.toWatch);
-          });
-          b.constant = c;
-          b.toWatch = d;
-          break;
-        case q.ThisExpression:
-          b.constant = !1, b.toWatch = [];
-      }
-    }
-    function md(b) {
-      if (1 == b.length) {
-        b = b[0].expression;
-        var a = b.toWatch;
-        return 1 !== a.length ? a : a[0] !== b ? a : u;
-      }
-    }
-    function nd(b) {
-      return b.type === q.Identifier || b.type === q.MemberExpression;
-    }
-    function od(b) {
-      if (1 === b.body.length && nd(b.body[0].expression))
-        return {
-          type: q.AssignmentExpression,
-          left: b.body[0].expression,
-          right: {type: q.NGValueParameter},
-          operator: "="
-        };
-    }
-    function pd(b) {
-      return 0 === b.body.length || 1 === b.body.length && (b.body[0].expression.type === q.Literal || b.body[0].expression.type === q.ArrayExpression || b.body[0].expression.type === q.ObjectExpression);
-    }
-    function qd(b, a) {
-      this.astBuilder = b;
-      this.$filter = a;
-    }
-    function rd(b, a) {
-      this.astBuilder = b;
-      this.$filter = a;
-    }
-    function Eb(b, a, c, d) {
-      na(b, d);
-      a = a.split(".");
-      for (var e,
-          f = 0; 1 < a.length; f++) {
-        e = Ba(a.shift(), d);
-        var g = na(b[e], d);
-        g || (g = {}, b[e] = g);
-        b = g;
-      }
-      e = Ba(a.shift(), d);
-      na(b[e], d);
-      return b[e] = c;
-    }
-    function Fb(b) {
-      return "constructor" == b;
-    }
-    function fc(b) {
-      return G(b.valueOf) ? b.valueOf() : Xf.call(b);
-    }
-    function gf() {
-      var b = ga(),
-          a = ga();
-      this.$get = ["$filter", "$sniffer", function(c, d) {
-        function e(a, b) {
-          return null == a || null == b ? a === b : "object" === typeof a && (a = fc(a), "object" === typeof a) ? !1 : a === b || a !== a && b !== b;
-        }
-        function f(a, b, c, d, f) {
-          var g = d.inputs,
-              h;
-          if (1 === g.length) {
-            var l = e,
-                g = g[0];
-            return a.$watch(function(a) {
-              var b = g(a);
-              e(b, l) || (h = d(a, u, u, [b]), l = b && fc(b));
-              return h;
-            }, b, c, f);
-          }
-          for (var k = [],
-              m = [],
-              r = 0,
-              n = g.length; r < n; r++)
-            k[r] = e, m[r] = null;
-          return a.$watch(function(a) {
-            for (var b = !1,
-                c = 0,
-                f = g.length; c < f; c++) {
-              var l = g[c](a);
-              if (b || (b = !e(l, k[c])))
-                m[c] = l, k[c] = l && fc(l);
+            var fragment = document.createDocumentFragment();
+            fragment.appendChild(firstElementToRemove);
+            jqLite(newNode).data(jqLite(firstElementToRemove).data());
+            if (!jQuery) {
+              delete jqLite.cache[firstElementToRemove[jqLite.expando]];
+            } else {
+              skipDestroyOnNextJQueryCleanData = true;
+              jQuery.cleanData([firstElementToRemove]);
             }
-            b && (h = d(a, u, u, m));
-            return h;
-          }, b, c, f);
-        }
-        function g(a, b, c, d) {
-          var e,
-              f;
-          return e = a.$watch(function(a) {
-            return d(a);
-          }, function(a, c, d) {
-            f = a;
-            G(b) && b.apply(this, arguments);
-            y(a) && d.$$postDigest(function() {
-              y(f) && e();
-            });
-          }, c);
-        }
-        function h(a, b, c, d) {
-          function e(a) {
-            var b = !0;
-            n(a, function(a) {
-              y(a) || (b = !1);
-            });
-            return b;
+            for (var k = 1,
+                kk = elementsToRemove.length; k < kk; k++) {
+              var element = elementsToRemove[k];
+              jqLite(element).remove();
+              fragment.appendChild(element);
+              delete elementsToRemove[k];
+            }
+            elementsToRemove[0] = newNode;
+            elementsToRemove.length = 1;
           }
-          var f,
-              g;
-          return f = a.$watch(function(a) {
-            return d(a);
-          }, function(a, c, d) {
-            g = a;
-            G(b) && b.call(this, a, c, d);
-            e(a) && d.$$postDigest(function() {
-              e(g) && f();
-            });
-          }, c);
-        }
-        function l(a, b, c, d) {
-          var e;
-          return e = a.$watch(function(a) {
-            return d(a);
-          }, function(a, c, d) {
-            G(b) && b.apply(this, arguments);
-            e();
-          }, c);
-        }
-        function k(a, b) {
-          if (!b)
-            return a;
-          var c = a.$$watchDelegate,
-              c = c !== h && c !== g ? function(c, d, e, f) {
-                e = a(c, d, e, f);
-                return b(e, c, d);
-              } : function(c, d, e, f) {
-                e = a(c, d, e, f);
-                c = b(e, c, d);
-                return y(e) ? c : e;
-              };
-          a.$$watchDelegate && a.$$watchDelegate !== f ? c.$$watchDelegate = a.$$watchDelegate : b.$stateful || (c.$$watchDelegate = f, c.inputs = a.inputs ? a.inputs : [a]);
-          return c;
-        }
-        var m = {
-          csp: d.csp,
-          expensiveChecks: !1
-        },
-            r = {
-              csp: d.csp,
-              expensiveChecks: !0
-            };
-        return function(d, e, H) {
-          var n,
-              t,
-              p;
-          switch (typeof d) {
-            case "string":
-              p = d = d.trim();
-              var q = H ? a : b;
-              n = q[p];
-              n || (":" === d.charAt(0) && ":" === d.charAt(1) && (t = !0, d = d.substring(2)), H = H ? r : m, n = new gc(H), n = (new hc(n, c, H)).parse(d), n.constant ? n.$$watchDelegate = l : t ? n.$$watchDelegate = n.literal ? h : g : n.inputs && (n.$$watchDelegate = f), q[p] = n);
-              return k(n, e);
-            case "function":
-              return k(d, e);
-            default:
-              return w;
+          function cloneAndAnnotateFn(fn, annotation) {
+            return extend(function() {
+              return fn.apply(null, arguments);
+            }, fn, annotation);
           }
-        };
-      }];
-    }
-    function jf() {
-      this.$get = ["$rootScope", "$exceptionHandler", function(b, a) {
-        return sd(function(a) {
-          b.$evalAsync(a);
-        }, a);
-      }];
-    }
-    function kf() {
-      this.$get = ["$browser", "$exceptionHandler", function(b, a) {
-        return sd(function(a) {
-          b.defer(a);
-        }, a);
-      }];
-    }
-    function sd(b, a) {
-      function c(a, b, c) {
-        function d(b) {
-          return function(c) {
-            e || (e = !0, b.call(a, c));
-          };
-        }
-        var e = !1;
-        return [d(b), d(c)];
-      }
-      function d() {
-        this.$$state = {status: 0};
-      }
-      function e(a, b) {
-        return function(c) {
-          b.call(a, c);
-        };
-      }
-      function f(c) {
-        !c.processScheduled && c.pending && (c.processScheduled = !0, b(function() {
-          var b,
-              d,
-              e;
-          e = c.pending;
-          c.processScheduled = !1;
-          c.pending = u;
-          for (var f = 0,
-              g = e.length; f < g; ++f) {
-            d = e[f][0];
-            b = e[f][c.status];
+          function invokeLinkFn(linkFn, scope, $element, attrs, controllers, transcludeFn) {
             try {
-              G(b) ? d.resolve(b(c.value)) : 1 === c.status ? d.resolve(c.value) : d.reject(c.value);
-            } catch (h) {
-              d.reject(h), a(h);
-            }
-          }
-        }));
-      }
-      function g() {
-        this.promise = new d;
-        this.resolve = e(this, this.resolve);
-        this.reject = e(this, this.reject);
-        this.notify = e(this, this.notify);
-      }
-      var h = F("$q", TypeError);
-      d.prototype = {
-        then: function(a, b, c) {
-          var d = new g;
-          this.$$state.pending = this.$$state.pending || [];
-          this.$$state.pending.push([d, a, b, c]);
-          0 < this.$$state.status && f(this.$$state);
-          return d.promise;
-        },
-        "catch": function(a) {
-          return this.then(null, a);
-        },
-        "finally": function(a, b) {
-          return this.then(function(b) {
-            return k(b, !0, a);
-          }, function(b) {
-            return k(b, !1, a);
-          }, b);
-        }
-      };
-      g.prototype = {
-        resolve: function(a) {
-          this.promise.$$state.status || (a === this.promise ? this.$$reject(h("qcycle", a)) : this.$$resolve(a));
-        },
-        $$resolve: function(b) {
-          var d,
-              e;
-          e = c(this, this.$$resolve, this.$$reject);
-          try {
-            if (C(b) || G(b))
-              d = b && b.then;
-            G(d) ? (this.promise.$$state.status = -1, d.call(b, e[0], e[1], this.notify)) : (this.promise.$$state.value = b, this.promise.$$state.status = 1, f(this.promise.$$state));
-          } catch (g) {
-            e[1](g), a(g);
-          }
-        },
-        reject: function(a) {
-          this.promise.$$state.status || this.$$reject(a);
-        },
-        $$reject: function(a) {
-          this.promise.$$state.value = a;
-          this.promise.$$state.status = 2;
-          f(this.promise.$$state);
-        },
-        notify: function(c) {
-          var d = this.promise.$$state.pending;
-          0 >= this.promise.$$state.status && d && d.length && b(function() {
-            for (var b,
-                e,
-                f = 0,
-                g = d.length; f < g; f++) {
-              e = d[f][0];
-              b = d[f][3];
-              try {
-                e.notify(G(b) ? b(c) : c);
-              } catch (h) {
-                a(h);
-              }
-            }
-          });
-        }
-      };
-      var l = function(a, b) {
-        var c = new g;
-        b ? c.resolve(a) : c.reject(a);
-        return c.promise;
-      },
-          k = function(a, b, c) {
-            var d = null;
-            try {
-              G(c) && (d = c());
+              linkFn(scope, $element, attrs, controllers, transcludeFn);
             } catch (e) {
-              return l(e, !1);
-            }
-            return d && G(d.then) ? d.then(function() {
-              return l(a, b);
-            }, function(a) {
-              return l(a, !1);
-            }) : l(a, b);
-          },
-          m = function(a, b, c, d) {
-            var e = new g;
-            e.resolve(a);
-            return e.promise.then(b, c, d);
-          },
-          r = function A(a) {
-            if (!G(a))
-              throw h("norslvr", a);
-            if (!(this instanceof A))
-              return new A(a);
-            var b = new g;
-            a(function(a) {
-              b.resolve(a);
-            }, function(a) {
-              b.reject(a);
-            });
-            return b.promise;
-          };
-      r.defer = function() {
-        return new g;
-      };
-      r.reject = function(a) {
-        var b = new g;
-        b.reject(a);
-        return b.promise;
-      };
-      r.when = m;
-      r.all = function(a) {
-        var b = new g,
-            c = 0,
-            d = K(a) ? [] : {};
-        n(a, function(a, e) {
-          c++;
-          m(a).then(function(a) {
-            d.hasOwnProperty(e) || (d[e] = a, --c || b.resolve(d));
-          }, function(a) {
-            d.hasOwnProperty(e) || b.reject(a);
-          });
-        });
-        0 === c && b.resolve(d);
-        return b.promise;
-      };
-      return r;
-    }
-    function tf() {
-      this.$get = ["$window", "$timeout", function(b, a) {
-        function c() {
-          for (var a = 0; a < m.length; a++) {
-            var b = m[a];
-            b && (m[a] = null, b());
-          }
-          k = m.length = 0;
-        }
-        function d(a) {
-          var b = m.length;
-          k++;
-          m.push(a);
-          0 === b && (l = h(c));
-          return function() {
-            0 <= b && (b = m[b] = null, 0 === --k && l && (l(), l = null, m.length = 0));
-          };
-        }
-        var e = b.requestAnimationFrame || b.webkitRequestAnimationFrame,
-            f = b.cancelAnimationFrame || b.webkitCancelAnimationFrame || b.webkitCancelRequestAnimationFrame,
-            g = !!e,
-            h = g ? function(a) {
-              var b = e(a);
-              return function() {
-                f(b);
-              };
-            } : function(b) {
-              var c = a(b, 16.66, !1);
-              return function() {
-                a.cancel(c);
-              };
-            };
-        d.supported = g;
-        var l,
-            k = 0,
-            m = [];
-        return d;
-      }];
-    }
-    function hf() {
-      function b(a) {
-        function b() {
-          this.$$watchers = this.$$nextSibling = this.$$childHead = this.$$childTail = null;
-          this.$$listeners = {};
-          this.$$listenerCount = {};
-          this.$$watchersCount = 0;
-          this.$id = ++lb;
-          this.$$ChildScope = null;
-        }
-        b.prototype = a;
-        return b;
-      }
-      var a = 10,
-          c = F("$rootScope"),
-          d = null,
-          e = null;
-      this.digestTtl = function(b) {
-        arguments.length && (a = b);
-        return a;
-      };
-      this.$get = ["$injector", "$exceptionHandler", "$parse", "$browser", function(f, g, h, l) {
-        function k(a) {
-          a.currentScope.$$destroyed = !0;
-        }
-        function m() {
-          this.$id = ++lb;
-          this.$$phase = this.$parent = this.$$watchers = this.$$nextSibling = this.$$prevSibling = this.$$childHead = this.$$childTail = null;
-          this.$root = this;
-          this.$$destroyed = !1;
-          this.$$listeners = {};
-          this.$$listenerCount = {};
-          this.$$watchersCount = 0;
-          this.$$isolateBindings = null;
-        }
-        function r(a) {
-          if (p.$$phase)
-            throw c("inprog", p.$$phase);
-          p.$$phase = a;
-        }
-        function s(a, b) {
-          do
-            a.$$watchersCount += b;
- while (a = a.$parent);
-        }
-        function A(a, b, c) {
-          do
-            a.$$listenerCount[c] -= b, 0 === a.$$listenerCount[c] && delete a.$$listenerCount[c];
- while (a = a.$parent);
-        }
-        function q() {}
-        function u() {
-          for (; I.length; )
-            try {
-              I.shift()();
-            } catch (a) {
-              g(a);
-            }
-          e = null;
-        }
-        function t() {
-          null === e && (e = l.defer(function() {
-            p.$apply(u);
-          }));
-        }
-        m.prototype = {
-          constructor: m,
-          $new: function(a, c) {
-            var d;
-            c = c || this;
-            a ? (d = new m, d.$root = this.$root) : (this.$$ChildScope || (this.$$ChildScope = b(this)), d = new this.$$ChildScope);
-            d.$parent = c;
-            d.$$prevSibling = c.$$childTail;
-            c.$$childHead ? (c.$$childTail.$$nextSibling = d, c.$$childTail = d) : c.$$childHead = c.$$childTail = d;
-            (a || c != this) && d.$on("$destroy", k);
-            return d;
-          },
-          $watch: function(a, b, c, e) {
-            var f = h(a);
-            if (f.$$watchDelegate)
-              return f.$$watchDelegate(this, b, c, f, a);
-            var g = this,
-                l = g.$$watchers,
-                k = {
-                  fn: b,
-                  last: q,
-                  get: f,
-                  exp: e || a,
-                  eq: !!c
-                };
-            d = null;
-            G(b) || (k.fn = w);
-            l || (l = g.$$watchers = []);
-            l.unshift(k);
-            s(this, 1);
-            return function() {
-              0 <= Ya(l, k) && s(g, -1);
-              d = null;
-            };
-          },
-          $watchGroup: function(a, b) {
-            function c() {
-              h = !1;
-              l ? (l = !1, b(e, e, g)) : b(e, d, g);
-            }
-            var d = Array(a.length),
-                e = Array(a.length),
-                f = [],
-                g = this,
-                h = !1,
-                l = !0;
-            if (!a.length) {
-              var k = !0;
-              g.$evalAsync(function() {
-                k && b(e, e, g);
-              });
-              return function() {
-                k = !1;
-              };
-            }
-            if (1 === a.length)
-              return this.$watch(a[0], function(a, c, f) {
-                e[0] = a;
-                d[0] = c;
-                b(e, a === c ? e : d, f);
-              });
-            n(a, function(a, b) {
-              var l = g.$watch(a, function(a, f) {
-                e[b] = a;
-                d[b] = f;
-                h || (h = !0, g.$evalAsync(c));
-              });
-              f.push(l);
-            });
-            return function() {
-              for (; f.length; )
-                f.shift()();
-            };
-          },
-          $watchCollection: function(a, b) {
-            function c(a) {
-              e = a;
-              var b,
-                  d,
-                  g,
-                  h;
-              if (!v(e)) {
-                if (C(e))
-                  if (Da(e))
-                    for (f !== r && (f = r, n = f.length = 0, k++), a = e.length, n !== a && (k++, f.length = n = a), b = 0; b < a; b++)
-                      h = f[b], g = e[b], d = h !== h && g !== g, d || h === g || (k++, f[b] = g);
-                  else {
-                    f !== s && (f = s = {}, n = 0, k++);
-                    a = 0;
-                    for (b in e)
-                      e.hasOwnProperty(b) && (a++, g = e[b], h = f[b], b in f ? (d = h !== h && g !== g, d || h === g || (k++, f[b] = g)) : (n++, f[b] = g, k++));
-                    if (n > a)
-                      for (b in k++, f)
-                        e.hasOwnProperty(b) || (n--, delete f[b]);
-                  }
-                else
-                  f !== e && (f = e, k++);
-                return k;
-              }
-            }
-            c.$stateful = !0;
-            var d = this,
-                e,
-                f,
-                g,
-                l = 1 < b.length,
-                k = 0,
-                m = h(a, c),
-                r = [],
-                s = {},
-                p = !0,
-                n = 0;
-            return this.$watch(m, function() {
-              p ? (p = !1, b(e, e, d)) : b(e, g, d);
-              if (l)
-                if (C(e))
-                  if (Da(e)) {
-                    g = Array(e.length);
-                    for (var a = 0; a < e.length; a++)
-                      g[a] = e[a];
-                  } else
-                    for (a in g = {}, e)
-                      kb.call(e, a) && (g[a] = e[a]);
-                else
-                  g = e;
-            });
-          },
-          $digest: function() {
-            var b,
-                f,
-                h,
-                k,
-                m,
-                s,
-                n = a,
-                A,
-                t = [],
-                I,
-                v;
-            r("$digest");
-            l.$$checkUrlChange();
-            this === p && null !== e && (l.defer.cancel(e), u());
-            d = null;
-            do {
-              s = !1;
-              for (A = this; x.length; ) {
-                try {
-                  v = x.shift(), v.scope.$eval(v.expression, v.locals);
-                } catch (w) {
-                  g(w);
-                }
-                d = null;
-              }
-              a: do {
-                if (k = A.$$watchers)
-                  for (m = k.length; m--; )
-                    try {
-                      if (b = k[m])
-                        if ((f = b.get(A)) !== (h = b.last) && !(b.eq ? ka(f, h) : "number" === typeof f && "number" === typeof h && isNaN(f) && isNaN(h)))
-                          s = !0, d = b, b.last = b.eq ? ua(f, null) : f, b.fn(f, h === q ? f : h, A), 5 > n && (I = 4 - n, t[I] || (t[I] = []), t[I].push({
-                            msg: G(b.exp) ? "fn: " + (b.exp.name || b.exp.toString()) : b.exp,
-                            newVal: f,
-                            oldVal: h
-                          }));
-                        else if (b === d) {
-                          s = !1;
-                          break a;
-                        }
-                    } catch (z) {
-                      g(z);
-                    }
-                if (!(k = A.$$watchersCount && A.$$childHead || A !== this && A.$$nextSibling))
-                  for (; A !== this && !(k = A.$$nextSibling); )
-                    A = A.$parent;
-              } while (A = k);
-              if ((s || x.length) && !n--)
-                throw p.$$phase = null, c("infdig", a, t);
-            } while (s || x.length);
-            for (p.$$phase = null; y.length; )
-              try {
-                y.shift()();
-              } catch (C) {
-                g(C);
-              }
-          },
-          $destroy: function() {
-            if (!this.$$destroyed) {
-              var a = this.$parent;
-              this.$broadcast("$destroy");
-              this.$$destroyed = !0;
-              this === p && l.$$applicationDestroyed();
-              s(this, -this.$$watchersCount);
-              for (var b in this.$$listenerCount)
-                A(this, this.$$listenerCount[b], b);
-              a && a.$$childHead == this && (a.$$childHead = this.$$nextSibling);
-              a && a.$$childTail == this && (a.$$childTail = this.$$prevSibling);
-              this.$$prevSibling && (this.$$prevSibling.$$nextSibling = this.$$nextSibling);
-              this.$$nextSibling && (this.$$nextSibling.$$prevSibling = this.$$prevSibling);
-              this.$destroy = this.$digest = this.$apply = this.$evalAsync = this.$applyAsync = w;
-              this.$on = this.$watch = this.$watchGroup = function() {
-                return w;
-              };
-              this.$$listeners = {};
-              this.$parent = this.$$nextSibling = this.$$prevSibling = this.$$childHead = this.$$childTail = this.$root = this.$$watchers = null;
-            }
-          },
-          $eval: function(a, b) {
-            return h(a)(this, b);
-          },
-          $evalAsync: function(a, b) {
-            p.$$phase || x.length || l.defer(function() {
-              x.length && p.$digest();
-            });
-            x.push({
-              scope: this,
-              expression: a,
-              locals: b
-            });
-          },
-          $$postDigest: function(a) {
-            y.push(a);
-          },
-          $apply: function(a) {
-            try {
-              return r("$apply"), this.$eval(a);
-            } catch (b) {
-              g(b);
-            } finally {
-              p.$$phase = null;
-              try {
-                p.$digest();
-              } catch (c) {
-                throw g(c), c;
-              }
-            }
-          },
-          $applyAsync: function(a) {
-            function b() {
-              c.$eval(a);
-            }
-            var c = this;
-            a && I.push(b);
-            t();
-          },
-          $on: function(a, b) {
-            var c = this.$$listeners[a];
-            c || (this.$$listeners[a] = c = []);
-            c.push(b);
-            var d = this;
-            do
-              d.$$listenerCount[a] || (d.$$listenerCount[a] = 0), d.$$listenerCount[a]++;
- while (d = d.$parent);
-            var e = this;
-            return function() {
-              var d = c.indexOf(b);
-              -1 !== d && (c[d] = null, A(e, 1, a));
-            };
-          },
-          $emit: function(a, b) {
-            var c = [],
-                d,
-                e = this,
-                f = !1,
-                h = {
-                  name: a,
-                  targetScope: e,
-                  stopPropagation: function() {
-                    f = !0;
-                  },
-                  preventDefault: function() {
-                    h.defaultPrevented = !0;
-                  },
-                  defaultPrevented: !1
-                },
-                l = Za([h], arguments, 1),
-                k,
-                m;
-            do {
-              d = e.$$listeners[a] || c;
-              h.currentScope = e;
-              k = 0;
-              for (m = d.length; k < m; k++)
-                if (d[k])
-                  try {
-                    d[k].apply(null, l);
-                  } catch (r) {
-                    g(r);
-                  }
-                else
-                  d.splice(k, 1), k--, m--;
-              if (f)
-                return h.currentScope = null, h;
-              e = e.$parent;
-            } while (e);
-            h.currentScope = null;
-            return h;
-          },
-          $broadcast: function(a, b) {
-            var c = this,
-                d = this,
-                e = {
-                  name: a,
-                  targetScope: this,
-                  preventDefault: function() {
-                    e.defaultPrevented = !0;
-                  },
-                  defaultPrevented: !1
-                };
-            if (!this.$$listenerCount[a])
-              return e;
-            for (var f = Za([e], arguments, 1),
-                h,
-                l; c = d; ) {
-              e.currentScope = c;
-              d = c.$$listeners[a] || [];
-              h = 0;
-              for (l = d.length; h < l; h++)
-                if (d[h])
-                  try {
-                    d[h].apply(null, f);
-                  } catch (k) {
-                    g(k);
-                  }
-                else
-                  d.splice(h, 1), h--, l--;
-              if (!(d = c.$$listenerCount[a] && c.$$childHead || c !== this && c.$$nextSibling))
-                for (; c !== this && !(d = c.$$nextSibling); )
-                  c = c.$parent;
-            }
-            e.currentScope = null;
-            return e;
-          }
-        };
-        var p = new m,
-            x = p.$$asyncQueue = [],
-            y = p.$$postDigestQueue = [],
-            I = p.$$applyAsyncQueue = [];
-        return p;
-      }];
-    }
-    function ge() {
-      var b = /^\s*(https?|ftp|mailto|tel|file):/,
-          a = /^\s*((https?|ftp|file|blob):|data:image\/)/;
-      this.aHrefSanitizationWhitelist = function(a) {
-        return y(a) ? (b = a, this) : b;
-      };
-      this.imgSrcSanitizationWhitelist = function(b) {
-        return y(b) ? (a = b, this) : a;
-      };
-      this.$get = function() {
-        return function(c, d) {
-          var e = d ? a : b,
-              f;
-          f = Aa(c).href;
-          return "" === f || f.match(e) ? c : "unsafe:" + f;
-        };
-      };
-    }
-    function Yf(b) {
-      if ("self" === b)
-        return b;
-      if (L(b)) {
-        if (-1 < b.indexOf("***"))
-          throw Ca("iwcard", b);
-        b = td(b).replace("\\*\\*", ".*").replace("\\*", "[^:/.?&;]*");
-        return new RegExp("^" + b + "$");
-      }
-      if (Va(b))
-        return new RegExp("^" + b.source + "$");
-      throw Ca("imatcher");
-    }
-    function ud(b) {
-      var a = [];
-      y(b) && n(b, function(b) {
-        a.push(Yf(b));
-      });
-      return a;
-    }
-    function mf() {
-      this.SCE_CONTEXTS = oa;
-      var b = ["self"],
-          a = [];
-      this.resourceUrlWhitelist = function(a) {
-        arguments.length && (b = ud(a));
-        return b;
-      };
-      this.resourceUrlBlacklist = function(b) {
-        arguments.length && (a = ud(b));
-        return a;
-      };
-      this.$get = ["$injector", function(c) {
-        function d(a, b) {
-          return "self" === a ? fd(b) : !!a.exec(b.href);
-        }
-        function e(a) {
-          var b = function(a) {
-            this.$$unwrapTrustedValue = function() {
-              return a;
-            };
-          };
-          a && (b.prototype = new a);
-          b.prototype.valueOf = function() {
-            return this.$$unwrapTrustedValue();
-          };
-          b.prototype.toString = function() {
-            return this.$$unwrapTrustedValue().toString();
-          };
-          return b;
-        }
-        var f = function(a) {
-          throw Ca("unsafe");
-        };
-        c.has("$sanitize") && (f = c.get("$sanitize"));
-        var g = e(),
-            h = {};
-        h[oa.HTML] = e(g);
-        h[oa.CSS] = e(g);
-        h[oa.URL] = e(g);
-        h[oa.JS] = e(g);
-        h[oa.RESOURCE_URL] = e(h[oa.URL]);
-        return {
-          trustAs: function(a, b) {
-            var c = h.hasOwnProperty(a) ? h[a] : null;
-            if (!c)
-              throw Ca("icontext", a, b);
-            if (null === b || b === u || "" === b)
-              return b;
-            if ("string" !== typeof b)
-              throw Ca("itype", a);
-            return new c(b);
-          },
-          getTrusted: function(c, e) {
-            if (null === e || e === u || "" === e)
-              return e;
-            var g = h.hasOwnProperty(c) ? h[c] : null;
-            if (g && e instanceof g)
-              return e.$$unwrapTrustedValue();
-            if (c === oa.RESOURCE_URL) {
-              var g = Aa(e.toString()),
-                  r,
-                  s,
-                  n = !1;
-              r = 0;
-              for (s = b.length; r < s; r++)
-                if (d(b[r], g)) {
-                  n = !0;
-                  break;
-                }
-              if (n)
-                for (r = 0, s = a.length; r < s; r++)
-                  if (d(a[r], g)) {
-                    n = !1;
-                    break;
-                  }
-              if (n)
-                return e;
-              throw Ca("insecurl", e.toString());
-            }
-            if (c === oa.HTML)
-              return f(e);
-            throw Ca("unsafe");
-          },
-          valueOf: function(a) {
-            return a instanceof g ? a.$$unwrapTrustedValue() : a;
-          }
-        };
-      }];
-    }
-    function lf() {
-      var b = !0;
-      this.enabled = function(a) {
-        arguments.length && (b = !!a);
-        return b;
-      };
-      this.$get = ["$parse", "$sceDelegate", function(a, c) {
-        if (b && 8 > gb)
-          throw Ca("iequirks");
-        var d = fa(oa);
-        d.isEnabled = function() {
-          return b;
-        };
-        d.trustAs = c.trustAs;
-        d.getTrusted = c.getTrusted;
-        d.valueOf = c.valueOf;
-        b || (d.trustAs = d.getTrusted = function(a, b) {
-          return b;
-        }, d.valueOf = Ua);
-        d.parseAs = function(b, c) {
-          var e = a(c);
-          return e.literal && e.constant ? e : a(c, function(a) {
-            return d.getTrusted(b, a);
-          });
-        };
-        var e = d.parseAs,
-            f = d.getTrusted,
-            g = d.trustAs;
-        n(oa, function(a, b) {
-          var c = E(b);
-          d[eb("parse_as_" + c)] = function(b) {
-            return e(a, b);
-          };
-          d[eb("get_trusted_" + c)] = function(b) {
-            return f(a, b);
-          };
-          d[eb("trust_as_" + c)] = function(b) {
-            return g(a, b);
-          };
-        });
-        return d;
-      }];
-    }
-    function nf() {
-      this.$get = ["$window", "$document", function(b, a) {
-        var c = {},
-            d = Y((/android (\d+)/.exec(E((b.navigator || {}).userAgent)) || [])[1]),
-            e = /Boxee/i.test((b.navigator || {}).userAgent),
-            f = a[0] || {},
-            g,
-            h = /^(Moz|webkit|ms)(?=[A-Z])/,
-            l = f.body && f.body.style,
-            k = !1,
-            m = !1;
-        if (l) {
-          for (var r in l)
-            if (k = h.exec(r)) {
-              g = k[0];
-              g = g.substr(0, 1).toUpperCase() + g.substr(1);
-              break;
-            }
-          g || (g = "WebkitOpacity" in l && "webkit");
-          k = !!("transition" in l || g + "Transition" in l);
-          m = !!("animation" in l || g + "Animation" in l);
-          !d || k && m || (k = L(l.webkitTransition), m = L(l.webkitAnimation));
-        }
-        return {
-          history: !(!b.history || !b.history.pushState || 4 > d || e),
-          hasEvent: function(a) {
-            if ("input" === a && 11 >= gb)
-              return !1;
-            if (v(c[a])) {
-              var b = f.createElement("div");
-              c[a] = "on" + a in b;
-            }
-            return c[a];
-          },
-          csp: cb(),
-          vendorPrefix: g,
-          transitions: k,
-          animations: m,
-          android: d
-        };
-      }];
-    }
-    function pf() {
-      this.$get = ["$templateCache", "$http", "$q", function(b, a, c) {
-        function d(e, f) {
-          d.totalPendingRequests++;
-          var g = a.defaults && a.defaults.transformResponse;
-          K(g) ? g = g.filter(function(a) {
-            return a !== $b;
-          }) : g === $b && (g = null);
-          return a.get(e, {
-            cache: b,
-            transformResponse: g
-          })["finally"](function() {
-            d.totalPendingRequests--;
-          }).then(function(a) {
-            b.put(e, a.data);
-            return a.data;
-          }, function(a) {
-            if (!f)
-              throw ea("tpload", e, a.status, a.statusText);
-            return c.reject(a);
-          });
-        }
-        d.totalPendingRequests = 0;
-        return d;
-      }];
-    }
-    function qf() {
-      this.$get = ["$rootScope", "$browser", "$location", function(b, a, c) {
-        return {
-          findBindings: function(a, b, c) {
-            a = a.getElementsByClassName("ng-binding");
-            var g = [];
-            n(a, function(a) {
-              var d = aa.element(a).data("$binding");
-              d && n(d, function(d) {
-                c ? (new RegExp("(^|\\s)" + td(b) + "(\\s|\\||$)")).test(d) && g.push(a) : -1 != d.indexOf(b) && g.push(a);
-              });
-            });
-            return g;
-          },
-          findModels: function(a, b, c) {
-            for (var g = ["ng-", "data-ng-", "ng\\:"],
-                h = 0; h < g.length; ++h) {
-              var l = a.querySelectorAll("[" + g[h] + "model" + (c ? "=" : "*=") + '"' + b + '"]');
-              if (l.length)
-                return l;
-            }
-          },
-          getLocation: function() {
-            return c.url();
-          },
-          setLocation: function(a) {
-            a !== c.url() && (c.url(a), b.$digest());
-          },
-          whenStable: function(b) {
-            a.notifyWhenNoOutstandingRequests(b);
-          }
-        };
-      }];
-    }
-    function rf() {
-      this.$get = ["$rootScope", "$browser", "$q", "$$q", "$exceptionHandler", function(b, a, c, d, e) {
-        function f(f, l, k) {
-          G(f) || (k = l, l = f, f = w);
-          var m = ra.call(arguments, 3),
-              r = y(k) && !k,
-              s = (r ? d : c).defer(),
-              n = s.promise,
-              q;
-          q = a.defer(function() {
-            try {
-              s.resolve(f.apply(null, m));
-            } catch (a) {
-              s.reject(a), e(a);
-            } finally {
-              delete g[n.$$timeoutId];
-            }
-            r || b.$apply();
-          }, l);
-          n.$$timeoutId = q;
-          g[q] = s;
-          return n;
-        }
-        var g = {};
-        f.cancel = function(b) {
-          return b && b.$$timeoutId in g ? (g[b.$$timeoutId].reject("canceled"), delete g[b.$$timeoutId], a.defer.cancel(b.$$timeoutId)) : !1;
-        };
-        return f;
-      }];
-    }
-    function Aa(b) {
-      gb && (Z.setAttribute("href", b), b = Z.href);
-      Z.setAttribute("href", b);
-      return {
-        href: Z.href,
-        protocol: Z.protocol ? Z.protocol.replace(/:$/, "") : "",
-        host: Z.host,
-        search: Z.search ? Z.search.replace(/^\?/, "") : "",
-        hash: Z.hash ? Z.hash.replace(/^#/, "") : "",
-        hostname: Z.hostname,
-        port: Z.port,
-        pathname: "/" === Z.pathname.charAt(0) ? Z.pathname : "/" + Z.pathname
-      };
-    }
-    function fd(b) {
-      b = L(b) ? Aa(b) : b;
-      return b.protocol === vd.protocol && b.host === vd.host;
-    }
-    function sf() {
-      this.$get = qa(N);
-    }
-    function wd(b) {
-      function a(a) {
-        try {
-          return decodeURIComponent(a);
-        } catch (b) {
-          return a;
-        }
-      }
-      var c = b[0] || {},
-          d = {},
-          e = "";
-      return function() {
-        var b,
-            g,
-            h,
-            l,
-            k;
-        b = c.cookie || "";
-        if (b !== e)
-          for (e = b, b = e.split("; "), d = {}, h = 0; h < b.length; h++)
-            g = b[h], l = g.indexOf("="), 0 < l && (k = a(g.substring(0, l)), d[k] === u && (d[k] = a(g.substring(l + 1))));
-        return d;
-      };
-    }
-    function xf() {
-      this.$get = wd;
-    }
-    function Kc(b) {
-      function a(c, d) {
-        if (C(c)) {
-          var e = {};
-          n(c, function(b, c) {
-            e[c] = a(c, b);
-          });
-          return e;
-        }
-        return b.factory(c + "Filter", d);
-      }
-      this.register = a;
-      this.$get = ["$injector", function(a) {
-        return function(b) {
-          return a.get(b + "Filter");
-        };
-      }];
-      a("currency", xd);
-      a("date", yd);
-      a("filter", Zf);
-      a("json", $f);
-      a("limitTo", ag);
-      a("lowercase", bg);
-      a("number", zd);
-      a("orderBy", Ad);
-      a("uppercase", cg);
-    }
-    function Zf() {
-      return function(b, a, c) {
-        if (!Da(b)) {
-          if (null == b)
-            return b;
-          throw F("filter")("notarray", b);
-        }
-        var d;
-        switch (ic(a)) {
-          case "function":
-            break;
-          case "boolean":
-          case "null":
-          case "number":
-          case "string":
-            d = !0;
-          case "object":
-            a = dg(a, c, d);
-            break;
-          default:
-            return b;
-        }
-        return Array.prototype.filter.call(b, a);
-      };
-    }
-    function dg(b, a, c) {
-      var d = C(b) && "$" in b;
-      !0 === a ? a = ka : G(a) || (a = function(a, b) {
-        if (v(a))
-          return !1;
-        if (null === a || null === b)
-          return a === b;
-        var c;
-        !(c = C(b)) && (c = C(a)) && (c = a, c = !(G(c.toString) && c.toString !== Object.prototype.toString));
-        if (c)
-          return !1;
-        a = E("" + a);
-        b = E("" + b);
-        return -1 !== a.indexOf(b);
-      });
-      return function(e) {
-        return d && !C(e) ? La(e, b.$, a, !1) : La(e, b, a, c);
-      };
-    }
-    function La(b, a, c, d, e) {
-      var f = ic(b),
-          g = ic(a);
-      if ("string" === g && "!" === a.charAt(0))
-        return !La(b, a.substring(1), c, d);
-      if (K(b))
-        return b.some(function(b) {
-          return La(b, a, c, d);
-        });
-      switch (f) {
-        case "object":
-          var h;
-          if (d) {
-            for (h in b)
-              if ("$" !== h.charAt(0) && La(b[h], a, c, !0))
-                return !0;
-            return e ? !1 : La(b, a, c, !1);
-          }
-          if ("object" === g) {
-            for (h in a)
-              if (e = a[h], !G(e) && !v(e) && (f = "$" === h, !La(f ? b : b[h], e, c, f, f)))
-                return !1;
-            return !0;
-          }
-          return c(b, a);
-        case "function":
-          return !1;
-        default:
-          return c(b, a);
-      }
-    }
-    function ic(b) {
-      return null === b ? "null" : typeof b;
-    }
-    function xd(b) {
-      var a = b.NUMBER_FORMATS;
-      return function(b, d, e) {
-        v(d) && (d = a.CURRENCY_SYM);
-        v(e) && (e = a.PATTERNS[1].maxFrac);
-        return null == b ? b : Bd(b, a.PATTERNS[1], a.GROUP_SEP, a.DECIMAL_SEP, e).replace(/\u00A4/g, d);
-      };
-    }
-    function zd(b) {
-      var a = b.NUMBER_FORMATS;
-      return function(b, d) {
-        return null == b ? b : Bd(b, a.PATTERNS[0], a.GROUP_SEP, a.DECIMAL_SEP, d);
-      };
-    }
-    function Bd(b, a, c, d, e) {
-      if (C(b))
-        return "";
-      var f = 0 > b;
-      b = Math.abs(b);
-      var g = Infinity === b;
-      if (!g && !isFinite(b))
-        return "";
-      var h = b + "",
-          l = "",
-          k = !1,
-          m = [];
-      g && (l = "\u221e");
-      if (!g && -1 !== h.indexOf("e")) {
-        var r = h.match(/([\d\.]+)e(-?)(\d+)/);
-        r && "-" == r[2] && r[3] > e + 1 ? b = 0 : (l = h, k = !0);
-      }
-      if (g || k)
-        0 < e && 1 > b && (l = b.toFixed(e), b = parseFloat(l));
-      else {
-        g = (h.split(Cd)[1] || "").length;
-        v(e) && (e = Math.min(Math.max(a.minFrac, g), a.maxFrac));
-        b = +(Math.round(+(b.toString() + "e" + e)).toString() + "e" + -e);
-        var g = ("" + b).split(Cd),
-            h = g[0],
-            g = g[1] || "",
-            r = 0,
-            s = a.lgSize,
-            n = a.gSize;
-        if (h.length >= s + n)
-          for (r = h.length - s, k = 0; k < r; k++)
-            0 === (r - k) % n && 0 !== k && (l += c), l += h.charAt(k);
-        for (k = r; k < h.length; k++)
-          0 === (h.length - k) % s && 0 !== k && (l += c), l += h.charAt(k);
-        for (; g.length < e; )
-          g += "0";
-        e && "0" !== e && (l += d + g.substr(0, e));
-      }
-      0 === b && (f = !1);
-      m.push(f ? a.negPre : a.posPre, l, f ? a.negSuf : a.posSuf);
-      return m.join("");
-    }
-    function Gb(b, a, c) {
-      var d = "";
-      0 > b && (d = "-", b = -b);
-      for (b = "" + b; b.length < a; )
-        b = "0" + b;
-      c && (b = b.substr(b.length - a));
-      return d + b;
-    }
-    function $(b, a, c, d) {
-      c = c || 0;
-      return function(e) {
-        e = e["get" + b]();
-        if (0 < c || e > -c)
-          e += c;
-        0 === e && -12 == c && (e = 12);
-        return Gb(e, a, d);
-      };
-    }
-    function Hb(b, a) {
-      return function(c, d) {
-        var e = c["get" + b](),
-            f = pb(a ? "SHORT" + b : b);
-        return d[f][e];
-      };
-    }
-    function Dd(b) {
-      var a = (new Date(b, 0, 1)).getDay();
-      return new Date(b, 0, (4 >= a ? 5 : 12) - a);
-    }
-    function Ed(b) {
-      return function(a) {
-        var c = Dd(a.getFullYear());
-        a = +new Date(a.getFullYear(), a.getMonth(), a.getDate() + (4 - a.getDay())) - +c;
-        a = 1 + Math.round(a / 6048E5);
-        return Gb(a, b);
-      };
-    }
-    function jc(b, a) {
-      return 0 >= b.getFullYear() ? a.ERAS[0] : a.ERAS[1];
-    }
-    function yd(b) {
-      function a(a) {
-        var b;
-        if (b = a.match(c)) {
-          a = new Date(0);
-          var f = 0,
-              g = 0,
-              h = b[8] ? a.setUTCFullYear : a.setFullYear,
-              l = b[8] ? a.setUTCHours : a.setHours;
-          b[9] && (f = Y(b[9] + b[10]), g = Y(b[9] + b[11]));
-          h.call(a, Y(b[1]), Y(b[2]) - 1, Y(b[3]));
-          f = Y(b[4] || 0) - f;
-          g = Y(b[5] || 0) - g;
-          h = Y(b[6] || 0);
-          b = Math.round(1E3 * parseFloat("0." + (b[7] || 0)));
-          l.call(a, f, g, h, b);
-        }
-        return a;
-      }
-      var c = /^(\d{4})-?(\d\d)-?(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
-      return function(c, e, f) {
-        var g = "",
-            h = [],
-            l,
-            k;
-        e = e || "mediumDate";
-        e = b.DATETIME_FORMATS[e] || e;
-        L(c) && (c = eg.test(c) ? Y(c) : a(c));
-        V(c) && (c = new Date(c));
-        if (!da(c) || !isFinite(c.getTime()))
-          return c;
-        for (; e; )
-          (k = fg.exec(e)) ? (h = Za(h, k, 1), e = h.pop()) : (h.push(e), e = null);
-        var m = c.getTimezoneOffset();
-        f && (m = wc(f, c.getTimezoneOffset()), c = Pb(c, f, !0));
-        n(h, function(a) {
-          l = gg[a];
-          g += l ? l(c, b.DATETIME_FORMATS, m) : a.replace(/(^'|'$)/g, "").replace(/''/g, "'");
-        });
-        return g;
-      };
-    }
-    function $f() {
-      return function(b, a) {
-        v(a) && (a = 2);
-        return $a(b, a);
-      };
-    }
-    function ag() {
-      return function(b, a, c) {
-        a = Infinity === Math.abs(Number(a)) ? Number(a) : Y(a);
-        if (isNaN(a))
-          return b;
-        V(b) && (b = b.toString());
-        if (!K(b) && !L(b))
-          return b;
-        c = !c || isNaN(c) ? 0 : Y(c);
-        c = 0 > c && c >= -b.length ? b.length + c : c;
-        return 0 <= a ? b.slice(c, c + a) : 0 === c ? b.slice(a, b.length) : b.slice(Math.max(0, c + a), c);
-      };
-    }
-    function Ad(b) {
-      return function(a, c, d) {
-        function e(a, b) {
-          return b ? function(b, c) {
-            return a(c, b);
-          } : a;
-        }
-        function f(a) {
-          switch (typeof a) {
-            case "number":
-            case "boolean":
-            case "string":
-              return !0;
-            default:
-              return !1;
-          }
-        }
-        function g(a) {
-          return null === a ? "null" : "function" === typeof a.valueOf && (a = a.valueOf(), f(a)) || "function" === typeof a.toString && (a = a.toString(), f(a)) ? a : "";
-        }
-        function h(a, b) {
-          var c = typeof a,
-              d = typeof b;
-          c === d && "object" === c && (a = g(a), b = g(b));
-          return c === d ? ("string" === c && (a = a.toLowerCase(), b = b.toLowerCase()), a === b ? 0 : a < b ? -1 : 1) : c < d ? -1 : 1;
-        }
-        if (!Da(a))
-          return a;
-        c = K(c) ? c : [c];
-        0 === c.length && (c = ["+"]);
-        c = c.map(function(a) {
-          var c = !1,
-              d = a || Ua;
-          if (L(a)) {
-            if ("+" == a.charAt(0) || "-" == a.charAt(0))
-              c = "-" == a.charAt(0), a = a.substring(1);
-            if ("" === a)
-              return e(h, c);
-            d = b(a);
-            if (d.constant) {
-              var f = d();
-              return e(function(a, b) {
-                return h(a[f], b[f]);
-              }, c);
+              $exceptionHandler(e, startingTag($element));
             }
           }
-          return e(function(a, b) {
-            return h(d(a), d(b));
-          }, c);
-        });
-        return ra.call(a).sort(e(function(a, b) {
-          for (var d = 0; d < c.length; d++) {
-            var e = c[d](a, b);
-            if (0 !== e)
-              return e;
-          }
-          return 0;
-        }, d));
-      };
-    }
-    function Ma(b) {
-      G(b) && (b = {link: b});
-      b.restrict = b.restrict || "AC";
-      return qa(b);
-    }
-    function Fd(b, a, c, d, e) {
-      var f = this,
-          g = [],
-          h = f.$$parentForm = b.parent().controller("form") || Ib;
-      f.$error = {};
-      f.$$success = {};
-      f.$pending = u;
-      f.$name = e(a.name || a.ngForm || "")(c);
-      f.$dirty = !1;
-      f.$pristine = !0;
-      f.$valid = !0;
-      f.$invalid = !1;
-      f.$submitted = !1;
-      h.$addControl(f);
-      f.$rollbackViewValue = function() {
-        n(g, function(a) {
-          a.$rollbackViewValue();
-        });
-      };
-      f.$commitViewValue = function() {
-        n(g, function(a) {
-          a.$commitViewValue();
-        });
-      };
-      f.$addControl = function(a) {
-        Qa(a.$name, "input");
-        g.push(a);
-        a.$name && (f[a.$name] = a);
-      };
-      f.$$renameControl = function(a, b) {
-        var c = a.$name;
-        f[c] === a && delete f[c];
-        f[b] = a;
-        a.$name = b;
-      };
-      f.$removeControl = function(a) {
-        a.$name && f[a.$name] === a && delete f[a.$name];
-        n(f.$pending, function(b, c) {
-          f.$setValidity(c, null, a);
-        });
-        n(f.$error, function(b, c) {
-          f.$setValidity(c, null, a);
-        });
-        n(f.$$success, function(b, c) {
-          f.$setValidity(c, null, a);
-        });
-        Ya(g, a);
-      };
-      Gd({
-        ctrl: this,
-        $element: b,
-        set: function(a, b, c) {
-          var d = a[b];
-          d ? -1 === d.indexOf(c) && d.push(c) : a[b] = [c];
-        },
-        unset: function(a, b, c) {
-          var d = a[b];
-          d && (Ya(d, c), 0 === d.length && delete a[b]);
-        },
-        parentForm: h,
-        $animate: d
-      });
-      f.$setDirty = function() {
-        d.removeClass(b, Sa);
-        d.addClass(b, Jb);
-        f.$dirty = !0;
-        f.$pristine = !1;
-        h.$setDirty();
-      };
-      f.$setPristine = function() {
-        d.setClass(b, Sa, Jb + " ng-submitted");
-        f.$dirty = !1;
-        f.$pristine = !0;
-        f.$submitted = !1;
-        n(g, function(a) {
-          a.$setPristine();
-        });
-      };
-      f.$setUntouched = function() {
-        n(g, function(a) {
-          a.$setUntouched();
-        });
-      };
-      f.$setSubmitted = function() {
-        d.addClass(b, "ng-submitted");
-        f.$submitted = !0;
-        h.$setSubmitted();
-      };
-    }
-    function kc(b) {
-      b.$formatters.push(function(a) {
-        return b.$isEmpty(a) ? a : a.toString();
-      });
-    }
-    function hb(b, a, c, d, e, f) {
-      var g = E(a[0].type);
-      if (!e.android) {
-        var h = !1;
-        a.on("compositionstart", function(a) {
-          h = !0;
-        });
-        a.on("compositionend", function() {
-          h = !1;
-          l();
-        });
-      }
-      var l = function(b) {
-        k && (f.defer.cancel(k), k = null);
-        if (!h) {
-          var e = a.val();
-          b = b && b.type;
-          "password" === g || c.ngTrim && "false" === c.ngTrim || (e = T(e));
-          (d.$viewValue !== e || "" === e && d.$$hasNativeValidators) && d.$setViewValue(e, b);
-        }
-      };
-      if (e.hasEvent("input"))
-        a.on("input", l);
-      else {
-        var k,
-            m = function(a, b, c) {
-              k || (k = f.defer(function() {
-                k = null;
-                b && b.value === c || l(a);
-              }));
-            };
-        a.on("keydown", function(a) {
-          var b = a.keyCode;
-          91 === b || 15 < b && 19 > b || 37 <= b && 40 >= b || m(a, this, this.value);
-        });
-        if (e.hasEvent("paste"))
-          a.on("paste cut", m);
-      }
-      a.on("change", l);
-      d.$render = function() {
-        a.val(d.$isEmpty(d.$viewValue) ? "" : d.$viewValue);
-      };
-    }
-    function Kb(b, a) {
-      return function(c, d) {
-        var e,
-            f;
-        if (da(c))
-          return c;
-        if (L(c)) {
-          '"' == c.charAt(0) && '"' == c.charAt(c.length - 1) && (c = c.substring(1, c.length - 1));
-          if (hg.test(c))
-            return new Date(c);
-          b.lastIndex = 0;
-          if (e = b.exec(c))
-            return e.shift(), f = d ? {
-              yyyy: d.getFullYear(),
-              MM: d.getMonth() + 1,
-              dd: d.getDate(),
-              HH: d.getHours(),
-              mm: d.getMinutes(),
-              ss: d.getSeconds(),
-              sss: d.getMilliseconds() / 1E3
-            } : {
-              yyyy: 1970,
-              MM: 1,
-              dd: 1,
-              HH: 0,
-              mm: 0,
-              ss: 0,
-              sss: 0
-            }, n(e, function(b, c) {
-              c < a.length && (f[a[c]] = +b);
-            }), new Date(f.yyyy, f.MM - 1, f.dd, f.HH, f.mm, f.ss || 0, 1E3 * f.sss || 0);
-        }
-        return NaN;
-      };
-    }
-    function ib(b, a, c, d) {
-      return function(e, f, g, h, l, k, m) {
-        function r(a) {
-          return a && !(a.getTime && a.getTime() !== a.getTime());
-        }
-        function s(a) {
-          return y(a) ? da(a) ? a : c(a) : u;
-        }
-        Hd(e, f, g, h);
-        hb(e, f, g, h, l, k);
-        var n = h && h.$options && h.$options.timezone,
-            q;
-        h.$$parserName = b;
-        h.$parsers.push(function(b) {
-          return h.$isEmpty(b) ? null : a.test(b) ? (b = c(b, q), n && (b = Pb(b, n)), b) : u;
-        });
-        h.$formatters.push(function(a) {
-          if (a && !da(a))
-            throw Lb("datefmt", a);
-          if (r(a))
-            return (q = a) && n && (q = Pb(q, n, !0)), m("date")(a, d, n);
-          q = null;
-          return "";
-        });
-        if (y(g.min) || g.ngMin) {
-          var M;
-          h.$validators.min = function(a) {
-            return !r(a) || v(M) || c(a) >= M;
-          };
-          g.$observe("min", function(a) {
-            M = s(a);
-            h.$validate();
-          });
-        }
-        if (y(g.max) || g.ngMax) {
-          var t;
-          h.$validators.max = function(a) {
-            return !r(a) || v(t) || c(a) <= t;
-          };
-          g.$observe("max", function(a) {
-            t = s(a);
-            h.$validate();
-          });
-        }
-      };
-    }
-    function Hd(b, a, c, d) {
-      (d.$$hasNativeValidators = C(a[0].validity)) && d.$parsers.push(function(b) {
-        var c = a.prop("validity") || {};
-        return c.badInput && !c.typeMismatch ? u : b;
-      });
-    }
-    function Id(b, a, c, d, e) {
-      if (y(d)) {
-        b = b(d);
-        if (!b.constant)
-          throw F("ngModel")("constexpr", c, d);
-        return b(a);
-      }
-      return e;
-    }
-    function lc(b, a) {
-      b = "ngClass" + b;
-      return ["$animate", function(c) {
-        function d(a, b) {
-          var c = [],
-              d = 0;
-          a: for (; d < a.length; d++) {
-            for (var e = a[d],
-                m = 0; m < b.length; m++)
-              if (e == b[m])
-                continue a;
-            c.push(e);
-          }
-          return c;
-        }
-        function e(a) {
-          var b = [];
-          return K(a) ? (n(a, function(a) {
-            b = b.concat(e(a));
-          }), b) : L(a) ? a.split(" ") : C(a) ? (n(a, function(a, c) {
-            a && (b = b.concat(c.split(" ")));
-          }), b) : a;
-        }
-        return {
-          restrict: "AC",
-          link: function(f, g, h) {
-            function l(a, b) {
-              var c = g.data("$classCounts") || ga(),
-                  d = [];
-              n(a, function(a) {
-                if (0 < b || c[a])
-                  c[a] = (c[a] || 0) + b, c[a] === +(0 < b) && d.push(a);
-              });
-              g.data("$classCounts", c);
-              return d.join(" ");
-            }
-            function k(b) {
-              if (!0 === a || f.$index % 2 === a) {
-                var k = e(b || []);
-                if (!m) {
-                  var n = l(k, 1);
-                  h.$addClass(n);
-                } else if (!ka(b, m)) {
-                  var q = e(m),
-                      n = d(k, q),
-                      k = d(q, k),
-                      n = l(n, 1),
-                      k = l(k, -1);
-                  n && n.length && c.addClass(g, n);
-                  k && k.length && c.removeClass(g, k);
-                }
-              }
-              m = fa(b);
-            }
-            var m;
-            f.$watch(h[b], k, !0);
-            h.$observe("class", function(a) {
-              k(f.$eval(h[b]));
-            });
-            "ngClass" !== b && f.$watch("$index", function(c, d) {
-              var g = c & 1;
-              if (g !== (d & 1)) {
-                var k = e(f.$eval(h[b]));
-                g === a ? (g = l(k, 1), h.$addClass(g)) : (g = l(k, -1), h.$removeClass(g));
-              }
-            });
-          }
-        };
-      }];
-    }
-    function Gd(b) {
-      function a(a, b) {
-        b && !f[a] ? (k.addClass(e, a), f[a] = !0) : !b && f[a] && (k.removeClass(e, a), f[a] = !1);
-      }
-      function c(b, c) {
-        b = b ? "-" + Ac(b, "-") : "";
-        a(jb + b, !0 === c);
-        a(Jd + b, !1 === c);
-      }
-      var d = b.ctrl,
-          e = b.$element,
-          f = {},
-          g = b.set,
-          h = b.unset,
-          l = b.parentForm,
-          k = b.$animate;
-      f[Jd] = !(f[jb] = e.hasClass(jb));
-      d.$setValidity = function(b, e, f) {
-        e === u ? (d.$pending || (d.$pending = {}), g(d.$pending, b, f)) : (d.$pending && h(d.$pending, b, f), Kd(d.$pending) && (d.$pending = u));
-        Xa(e) ? e ? (h(d.$error, b, f), g(d.$$success, b, f)) : (g(d.$error, b, f), h(d.$$success, b, f)) : (h(d.$error, b, f), h(d.$$success, b, f));
-        d.$pending ? (a(Ld, !0), d.$valid = d.$invalid = u, c("", null)) : (a(Ld, !1), d.$valid = Kd(d.$error), d.$invalid = !d.$valid, c("", d.$valid));
-        e = d.$pending && d.$pending[b] ? u : d.$error[b] ? !1 : d.$$success[b] ? !0 : null;
-        c(b, e);
-        l.$setValidity(b, e, d);
-      };
-    }
-    function Kd(b) {
-      if (b)
-        for (var a in b)
-          return !1;
-      return !0;
-    }
-    var ig = /^\/(.+)\/([a-z]*)$/,
-        E = function(b) {
-          return L(b) ? b.toLowerCase() : b;
-        },
-        kb = Object.prototype.hasOwnProperty,
-        pb = function(b) {
-          return L(b) ? b.toUpperCase() : b;
-        },
-        gb,
-        z,
-        la,
-        ra = [].slice,
-        Lf = [].splice,
-        jg = [].push,
-        sa = Object.prototype.toString,
-        rc = Object.getPrototypeOf,
-        Ea = F("ng"),
-        aa = N.angular || (N.angular = {}),
-        db,
-        lb = 0;
-    gb = W.documentMode;
-    w.$inject = [];
-    Ua.$inject = [];
-    var K = Array.isArray,
-        tc = /^\[object (Uint8(Clamped)?)|(Uint16)|(Uint32)|(Int8)|(Int16)|(Int32)|(Float(32)|(64))Array\]$/,
-        T = function(b) {
-          return L(b) ? b.trim() : b;
-        },
-        td = function(b) {
-          return b.replace(/([-()\[\]{}+?*.$\^|,:#<!\\])/g, "\\$1").replace(/\x08/g, "\\x08");
-        },
-        cb = function() {
-          if (y(cb.isActive_))
-            return cb.isActive_;
-          var b = !(!W.querySelector("[ng-csp]") && !W.querySelector("[data-ng-csp]"));
-          if (!b)
-            try {
-              new Function("");
-            } catch (a) {
-              b = !0;
-            }
-          return cb.isActive_ = b;
-        },
-        nb = function() {
-          if (y(nb.name_))
-            return nb.name_;
-          var b,
-              a,
-              c = Na.length,
-              d,
-              e;
-          for (a = 0; a < c; ++a)
-            if (d = Na[a], b = W.querySelector("[" + d.replace(":", "\\:") + "jq]")) {
-              e = b.getAttribute(d + "jq");
-              break;
-            }
-          return nb.name_ = e;
-        },
-        Na = ["ng-", "data-ng-", "ng:", "x-ng-"],
-        ae = /[A-Z]/g,
-        Bc = !1,
-        Rb,
-        pa = 1,
-        ab = 3,
-        ee = {
-          full: "1.4.0",
-          major: 1,
-          minor: 4,
-          dot: 0,
-          codeName: "jaracimrman-existence"
-        };
-    R.expando = "ng339";
-    var ub = R.cache = {},
-        Df = 1;
-    R._data = function(b) {
-      return this.cache[b[this.expando]] || {};
-    };
-    var yf = /([\:\-\_]+(.))/g,
-        zf = /^moz([A-Z])/,
-        kg = {
-          mouseleave: "mouseout",
-          mouseenter: "mouseover"
-        },
-        Ub = F("jqLite"),
-        Cf = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
-        Tb = /<|&#?\w+;/,
-        Af = /<([\w:]+)/,
-        Bf = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
-        ma = {
-          option: [1, '<select multiple="multiple">', "</select>"],
-          thead: [1, "<table>", "</table>"],
-          col: [2, "<table><colgroup>", "</colgroup></table>"],
-          tr: [2, "<table><tbody>", "</tbody></table>"],
-          td: [3, "<table><tbody><tr>", "</tr></tbody></table>"],
-          _default: [0, "", ""]
-        };
-    ma.optgroup = ma.option;
-    ma.tbody = ma.tfoot = ma.colgroup = ma.caption = ma.thead;
-    ma.th = ma.td;
-    var Oa = R.prototype = {
-      ready: function(b) {
-        function a() {
-          c || (c = !0, b());
-        }
-        var c = !1;
-        "complete" === W.readyState ? setTimeout(a) : (this.on("DOMContentLoaded", a), R(N).on("load", a));
-      },
-      toString: function() {
-        var b = [];
-        n(this, function(a) {
-          b.push("" + a);
-        });
-        return "[" + b.join(", ") + "]";
-      },
-      eq: function(b) {
-        return 0 <= b ? z(this[b]) : z(this[this.length + b]);
-      },
-      length: 0,
-      push: jg,
-      sort: [].sort,
-      splice: [].splice
-    },
-        zb = {};
-    n("multiple selected checked disabled readOnly required open".split(" "), function(b) {
-      zb[E(b)] = b;
-    });
-    var Sc = {};
-    n("input select option textarea button form details".split(" "), function(b) {
-      Sc[b] = !0;
-    });
-    var Tc = {
-      ngMinlength: "minlength",
-      ngMaxlength: "maxlength",
-      ngMin: "min",
-      ngMax: "max",
-      ngPattern: "pattern"
-    };
-    n({
-      data: Wb,
-      removeData: sb
-    }, function(b, a) {
-      R[a] = b;
-    });
-    n({
-      data: Wb,
-      inheritedData: yb,
-      scope: function(b) {
-        return z.data(b, "$scope") || yb(b.parentNode || b, ["$isolateScope", "$scope"]);
-      },
-      isolateScope: function(b) {
-        return z.data(b, "$isolateScope") || z.data(b, "$isolateScopeNoTemplate");
-      },
-      controller: Pc,
-      injector: function(b) {
-        return yb(b, "$injector");
-      },
-      removeAttr: function(b, a) {
-        b.removeAttribute(a);
-      },
-      hasClass: vb,
-      css: function(b, a, c) {
-        a = eb(a);
-        if (y(c))
-          b.style[a] = c;
-        else
-          return b.style[a];
-      },
-      attr: function(b, a, c) {
-        var d = b.nodeType;
-        if (d !== ab && 2 !== d && 8 !== d)
-          if (d = E(a), zb[d])
-            if (y(c))
-              c ? (b[a] = !0, b.setAttribute(a, d)) : (b[a] = !1, b.removeAttribute(d));
-            else
-              return b[a] || (b.attributes.getNamedItem(a) || w).specified ? d : u;
-          else if (y(c))
-            b.setAttribute(a, c);
-          else if (b.getAttribute)
-            return b = b.getAttribute(a, 2), null === b ? u : b;
-      },
-      prop: function(b, a, c) {
-        if (y(c))
-          b[a] = c;
-        else
-          return b[a];
-      },
-      text: function() {
-        function b(a, b) {
-          if (v(b)) {
-            var d = a.nodeType;
-            return d === pa || d === ab ? a.textContent : "";
-          }
-          a.textContent = b;
-        }
-        b.$dv = "";
-        return b;
-      }(),
-      val: function(b, a) {
-        if (v(a)) {
-          if (b.multiple && "select" === ta(b)) {
-            var c = [];
-            n(b.options, function(a) {
-              a.selected && c.push(a.value || a.text);
-            });
-            return 0 === c.length ? null : c;
-          }
-          return b.value;
-        }
-        b.value = a;
-      },
-      html: function(b, a) {
-        if (v(a))
-          return b.innerHTML;
-        rb(b, !0);
-        b.innerHTML = a;
-      },
-      empty: Qc
-    }, function(b, a) {
-      R.prototype[a] = function(a, d) {
-        var e,
-            f,
-            g = this.length;
-        if (b !== Qc && (2 == b.length && b !== vb && b !== Pc ? a : d) === u) {
-          if (C(a)) {
-            for (e = 0; e < g; e++)
-              if (b === Wb)
-                b(this[e], a);
-              else
-                for (f in a)
-                  b(this[e], f, a[f]);
-            return this;
-          }
-          e = b.$dv;
-          g = e === u ? Math.min(g, 1) : g;
-          for (f = 0; f < g; f++) {
-            var h = b(this[f], a, d);
-            e = e ? e + h : h;
-          }
-          return e;
-        }
-        for (e = 0; e < g; e++)
-          b(this[e], a, d);
-        return this;
-      };
-    });
-    n({
-      removeData: sb,
-      on: function a(c, d, e, f) {
-        if (y(f))
-          throw Ub("onargs");
-        if (Lc(c)) {
-          var g = tb(c, !0);
-          f = g.events;
-          var h = g.handle;
-          h || (h = g.handle = Gf(c, f));
-          for (var g = 0 <= d.indexOf(" ") ? d.split(" ") : [d],
-              l = g.length; l--; ) {
-            d = g[l];
-            var k = f[d];
-            k || (f[d] = [], "mouseenter" === d || "mouseleave" === d ? a(c, kg[d], function(a) {
-              var c = a.relatedTarget;
-              c && (c === this || this.contains(c)) || h(a, d);
-            }) : "$destroy" !== d && c.addEventListener(d, h, !1), k = f[d]);
-            k.push(e);
-          }
-        }
-      },
-      off: Oc,
-      one: function(a, c, d) {
-        a = z(a);
-        a.on(c, function f() {
-          a.off(c, d);
-          a.off(c, f);
-        });
-        a.on(c, d);
-      },
-      replaceWith: function(a, c) {
-        var d,
-            e = a.parentNode;
-        rb(a);
-        n(new R(c), function(c) {
-          d ? e.insertBefore(c, d.nextSibling) : e.replaceChild(c, a);
-          d = c;
-        });
-      },
-      children: function(a) {
-        var c = [];
-        n(a.childNodes, function(a) {
-          a.nodeType === pa && c.push(a);
-        });
-        return c;
-      },
-      contents: function(a) {
-        return a.contentDocument || a.childNodes || [];
-      },
-      append: function(a, c) {
-        var d = a.nodeType;
-        if (d === pa || 11 === d) {
-          c = new R(c);
-          for (var d = 0,
-              e = c.length; d < e; d++)
-            a.appendChild(c[d]);
-        }
-      },
-      prepend: function(a, c) {
-        if (a.nodeType === pa) {
-          var d = a.firstChild;
-          n(new R(c), function(c) {
-            a.insertBefore(c, d);
-          });
-        }
-      },
-      wrap: function(a, c) {
-        c = z(c).eq(0).clone()[0];
-        var d = a.parentNode;
-        d && d.replaceChild(c, a);
-        c.appendChild(a);
-      },
-      remove: Xb,
-      detach: function(a) {
-        Xb(a, !0);
-      },
-      after: function(a, c) {
-        var d = a,
-            e = a.parentNode;
-        c = new R(c);
-        for (var f = 0,
-            g = c.length; f < g; f++) {
-          var h = c[f];
-          e.insertBefore(h, d.nextSibling);
-          d = h;
-        }
-      },
-      addClass: xb,
-      removeClass: wb,
-      toggleClass: function(a, c, d) {
-        c && n(c.split(" "), function(c) {
-          var f = d;
-          v(f) && (f = !vb(a, c));
-          (f ? xb : wb)(a, c);
-        });
-      },
-      parent: function(a) {
-        return (a = a.parentNode) && 11 !== a.nodeType ? a : null;
-      },
-      next: function(a) {
-        return a.nextElementSibling;
-      },
-      find: function(a, c) {
-        return a.getElementsByTagName ? a.getElementsByTagName(c) : [];
-      },
-      clone: Vb,
-      triggerHandler: function(a, c, d) {
-        var e,
-            f,
-            g = c.type || c,
-            h = tb(a);
-        if (h = (h = h && h.events) && h[g])
-          e = {
-            preventDefault: function() {
-              this.defaultPrevented = !0;
-            },
-            isDefaultPrevented: function() {
-              return !0 === this.defaultPrevented;
-            },
-            stopImmediatePropagation: function() {
-              this.immediatePropagationStopped = !0;
-            },
-            isImmediatePropagationStopped: function() {
-              return !0 === this.immediatePropagationStopped;
-            },
-            stopPropagation: w,
-            type: g,
-            target: a
-          }, c.type && (e = Q(e, c)), c = fa(h), f = d ? [e].concat(d) : [e], n(c, function(c) {
-            e.isImmediatePropagationStopped() || c.apply(a, f);
-          });
-      }
-    }, function(a, c) {
-      R.prototype[c] = function(c, e, f) {
-        for (var g,
-            h = 0,
-            l = this.length; h < l; h++)
-          v(g) ? (g = a(this[h], c, e, f), y(g) && (g = z(g))) : Nc(g, a(this[h], c, e, f));
-        return y(g) ? g : this;
-      };
-      R.prototype.bind = R.prototype.on;
-      R.prototype.unbind = R.prototype.off;
-    });
-    Ra.prototype = {
-      put: function(a, c) {
-        this[Fa(a, this.nextUid)] = c;
-      },
-      get: function(a) {
-        return this[Fa(a, this.nextUid)];
-      },
-      remove: function(a) {
-        var c = this[a = Fa(a, this.nextUid)];
-        delete this[a];
-        return c;
-      }
-    };
-    var wf = [function() {
-      this.$get = [function() {
-        return Ra;
-      }];
-    }],
-        Vc = /^function\s*[^\(]*\(\s*([^\)]*)\)/m,
-        lg = /,/,
-        mg = /^\s*(_?)(\S+?)\1\s*$/,
-        Uc = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg,
-        Ga = F("$injector");
-    bb.$$annotate = function(a, c, d) {
-      var e;
-      if ("function" === typeof a) {
-        if (!(e = a.$inject)) {
-          e = [];
-          if (a.length) {
-            if (c)
-              throw L(d) && d || (d = a.name || Hf(a)), Ga("strictdi", d);
-            c = a.toString().replace(Uc, "");
-            c = c.match(Vc);
-            n(c[1].split(lg), function(a) {
-              a.replace(mg, function(a, c, d) {
-                e.push(d);
-              });
-            });
-          }
-          a.$inject = e;
-        }
-      } else
-        K(a) ? (c = a.length - 1, Pa(a[c], "fn"), e = a.slice(0, c)) : Pa(a, "fn", !0);
-      return e;
-    };
-    var Md = F("$animate"),
-        Te = function() {
-          this.$get = ["$q", "$$rAF", function(a, c) {
-            function d() {}
-            d.all = w;
-            d.chain = w;
-            d.prototype = {
-              end: w,
-              cancel: w,
-              resume: w,
-              pause: w,
-              complete: w,
-              then: function(d, f) {
-                return a(function(a) {
-                  c(function() {
-                    a();
+          function initializeDirectiveBindings(scope, attrs, destination, bindings, directive, newScope) {
+            var onNewScopeDestroyed;
+            forEach(bindings, function(definition, scopeName) {
+              var attrName = definition.attrName,
+                  optional = definition.optional,
+                  mode = definition.mode,
+                  lastValue,
+                  parentGet,
+                  parentSet,
+                  compare;
+              switch (mode) {
+                case '@':
+                  attrs.$observe(attrName, function(value) {
+                    destination[scopeName] = value;
                   });
-                }).then(d, f);
-              }
-            };
-            return d;
-          }];
-        },
-        Se = function() {
-          var a = new Ra,
-              c = [];
-          this.$get = ["$$AnimateRunner", "$rootScope", function(d, e) {
-            function f(d, f, l) {
-              var k = a.get(d);
-              k || (a.put(d, k = {}), c.push(d));
-              f && n(f.split(" "), function(a) {
-                a && (k[a] = !0);
-              });
-              l && n(l.split(" "), function(a) {
-                a && (k[a] = !1);
-              });
-              1 < c.length || e.$$postDigest(function() {
-                n(c, function(c) {
-                  var d = a.get(c);
-                  if (d) {
-                    var e = If(c.attr("class")),
-                        f = "",
-                        g = "";
-                    n(d, function(a, c) {
-                      a !== !!e[c] && (a ? f += (f.length ? " " : "") + c : g += (g.length ? " " : "") + c);
-                    });
-                    n(c, function(a) {
-                      f && xb(a, f);
-                      g && wb(a, g);
-                    });
-                    a.remove(c);
+                  attrs.$$observers[attrName].$$scope = scope;
+                  if (attrs[attrName]) {
+                    destination[scopeName] = $interpolate(attrs[attrName])(scope);
                   }
-                });
-                c.length = 0;
-              });
-            }
-            return {
-              enabled: w,
-              on: w,
-              off: w,
-              pin: w,
-              push: function(a, c, e, k) {
-                k && k();
-                e = e || {};
-                e.from && a.css(e.from);
-                e.to && a.css(e.to);
-                (e.addClass || e.removeClass) && f(a, e.addClass, e.removeClass);
-                return new d;
-              }
-            };
-          }];
-        },
-        Re = ["$provide", function(a) {
-          var c = this;
-          this.$$registeredAnimations = Object.create(null);
-          this.register = function(d, e) {
-            if (d && "." !== d.charAt(0))
-              throw Md("notcsel", d);
-            var f = d + "-animation";
-            c.$$registeredAnimations[d.substr(1)] = f;
-            a.factory(f, e);
-          };
-          this.classNameFilter = function(a) {
-            if (1 === arguments.length && (this.$$classNameFilter = a instanceof RegExp ? a : null) && /(\s+|\/)ng-animate(\s+|\/)/.test(this.$$classNameFilter.toString()))
-              throw Md("nongcls", "ng-animate");
-            return this.$$classNameFilter;
-          };
-          this.$get = ["$$animateQueue", function(a) {
-            function c(a, d, e) {
-              if (e) {
-                var l;
-                a: {
-                  for (l = 0; l < e.length; l++) {
-                    var k = e[l];
-                    if (1 === k.nodeType) {
-                      l = k;
-                      break a;
+                  break;
+                case '=':
+                  if (optional && !attrs[attrName]) {
+                    return ;
+                  }
+                  parentGet = $parse(attrs[attrName]);
+                  if (parentGet.literal) {
+                    compare = equals;
+                  } else {
+                    compare = function(a, b) {
+                      return a === b || (a !== a && b !== b);
+                    };
+                  }
+                  parentSet = parentGet.assign || function() {
+                    lastValue = destination[scopeName] = parentGet(scope);
+                    throw $compileMinErr('nonassign', "Expression '{0}' used with directive '{1}' is non-assignable!", attrs[attrName], directive.name);
+                  };
+                  lastValue = destination[scopeName] = parentGet(scope);
+                  var parentValueWatch = function parentValueWatch(parentValue) {
+                    if (!compare(parentValue, destination[scopeName])) {
+                      if (!compare(parentValue, lastValue)) {
+                        destination[scopeName] = parentValue;
+                      } else {
+                        parentSet(scope, parentValue = destination[scopeName]);
+                      }
                     }
+                    return lastValue = parentValue;
+                  };
+                  parentValueWatch.$stateful = true;
+                  var unwatch;
+                  if (definition.collection) {
+                    unwatch = scope.$watchCollection(attrs[attrName], parentValueWatch);
+                  } else {
+                    unwatch = scope.$watch($parse(attrs[attrName], parentValueWatch), null, parentGet.literal);
                   }
-                  l = void 0;
-                }
-                !l || l.parentNode || l.previousElementSibling || (e = null);
+                  onNewScopeDestroyed = (onNewScopeDestroyed || []);
+                  onNewScopeDestroyed.push(unwatch);
+                  break;
+                case '&':
+                  if (!attrs.hasOwnProperty(attrName) && optional)
+                    break;
+                  parentGet = $parse(attrs[attrName]);
+                  if (parentGet === noop && optional)
+                    break;
+                  destination[scopeName] = function(locals) {
+                    return parentGet(scope, locals);
+                  };
+                  break;
               }
-              e ? e.after(a) : d.prepend(a);
+            });
+            var destroyBindings = onNewScopeDestroyed ? function destroyBindings() {
+              for (var i = 0,
+                  ii = onNewScopeDestroyed.length; i < ii; ++i) {
+                onNewScopeDestroyed[i]();
+              }
+            } : noop;
+            if (newScope && destroyBindings !== noop) {
+              newScope.$on('$destroy', destroyBindings);
+              return noop;
             }
-            return {
-              on: a.on,
-              off: a.off,
-              pin: a.pin,
-              enabled: a.enabled,
-              cancel: function(a) {
-                a.end && a.end();
-              },
-              enter: function(f, g, h, l) {
-                g = g && z(g);
-                h = h && z(h);
-                g = g || h.parent();
-                c(f, g, h);
-                return a.push(f, "enter", Ha(l));
-              },
-              move: function(f, g, h, l) {
-                g = g && z(g);
-                h = h && z(h);
-                g = g || h.parent();
-                c(f, g, h);
-                return a.push(f, "move", Ha(l));
-              },
-              leave: function(c, e) {
-                return a.push(c, "leave", Ha(e), function() {
-                  c.remove();
-                });
-              },
-              addClass: function(c, e, h) {
-                h = Ha(h);
-                h.addClass = fb(h.addclass, e);
-                return a.push(c, "addClass", h);
-              },
-              removeClass: function(c, e, h) {
-                h = Ha(h);
-                h.removeClass = fb(h.removeClass, e);
-                return a.push(c, "removeClass", h);
-              },
-              setClass: function(c, e, h, l) {
-                l = Ha(l);
-                l.addClass = fb(l.addClass, e);
-                l.removeClass = fb(l.removeClass, h);
-                return a.push(c, "setClass", l);
-              },
-              animate: function(c, e, h, l, k) {
-                k = Ha(k);
-                k.from = k.from ? Q(k.from, e) : e;
-                k.to = k.to ? Q(k.to, h) : h;
-                k.tempClasses = fb(k.tempClasses, l || "ng-inline-animate");
-                return a.push(c, "animate", k);
+            return destroyBindings;
+          }
+        }];
+      }
+      var PREFIX_REGEXP = /^((?:x|data)[\:\-_])/i;
+      function directiveNormalize(name) {
+        return camelCase(name.replace(PREFIX_REGEXP, ''));
+      }
+      function nodesetLinkingFn(scope, nodeList, rootElement, boundTranscludeFn) {}
+      function directiveLinkingFn(nodesetLinkingFn, scope, node, rootElement, boundTranscludeFn) {}
+      function tokenDifference(str1, str2) {
+        var values = '',
+            tokens1 = str1.split(/\s+/),
+            tokens2 = str2.split(/\s+/);
+        outer: for (var i = 0; i < tokens1.length; i++) {
+          var token = tokens1[i];
+          for (var j = 0; j < tokens2.length; j++) {
+            if (token == tokens2[j])
+              continue outer;
+          }
+          values += (values.length > 0 ? ' ' : '') + token;
+        }
+        return values;
+      }
+      function removeComments(jqNodes) {
+        jqNodes = jqLite(jqNodes);
+        var i = jqNodes.length;
+        if (i <= 1) {
+          return jqNodes;
+        }
+        while (i--) {
+          var node = jqNodes[i];
+          if (node.nodeType === NODE_TYPE_COMMENT) {
+            splice.call(jqNodes, i, 1);
+          }
+        }
+        return jqNodes;
+      }
+      var $controllerMinErr = minErr('$controller');
+      var CNTRL_REG = /^(\S+)(\s+as\s+(\w+))?$/;
+      function identifierForController(controller, ident) {
+        if (ident && isString(ident))
+          return ident;
+        if (isString(controller)) {
+          var match = CNTRL_REG.exec(controller);
+          if (match)
+            return match[3];
+        }
+      }
+      function $ControllerProvider() {
+        var controllers = {},
+            globals = false;
+        this.register = function(name, constructor) {
+          assertNotHasOwnProperty(name, 'controller');
+          if (isObject(name)) {
+            extend(controllers, name);
+          } else {
+            controllers[name] = constructor;
+          }
+        };
+        this.allowGlobals = function() {
+          globals = true;
+        };
+        this.$get = ['$injector', '$window', function($injector, $window) {
+          return function(expression, locals, later, ident) {
+            var instance,
+                match,
+                constructor,
+                identifier;
+            later = later === true;
+            if (ident && isString(ident)) {
+              identifier = ident;
+            }
+            if (isString(expression)) {
+              match = expression.match(CNTRL_REG);
+              if (!match) {
+                throw $controllerMinErr('ctrlfmt', "Badly formed controller string '{0}'. " + "Must match `__name__ as __id__` or `__name__`.", expression);
               }
-            };
-          }];
-        }],
-        ea = F("$compile");
-    Dc.$inject = ["$provide", "$$sanitizeUriProvider"];
-    var Yc = /^((?:x|data)[\:\-_])/i,
-        Mf = F("$controller"),
-        Wc = /^(\S+)(\s+as\s+(\w+))?$/,
-        bd = "application/json",
-        ac = {"Content-Type": bd + ";charset=utf-8"},
-        Of = /^\[|^\{(?!\{)/,
-        Pf = {
-          "[": /]$/,
-          "{": /}$/
-        },
-        Nf = /^\)\]\}',?\n/,
-        Ka = aa.$interpolateMinErr = F("$interpolate");
-    Ka.throwNoconcat = function(a) {
-      throw Ka("noconcat", a);
-    };
-    Ka.interr = function(a, c) {
-      return Ka("interr", a, c.toString());
-    };
-    var ng = /^([^\?#]*)(\?([^#]*))?(#(.*))?$/,
-        Sf = {
-          http: 80,
-          https: 443,
-          ftp: 21
-        },
-        Cb = F("$location"),
-        og = {
-          $$html5: !1,
-          $$replace: !1,
-          absUrl: Db("$$absUrl"),
-          url: function(a) {
-            if (v(a))
-              return this.$$url;
-            var c = ng.exec(a);
-            (c[1] || "" === a) && this.path(decodeURIComponent(c[1]));
-            (c[2] || c[1] || "" === a) && this.search(c[3] || "");
-            this.hash(c[5] || "");
-            return this;
+              constructor = match[1], identifier = identifier || match[3];
+              expression = controllers.hasOwnProperty(constructor) ? controllers[constructor] : getter(locals.$scope, constructor, true) || (globals ? getter($window, constructor, true) : undefined);
+              assertArgFn(expression, constructor, true);
+            }
+            if (later) {
+              var controllerPrototype = (isArray(expression) ? expression[expression.length - 1] : expression).prototype;
+              instance = Object.create(controllerPrototype || null);
+              if (identifier) {
+                addIdentifier(locals, identifier, instance, constructor || expression.name);
+              }
+              var instantiate;
+              return instantiate = extend(function() {
+                var result = $injector.invoke(expression, instance, locals, constructor);
+                if (result !== instance && (isObject(result) || isFunction(result))) {
+                  instance = result;
+                  if (identifier) {
+                    addIdentifier(locals, identifier, instance, constructor || expression.name);
+                  }
+                }
+                return instance;
+              }, {
+                instance: instance,
+                identifier: identifier
+              });
+            }
+            instance = $injector.instantiate(expression, locals, constructor);
+            if (identifier) {
+              addIdentifier(locals, identifier, instance, constructor || expression.name);
+            }
+            return instance;
+          };
+          function addIdentifier(locals, identifier, instance, name) {
+            if (!(locals && isObject(locals.$scope))) {
+              throw minErr('$controller')('noscp', "Cannot export controller '{0}' as '{1}'! No $scope object provided via `locals`.", name, identifier);
+            }
+            locals.$scope[identifier] = instance;
+          }
+        }];
+      }
+      function $DocumentProvider() {
+        this.$get = ['$window', function(window) {
+          return jqLite(window.document);
+        }];
+      }
+      function $ExceptionHandlerProvider() {
+        this.$get = ['$log', function($log) {
+          return function(exception, cause) {
+            $log.error.apply($log, arguments);
+          };
+        }];
+      }
+      var APPLICATION_JSON = 'application/json';
+      var CONTENT_TYPE_APPLICATION_JSON = {'Content-Type': APPLICATION_JSON + ';charset=utf-8'};
+      var JSON_START = /^\[|^\{(?!\{)/;
+      var JSON_ENDS = {
+        '[': /]$/,
+        '{': /}$/
+      };
+      var JSON_PROTECTION_PREFIX = /^\)\]\}',?\n/;
+      function serializeValue(v) {
+        if (isObject(v)) {
+          return isDate(v) ? v.toISOString() : toJson(v);
+        }
+        return v;
+      }
+      function $HttpParamSerializerProvider() {
+        this.$get = function() {
+          return function ngParamSerializer(params) {
+            if (!params)
+              return '';
+            var parts = [];
+            forEachSorted(params, function(value, key) {
+              if (value === null || isUndefined(value))
+                return ;
+              if (isArray(value)) {
+                forEach(value, function(v, k) {
+                  parts.push(encodeUriQuery(key) + '=' + encodeUriQuery(serializeValue(v)));
+                });
+              } else {
+                parts.push(encodeUriQuery(key) + '=' + encodeUriQuery(serializeValue(value)));
+              }
+            });
+            return parts.join('&');
+          };
+        };
+      }
+      function $HttpParamSerializerJQLikeProvider() {
+        this.$get = function() {
+          return function jQueryLikeParamSerializer(params) {
+            if (!params)
+              return '';
+            var parts = [];
+            serialize(params, '', true);
+            return parts.join('&');
+            function serialize(toSerialize, prefix, topLevel) {
+              if (toSerialize === null || isUndefined(toSerialize))
+                return ;
+              if (isArray(toSerialize)) {
+                forEach(toSerialize, function(value) {
+                  serialize(value, prefix + '[]');
+                });
+              } else if (isObject(toSerialize) && !isDate(toSerialize)) {
+                forEachSorted(toSerialize, function(value, key) {
+                  serialize(value, prefix + (topLevel ? '' : '[') + key + (topLevel ? '' : ']'));
+                });
+              } else {
+                parts.push(encodeUriQuery(prefix) + '=' + encodeUriQuery(serializeValue(toSerialize)));
+              }
+            }
+          };
+        };
+      }
+      function defaultHttpResponseTransform(data, headers) {
+        if (isString(data)) {
+          var tempData = data.replace(JSON_PROTECTION_PREFIX, '').trim();
+          if (tempData) {
+            var contentType = headers('Content-Type');
+            if ((contentType && (contentType.indexOf(APPLICATION_JSON) === 0)) || isJsonLike(tempData)) {
+              data = fromJson(tempData);
+            }
+          }
+        }
+        return data;
+      }
+      function isJsonLike(str) {
+        var jsonStart = str.match(JSON_START);
+        return jsonStart && JSON_ENDS[jsonStart[0]].test(str);
+      }
+      function parseHeaders(headers) {
+        var parsed = createMap(),
+            i;
+        function fillInParsed(key, val) {
+          if (key) {
+            parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+          }
+        }
+        if (isString(headers)) {
+          forEach(headers.split('\n'), function(line) {
+            i = line.indexOf(':');
+            fillInParsed(lowercase(trim(line.substr(0, i))), trim(line.substr(i + 1)));
+          });
+        } else if (isObject(headers)) {
+          forEach(headers, function(headerVal, headerKey) {
+            fillInParsed(lowercase(headerKey), trim(headerVal));
+          });
+        }
+        return parsed;
+      }
+      function headersGetter(headers) {
+        var headersObj;
+        return function(name) {
+          if (!headersObj)
+            headersObj = parseHeaders(headers);
+          if (name) {
+            var value = headersObj[lowercase(name)];
+            if (value === void 0) {
+              value = null;
+            }
+            return value;
+          }
+          return headersObj;
+        };
+      }
+      function transformData(data, headers, status, fns) {
+        if (isFunction(fns)) {
+          return fns(data, headers, status);
+        }
+        forEach(fns, function(fn) {
+          data = fn(data, headers, status);
+        });
+        return data;
+      }
+      function isSuccess(status) {
+        return 200 <= status && status < 300;
+      }
+      function $HttpProvider() {
+        var defaults = this.defaults = {
+          transformResponse: [defaultHttpResponseTransform],
+          transformRequest: [function(d) {
+            return isObject(d) && !isFile(d) && !isBlob(d) && !isFormData(d) ? toJson(d) : d;
+          }],
+          headers: {
+            common: {'Accept': 'application/json, text/plain, */*'},
+            post: shallowCopy(CONTENT_TYPE_APPLICATION_JSON),
+            put: shallowCopy(CONTENT_TYPE_APPLICATION_JSON),
+            patch: shallowCopy(CONTENT_TYPE_APPLICATION_JSON)
           },
-          protocol: Db("$$protocol"),
-          host: Db("$$host"),
-          port: Db("$$port"),
-          path: jd("$$path", function(a) {
-            a = null !== a ? a.toString() : "";
-            return "/" == a.charAt(0) ? a : "/" + a;
-          }),
-          search: function(a, c) {
-            switch (arguments.length) {
-              case 0:
-                return this.$$search;
-              case 1:
-                if (L(a) || V(a))
-                  a = a.toString(), this.$$search = yc(a);
-                else if (C(a))
-                  a = ua(a, {}), n(a, function(c, e) {
-                    null == c && delete a[e];
-                  }), this.$$search = a;
-                else
-                  throw Cb("isrcharg");
+          xsrfCookieName: 'XSRF-TOKEN',
+          xsrfHeaderName: 'X-XSRF-TOKEN',
+          paramSerializer: '$httpParamSerializer'
+        };
+        var useApplyAsync = false;
+        this.useApplyAsync = function(value) {
+          if (isDefined(value)) {
+            useApplyAsync = !!value;
+            return this;
+          }
+          return useApplyAsync;
+        };
+        var interceptorFactories = this.interceptors = [];
+        this.$get = ['$httpBackend', '$$cookieReader', '$cacheFactory', '$rootScope', '$q', '$injector', function($httpBackend, $$cookieReader, $cacheFactory, $rootScope, $q, $injector) {
+          var defaultCache = $cacheFactory('$http');
+          defaults.paramSerializer = isString(defaults.paramSerializer) ? $injector.get(defaults.paramSerializer) : defaults.paramSerializer;
+          var reversedInterceptors = [];
+          forEach(interceptorFactories, function(interceptorFactory) {
+            reversedInterceptors.unshift(isString(interceptorFactory) ? $injector.get(interceptorFactory) : $injector.invoke(interceptorFactory));
+          });
+          function $http(requestConfig) {
+            if (!angular.isObject(requestConfig)) {
+              throw minErr('$http')('badreq', 'Http request configuration must be an object.  Received: {0}', requestConfig);
+            }
+            var config = extend({
+              method: 'get',
+              transformRequest: defaults.transformRequest,
+              transformResponse: defaults.transformResponse,
+              paramSerializer: defaults.paramSerializer
+            }, requestConfig);
+            config.headers = mergeHeaders(requestConfig);
+            config.method = uppercase(config.method);
+            config.paramSerializer = isString(config.paramSerializer) ? $injector.get(config.paramSerializer) : config.paramSerializer;
+            var serverRequest = function(config) {
+              var headers = config.headers;
+              var reqData = transformData(config.data, headersGetter(headers), undefined, config.transformRequest);
+              if (isUndefined(reqData)) {
+                forEach(headers, function(value, header) {
+                  if (lowercase(header) === 'content-type') {
+                    delete headers[header];
+                  }
+                });
+              }
+              if (isUndefined(config.withCredentials) && !isUndefined(defaults.withCredentials)) {
+                config.withCredentials = defaults.withCredentials;
+              }
+              return sendReq(config, reqData).then(transformResponse, transformResponse);
+            };
+            var chain = [serverRequest, undefined];
+            var promise = $q.when(config);
+            forEach(reversedInterceptors, function(interceptor) {
+              if (interceptor.request || interceptor.requestError) {
+                chain.unshift(interceptor.request, interceptor.requestError);
+              }
+              if (interceptor.response || interceptor.responseError) {
+                chain.push(interceptor.response, interceptor.responseError);
+              }
+            });
+            while (chain.length) {
+              var thenFn = chain.shift();
+              var rejectFn = chain.shift();
+              promise = promise.then(thenFn, rejectFn);
+            }
+            promise.success = function(fn) {
+              assertArgFn(fn, 'fn');
+              promise.then(function(response) {
+                fn(response.data, response.status, response.headers, config);
+              });
+              return promise;
+            };
+            promise.error = function(fn) {
+              assertArgFn(fn, 'fn');
+              promise.then(null, function(response) {
+                fn(response.data, response.status, response.headers, config);
+              });
+              return promise;
+            };
+            return promise;
+            function transformResponse(response) {
+              var resp = extend({}, response);
+              if (!response.data) {
+                resp.data = response.data;
+              } else {
+                resp.data = transformData(response.data, response.headers, response.status, config.transformResponse);
+              }
+              return (isSuccess(response.status)) ? resp : $q.reject(resp);
+            }
+            function executeHeaderFns(headers, config) {
+              var headerContent,
+                  processedHeaders = {};
+              forEach(headers, function(headerFn, header) {
+                if (isFunction(headerFn)) {
+                  headerContent = headerFn(config);
+                  if (headerContent != null) {
+                    processedHeaders[header] = headerContent;
+                  }
+                } else {
+                  processedHeaders[header] = headerFn;
+                }
+              });
+              return processedHeaders;
+            }
+            function mergeHeaders(config) {
+              var defHeaders = defaults.headers,
+                  reqHeaders = extend({}, config.headers),
+                  defHeaderName,
+                  lowercaseDefHeaderName,
+                  reqHeaderName;
+              defHeaders = extend({}, defHeaders.common, defHeaders[lowercase(config.method)]);
+              defaultHeadersIteration: for (defHeaderName in defHeaders) {
+                lowercaseDefHeaderName = lowercase(defHeaderName);
+                for (reqHeaderName in reqHeaders) {
+                  if (lowercase(reqHeaderName) === lowercaseDefHeaderName) {
+                    continue defaultHeadersIteration;
+                  }
+                }
+                reqHeaders[defHeaderName] = defHeaders[defHeaderName];
+              }
+              return executeHeaderFns(reqHeaders, shallowCopy(config));
+            }
+          }
+          $http.pendingRequests = [];
+          createShortMethods('get', 'delete', 'head', 'jsonp');
+          createShortMethodsWithData('post', 'put', 'patch');
+          $http.defaults = defaults;
+          return $http;
+          function createShortMethods(names) {
+            forEach(arguments, function(name) {
+              $http[name] = function(url, config) {
+                return $http(extend({}, config || {}, {
+                  method: name,
+                  url: url
+                }));
+              };
+            });
+          }
+          function createShortMethodsWithData(name) {
+            forEach(arguments, function(name) {
+              $http[name] = function(url, data, config) {
+                return $http(extend({}, config || {}, {
+                  method: name,
+                  url: url,
+                  data: data
+                }));
+              };
+            });
+          }
+          function sendReq(config, reqData) {
+            var deferred = $q.defer(),
+                promise = deferred.promise,
+                cache,
+                cachedResp,
+                reqHeaders = config.headers,
+                url = buildUrl(config.url, config.paramSerializer(config.params));
+            $http.pendingRequests.push(config);
+            promise.then(removePendingReq, removePendingReq);
+            if ((config.cache || defaults.cache) && config.cache !== false && (config.method === 'GET' || config.method === 'JSONP')) {
+              cache = isObject(config.cache) ? config.cache : isObject(defaults.cache) ? defaults.cache : defaultCache;
+            }
+            if (cache) {
+              cachedResp = cache.get(url);
+              if (isDefined(cachedResp)) {
+                if (isPromiseLike(cachedResp)) {
+                  cachedResp.then(resolvePromiseWithResult, resolvePromiseWithResult);
+                } else {
+                  if (isArray(cachedResp)) {
+                    resolvePromise(cachedResp[1], cachedResp[0], shallowCopy(cachedResp[2]), cachedResp[3]);
+                  } else {
+                    resolvePromise(cachedResp, 200, {}, 'OK');
+                  }
+                }
+              } else {
+                cache.put(url, promise);
+              }
+            }
+            if (isUndefined(cachedResp)) {
+              var xsrfValue = urlIsSameOrigin(config.url) ? $$cookieReader()[config.xsrfCookieName || defaults.xsrfCookieName] : undefined;
+              if (xsrfValue) {
+                reqHeaders[(config.xsrfHeaderName || defaults.xsrfHeaderName)] = xsrfValue;
+              }
+              $httpBackend(config.method, url, reqData, done, reqHeaders, config.timeout, config.withCredentials, config.responseType);
+            }
+            return promise;
+            function done(status, response, headersString, statusText) {
+              if (cache) {
+                if (isSuccess(status)) {
+                  cache.put(url, [status, response, parseHeaders(headersString), statusText]);
+                } else {
+                  cache.remove(url);
+                }
+              }
+              function resolveHttpPromise() {
+                resolvePromise(response, status, headersString, statusText);
+              }
+              if (useApplyAsync) {
+                $rootScope.$applyAsync(resolveHttpPromise);
+              } else {
+                resolveHttpPromise();
+                if (!$rootScope.$$phase)
+                  $rootScope.$apply();
+              }
+            }
+            function resolvePromise(response, status, headers, statusText) {
+              status = Math.max(status, 0);
+              (isSuccess(status) ? deferred.resolve : deferred.reject)({
+                data: response,
+                status: status,
+                headers: headersGetter(headers),
+                config: config,
+                statusText: statusText
+              });
+            }
+            function resolvePromiseWithResult(result) {
+              resolvePromise(result.data, result.status, shallowCopy(result.headers()), result.statusText);
+            }
+            function removePendingReq() {
+              var idx = $http.pendingRequests.indexOf(config);
+              if (idx !== -1)
+                $http.pendingRequests.splice(idx, 1);
+            }
+          }
+          function buildUrl(url, serializedParams) {
+            if (serializedParams.length > 0) {
+              url += ((url.indexOf('?') == -1) ? '?' : '&') + serializedParams;
+            }
+            return url;
+          }
+        }];
+      }
+      function createXhr() {
+        return new window.XMLHttpRequest();
+      }
+      function $HttpBackendProvider() {
+        this.$get = ['$browser', '$window', '$document', function($browser, $window, $document) {
+          return createHttpBackend($browser, createXhr, $browser.defer, $window.angular.callbacks, $document[0]);
+        }];
+      }
+      function createHttpBackend($browser, createXhr, $browserDefer, callbacks, rawDocument) {
+        return function(method, url, post, callback, headers, timeout, withCredentials, responseType) {
+          $browser.$$incOutstandingRequestCount();
+          url = url || $browser.url();
+          if (lowercase(method) == 'jsonp') {
+            var callbackId = '_' + (callbacks.counter++).toString(36);
+            callbacks[callbackId] = function(data) {
+              callbacks[callbackId].data = data;
+              callbacks[callbackId].called = true;
+            };
+            var jsonpDone = jsonpReq(url.replace('JSON_CALLBACK', 'angular.callbacks.' + callbackId), callbackId, function(status, text) {
+              completeRequest(callback, status, callbacks[callbackId].data, "", text);
+              callbacks[callbackId] = noop;
+            });
+          } else {
+            var xhr = createXhr();
+            xhr.open(method, url, true);
+            forEach(headers, function(value, key) {
+              if (isDefined(value)) {
+                xhr.setRequestHeader(key, value);
+              }
+            });
+            xhr.onload = function requestLoaded() {
+              var statusText = xhr.statusText || '';
+              var response = ('response' in xhr) ? xhr.response : xhr.responseText;
+              var status = xhr.status === 1223 ? 204 : xhr.status;
+              if (status === 0) {
+                status = response ? 200 : urlResolve(url).protocol == 'file' ? 404 : 0;
+              }
+              completeRequest(callback, status, response, xhr.getAllResponseHeaders(), statusText);
+            };
+            var requestError = function() {
+              completeRequest(callback, -1, null, null, '');
+            };
+            xhr.onerror = requestError;
+            xhr.onabort = requestError;
+            if (withCredentials) {
+              xhr.withCredentials = true;
+            }
+            if (responseType) {
+              try {
+                xhr.responseType = responseType;
+              } catch (e) {
+                if (responseType !== 'json') {
+                  throw e;
+                }
+              }
+            }
+            xhr.send(post);
+          }
+          if (timeout > 0) {
+            var timeoutId = $browserDefer(timeoutRequest, timeout);
+          } else if (isPromiseLike(timeout)) {
+            timeout.then(timeoutRequest);
+          }
+          function timeoutRequest() {
+            jsonpDone && jsonpDone();
+            xhr && xhr.abort();
+          }
+          function completeRequest(callback, status, response, headersString, statusText) {
+            if (timeoutId !== undefined) {
+              $browserDefer.cancel(timeoutId);
+            }
+            jsonpDone = xhr = null;
+            callback(status, response, headersString, statusText);
+            $browser.$$completeOutstandingRequest(noop);
+          }
+        };
+        function jsonpReq(url, callbackId, done) {
+          var script = rawDocument.createElement('script'),
+              callback = null;
+          script.type = "text/javascript";
+          script.src = url;
+          script.async = true;
+          callback = function(event) {
+            removeEventListenerFn(script, "load", callback);
+            removeEventListenerFn(script, "error", callback);
+            rawDocument.body.removeChild(script);
+            script = null;
+            var status = -1;
+            var text = "unknown";
+            if (event) {
+              if (event.type === "load" && !callbacks[callbackId].called) {
+                event = {type: "error"};
+              }
+              text = event.type;
+              status = event.type === "error" ? 404 : 200;
+            }
+            if (done) {
+              done(status, text);
+            }
+          };
+          addEventListenerFn(script, "load", callback);
+          addEventListenerFn(script, "error", callback);
+          rawDocument.body.appendChild(script);
+          return callback;
+        }
+      }
+      var $interpolateMinErr = angular.$interpolateMinErr = minErr('$interpolate');
+      $interpolateMinErr.throwNoconcat = function(text) {
+        throw $interpolateMinErr('noconcat', "Error while interpolating: {0}\nStrict Contextual Escaping disallows " + "interpolations that concatenate multiple expressions when a trusted value is " + "required.  See http://docs.angularjs.org/api/ng.$sce", text);
+      };
+      $interpolateMinErr.interr = function(text, err) {
+        return $interpolateMinErr('interr', "Can't interpolate: {0}\n{1}", text, err.toString());
+      };
+      function $InterpolateProvider() {
+        var startSymbol = '{{';
+        var endSymbol = '}}';
+        this.startSymbol = function(value) {
+          if (value) {
+            startSymbol = value;
+            return this;
+          } else {
+            return startSymbol;
+          }
+        };
+        this.endSymbol = function(value) {
+          if (value) {
+            endSymbol = value;
+            return this;
+          } else {
+            return endSymbol;
+          }
+        };
+        this.$get = ['$parse', '$exceptionHandler', '$sce', function($parse, $exceptionHandler, $sce) {
+          var startSymbolLength = startSymbol.length,
+              endSymbolLength = endSymbol.length,
+              escapedStartRegexp = new RegExp(startSymbol.replace(/./g, escape), 'g'),
+              escapedEndRegexp = new RegExp(endSymbol.replace(/./g, escape), 'g');
+          function escape(ch) {
+            return '\\\\\\' + ch;
+          }
+          function unescapeText(text) {
+            return text.replace(escapedStartRegexp, startSymbol).replace(escapedEndRegexp, endSymbol);
+          }
+          function stringify(value) {
+            if (value == null) {
+              return '';
+            }
+            switch (typeof value) {
+              case 'string':
+                break;
+              case 'number':
+                value = '' + value;
                 break;
               default:
-                v(c) || null === c ? delete this.$$search[a] : this.$$search[a] = c;
+                value = toJson(value);
             }
-            this.$$compose();
-            return this;
-          },
-          hash: jd("$$hash", function(a) {
-            return null !== a ? a.toString() : "";
-          }),
-          replace: function() {
-            this.$$replace = !0;
-            return this;
+            return value;
+          }
+          function $interpolate(text, mustHaveExpression, trustedContext, allOrNothing) {
+            allOrNothing = !!allOrNothing;
+            var startIndex,
+                endIndex,
+                index = 0,
+                expressions = [],
+                parseFns = [],
+                textLength = text.length,
+                exp,
+                concat = [],
+                expressionPositions = [];
+            while (index < textLength) {
+              if (((startIndex = text.indexOf(startSymbol, index)) != -1) && ((endIndex = text.indexOf(endSymbol, startIndex + startSymbolLength)) != -1)) {
+                if (index !== startIndex) {
+                  concat.push(unescapeText(text.substring(index, startIndex)));
+                }
+                exp = text.substring(startIndex + startSymbolLength, endIndex);
+                expressions.push(exp);
+                parseFns.push($parse(exp, parseStringifyInterceptor));
+                index = endIndex + endSymbolLength;
+                expressionPositions.push(concat.length);
+                concat.push('');
+              } else {
+                if (index !== textLength) {
+                  concat.push(unescapeText(text.substring(index)));
+                }
+                break;
+              }
+            }
+            if (trustedContext && concat.length > 1) {
+              $interpolateMinErr.throwNoconcat(text);
+            }
+            if (!mustHaveExpression || expressions.length) {
+              var compute = function(values) {
+                for (var i = 0,
+                    ii = expressions.length; i < ii; i++) {
+                  if (allOrNothing && isUndefined(values[i]))
+                    return ;
+                  concat[expressionPositions[i]] = values[i];
+                }
+                return concat.join('');
+              };
+              var getValue = function(value) {
+                return trustedContext ? $sce.getTrusted(trustedContext, value) : $sce.valueOf(value);
+              };
+              return extend(function interpolationFn(context) {
+                var i = 0;
+                var ii = expressions.length;
+                var values = new Array(ii);
+                try {
+                  for (; i < ii; i++) {
+                    values[i] = parseFns[i](context);
+                  }
+                  return compute(values);
+                } catch (err) {
+                  $exceptionHandler($interpolateMinErr.interr(text, err));
+                }
+              }, {
+                exp: text,
+                expressions: expressions,
+                $$watchDelegate: function(scope, listener) {
+                  var lastValue;
+                  return scope.$watchGroup(parseFns, function interpolateFnWatcher(values, oldValues) {
+                    var currValue = compute(values);
+                    if (isFunction(listener)) {
+                      listener.call(this, currValue, values !== oldValues ? lastValue : currValue, scope);
+                    }
+                    lastValue = currValue;
+                  });
+                }
+              });
+            }
+            function parseStringifyInterceptor(value) {
+              try {
+                value = getValue(value);
+                return allOrNothing && !isDefined(value) ? value : stringify(value);
+              } catch (err) {
+                $exceptionHandler($interpolateMinErr.interr(text, err));
+              }
+            }
+          }
+          $interpolate.startSymbol = function() {
+            return startSymbol;
+          };
+          $interpolate.endSymbol = function() {
+            return endSymbol;
+          };
+          return $interpolate;
+        }];
+      }
+      function $IntervalProvider() {
+        this.$get = ['$rootScope', '$window', '$q', '$$q', function($rootScope, $window, $q, $$q) {
+          var intervals = {};
+          function interval(fn, delay, count, invokeApply) {
+            var hasParams = arguments.length > 4,
+                args = hasParams ? sliceArgs(arguments, 4) : [],
+                setInterval = $window.setInterval,
+                clearInterval = $window.clearInterval,
+                iteration = 0,
+                skipApply = (isDefined(invokeApply) && !invokeApply),
+                deferred = (skipApply ? $$q : $q).defer(),
+                promise = deferred.promise;
+            count = isDefined(count) ? count : 0;
+            promise.then(null, null, (!hasParams) ? fn : function() {
+              fn.apply(null, args);
+            });
+            promise.$$intervalId = setInterval(function tick() {
+              deferred.notify(iteration++);
+              if (count > 0 && iteration >= count) {
+                deferred.resolve(iteration);
+                clearInterval(promise.$$intervalId);
+                delete intervals[promise.$$intervalId];
+              }
+              if (!skipApply)
+                $rootScope.$apply();
+            }, delay);
+            intervals[promise.$$intervalId] = deferred;
+            return promise;
+          }
+          interval.cancel = function(promise) {
+            if (promise && promise.$$intervalId in intervals) {
+              intervals[promise.$$intervalId].reject('canceled');
+              $window.clearInterval(promise.$$intervalId);
+              delete intervals[promise.$$intervalId];
+              return true;
+            }
+            return false;
+          };
+          return interval;
+        }];
+      }
+      function $LocaleProvider() {
+        this.$get = function() {
+          return {
+            id: 'en-us',
+            NUMBER_FORMATS: {
+              DECIMAL_SEP: '.',
+              GROUP_SEP: ',',
+              PATTERNS: [{
+                minInt: 1,
+                minFrac: 0,
+                maxFrac: 3,
+                posPre: '',
+                posSuf: '',
+                negPre: '-',
+                negSuf: '',
+                gSize: 3,
+                lgSize: 3
+              }, {
+                minInt: 1,
+                minFrac: 2,
+                maxFrac: 2,
+                posPre: '\u00A4',
+                posSuf: '',
+                negPre: '(\u00A4',
+                negSuf: ')',
+                gSize: 3,
+                lgSize: 3
+              }],
+              CURRENCY_SYM: '$'
+            },
+            DATETIME_FORMATS: {
+              MONTH: 'January,February,March,April,May,June,July,August,September,October,November,December'.split(','),
+              SHORTMONTH: 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(','),
+              DAY: 'Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday'.split(','),
+              SHORTDAY: 'Sun,Mon,Tue,Wed,Thu,Fri,Sat'.split(','),
+              AMPMS: ['AM', 'PM'],
+              medium: 'MMM d, y h:mm:ss a',
+              'short': 'M/d/yy h:mm a',
+              fullDate: 'EEEE, MMMM d, y',
+              longDate: 'MMMM d, y',
+              mediumDate: 'MMM d, y',
+              shortDate: 'M/d/yy',
+              mediumTime: 'h:mm:ss a',
+              shortTime: 'h:mm a',
+              ERANAMES: ["Before Christ", "Anno Domini"],
+              ERAS: ["BC", "AD"]
+            },
+            pluralCat: function(num) {
+              if (num === 1) {
+                return 'one';
+              }
+              return 'other';
+            }
+          };
+        };
+      }
+      var PATH_MATCH = /^([^\?#]*)(\?([^#]*))?(#(.*))?$/,
+          DEFAULT_PORTS = {
+            'http': 80,
+            'https': 443,
+            'ftp': 21
+          };
+      var $locationMinErr = minErr('$location');
+      function encodePath(path) {
+        var segments = path.split('/'),
+            i = segments.length;
+        while (i--) {
+          segments[i] = encodeUriSegment(segments[i]);
+        }
+        return segments.join('/');
+      }
+      function parseAbsoluteUrl(absoluteUrl, locationObj) {
+        var parsedUrl = urlResolve(absoluteUrl);
+        locationObj.$$protocol = parsedUrl.protocol;
+        locationObj.$$host = parsedUrl.hostname;
+        locationObj.$$port = toInt(parsedUrl.port) || DEFAULT_PORTS[parsedUrl.protocol] || null;
+      }
+      function parseAppUrl(relativeUrl, locationObj) {
+        var prefixed = (relativeUrl.charAt(0) !== '/');
+        if (prefixed) {
+          relativeUrl = '/' + relativeUrl;
+        }
+        var match = urlResolve(relativeUrl);
+        locationObj.$$path = decodeURIComponent(prefixed && match.pathname.charAt(0) === '/' ? match.pathname.substring(1) : match.pathname);
+        locationObj.$$search = parseKeyValue(match.search);
+        locationObj.$$hash = decodeURIComponent(match.hash);
+        if (locationObj.$$path && locationObj.$$path.charAt(0) != '/') {
+          locationObj.$$path = '/' + locationObj.$$path;
+        }
+      }
+      function beginsWith(begin, whole) {
+        if (whole.indexOf(begin) === 0) {
+          return whole.substr(begin.length);
+        }
+      }
+      function stripHash(url) {
+        var index = url.indexOf('#');
+        return index == -1 ? url : url.substr(0, index);
+      }
+      function trimEmptyHash(url) {
+        return url.replace(/(#.+)|#$/, '$1');
+      }
+      function stripFile(url) {
+        return url.substr(0, stripHash(url).lastIndexOf('/') + 1);
+      }
+      function serverBase(url) {
+        return url.substring(0, url.indexOf('/', url.indexOf('//') + 2));
+      }
+      function LocationHtml5Url(appBase, basePrefix) {
+        this.$$html5 = true;
+        basePrefix = basePrefix || '';
+        var appBaseNoFile = stripFile(appBase);
+        parseAbsoluteUrl(appBase, this);
+        this.$$parse = function(url) {
+          var pathUrl = beginsWith(appBaseNoFile, url);
+          if (!isString(pathUrl)) {
+            throw $locationMinErr('ipthprfx', 'Invalid url "{0}", missing path prefix "{1}".', url, appBaseNoFile);
+          }
+          parseAppUrl(pathUrl, this);
+          if (!this.$$path) {
+            this.$$path = '/';
+          }
+          this.$$compose();
+        };
+        this.$$compose = function() {
+          var search = toKeyValue(this.$$search),
+              hash = this.$$hash ? '#' + encodeUriSegment(this.$$hash) : '';
+          this.$$url = encodePath(this.$$path) + (search ? '?' + search : '') + hash;
+          this.$$absUrl = appBaseNoFile + this.$$url.substr(1);
+        };
+        this.$$parseLinkUrl = function(url, relHref) {
+          if (relHref && relHref[0] === '#') {
+            this.hash(relHref.slice(1));
+            return true;
+          }
+          var appUrl,
+              prevAppUrl;
+          var rewrittenUrl;
+          if ((appUrl = beginsWith(appBase, url)) !== undefined) {
+            prevAppUrl = appUrl;
+            if ((appUrl = beginsWith(basePrefix, appUrl)) !== undefined) {
+              rewrittenUrl = appBaseNoFile + (beginsWith('/', appUrl) || appUrl);
+            } else {
+              rewrittenUrl = appBase + prevAppUrl;
+            }
+          } else if ((appUrl = beginsWith(appBaseNoFile, url)) !== undefined) {
+            rewrittenUrl = appBaseNoFile + appUrl;
+          } else if (appBaseNoFile == url + '/') {
+            rewrittenUrl = appBaseNoFile;
+          }
+          if (rewrittenUrl) {
+            this.$$parse(rewrittenUrl);
+          }
+          return !!rewrittenUrl;
+        };
+      }
+      function LocationHashbangUrl(appBase, hashPrefix) {
+        var appBaseNoFile = stripFile(appBase);
+        parseAbsoluteUrl(appBase, this);
+        this.$$parse = function(url) {
+          var withoutBaseUrl = beginsWith(appBase, url) || beginsWith(appBaseNoFile, url);
+          var withoutHashUrl;
+          if (withoutBaseUrl.charAt(0) === '#') {
+            withoutHashUrl = beginsWith(hashPrefix, withoutBaseUrl);
+            if (isUndefined(withoutHashUrl)) {
+              withoutHashUrl = withoutBaseUrl;
+            }
+          } else {
+            withoutHashUrl = this.$$html5 ? withoutBaseUrl : '';
+          }
+          parseAppUrl(withoutHashUrl, this);
+          this.$$path = removeWindowsDriveName(this.$$path, withoutHashUrl, appBase);
+          this.$$compose();
+          function removeWindowsDriveName(path, url, base) {
+            var windowsFilePathExp = /^\/[A-Z]:(\/.*)/;
+            var firstPathSegmentMatch;
+            if (url.indexOf(base) === 0) {
+              url = url.replace(base, '');
+            }
+            if (windowsFilePathExp.exec(url)) {
+              return path;
+            }
+            firstPathSegmentMatch = windowsFilePathExp.exec(path);
+            return firstPathSegmentMatch ? firstPathSegmentMatch[1] : path;
           }
         };
-    n([id, ec, dc], function(a) {
-      a.prototype = Object.create(og);
-      a.prototype.state = function(c) {
-        if (!arguments.length)
-          return this.$$state;
-        if (a !== dc || !this.$$html5)
-          throw Cb("nostate");
-        this.$$state = v(c) ? null : c;
-        return this;
-      };
-    });
-    var ca = F("$parse"),
-        Tf = Function.prototype.call,
-        Uf = Function.prototype.apply,
-        Vf = Function.prototype.bind,
-        Mb = ga();
-    n("+ - * / % === !== == != < > <= >= && || ! = |".split(" "), function(a) {
-      Mb[a] = !0;
-    });
-    var pg = {
-      n: "\n",
-      f: "\f",
-      r: "\r",
-      t: "\t",
-      v: "\v",
-      "'": "'",
-      '"': '"'
-    },
-        gc = function(a) {
-          this.options = a;
+        this.$$compose = function() {
+          var search = toKeyValue(this.$$search),
+              hash = this.$$hash ? '#' + encodeUriSegment(this.$$hash) : '';
+          this.$$url = encodePath(this.$$path) + (search ? '?' + search : '') + hash;
+          this.$$absUrl = appBase + (this.$$url ? hashPrefix + this.$$url : '');
         };
-    gc.prototype = {
-      constructor: gc,
-      lex: function(a) {
-        this.text = a;
-        this.index = 0;
-        for (this.tokens = []; this.index < this.text.length; )
-          if (a = this.text.charAt(this.index), '"' === a || "'" === a)
-            this.readString(a);
-          else if (this.isNumber(a) || "." === a && this.isNumber(this.peek()))
-            this.readNumber();
-          else if (this.isIdent(a))
-            this.readIdent();
-          else if (this.is(a, "(){}[].,;:?"))
-            this.tokens.push({
-              index: this.index,
-              text: a
-            }), this.index++;
-          else if (this.isWhitespace(a))
-            this.index++;
-          else {
-            var c = a + this.peek(),
-                d = c + this.peek(2),
-                e = Mb[c],
-                f = Mb[d];
-            Mb[a] || e || f ? (a = f ? d : e ? c : a, this.tokens.push({
-              index: this.index,
-              text: a,
-              operator: !0
-            }), this.index += a.length) : this.throwError("Unexpected next character ", this.index, this.index + 1);
+        this.$$parseLinkUrl = function(url, relHref) {
+          if (stripHash(appBase) == stripHash(url)) {
+            this.$$parse(url);
+            return true;
           }
-        return this.tokens;
-      },
-      is: function(a, c) {
-        return -1 !== c.indexOf(a);
-      },
-      peek: function(a) {
-        a = a || 1;
-        return this.index + a < this.text.length ? this.text.charAt(this.index + a) : !1;
-      },
-      isNumber: function(a) {
-        return "0" <= a && "9" >= a && "string" === typeof a;
-      },
-      isWhitespace: function(a) {
-        return " " === a || "\r" === a || "\t" === a || "\n" === a || "\v" === a || "\u00a0" === a;
-      },
-      isIdent: function(a) {
-        return "a" <= a && "z" >= a || "A" <= a && "Z" >= a || "_" === a || "$" === a;
-      },
-      isExpOperator: function(a) {
-        return "-" === a || "+" === a || this.isNumber(a);
-      },
-      throwError: function(a, c, d) {
-        d = d || this.index;
-        c = y(c) ? "s " + c + "-" + this.index + " [" + this.text.substring(c, d) + "]" : " " + d;
-        throw ca("lexerr", a, c, this.text);
-      },
-      readNumber: function() {
-        for (var a = "",
-            c = this.index; this.index < this.text.length; ) {
-          var d = E(this.text.charAt(this.index));
-          if ("." == d || this.isNumber(d))
-            a += d;
-          else {
-            var e = this.peek();
-            if ("e" == d && this.isExpOperator(e))
-              a += d;
-            else if (this.isExpOperator(d) && e && this.isNumber(e) && "e" == a.charAt(a.length - 1))
-              a += d;
-            else if (!this.isExpOperator(d) || e && this.isNumber(e) || "e" != a.charAt(a.length - 1))
+          return false;
+        };
+      }
+      function LocationHashbangInHtml5Url(appBase, hashPrefix) {
+        this.$$html5 = true;
+        LocationHashbangUrl.apply(this, arguments);
+        var appBaseNoFile = stripFile(appBase);
+        this.$$parseLinkUrl = function(url, relHref) {
+          if (relHref && relHref[0] === '#') {
+            this.hash(relHref.slice(1));
+            return true;
+          }
+          var rewrittenUrl;
+          var appUrl;
+          if (appBase == stripHash(url)) {
+            rewrittenUrl = url;
+          } else if ((appUrl = beginsWith(appBaseNoFile, url))) {
+            rewrittenUrl = appBase + hashPrefix + appUrl;
+          } else if (appBaseNoFile === url + '/') {
+            rewrittenUrl = appBaseNoFile;
+          }
+          if (rewrittenUrl) {
+            this.$$parse(rewrittenUrl);
+          }
+          return !!rewrittenUrl;
+        };
+        this.$$compose = function() {
+          var search = toKeyValue(this.$$search),
+              hash = this.$$hash ? '#' + encodeUriSegment(this.$$hash) : '';
+          this.$$url = encodePath(this.$$path) + (search ? '?' + search : '') + hash;
+          this.$$absUrl = appBase + hashPrefix + this.$$url;
+        };
+      }
+      var locationPrototype = {
+        $$html5: false,
+        $$replace: false,
+        absUrl: locationGetter('$$absUrl'),
+        url: function(url) {
+          if (isUndefined(url)) {
+            return this.$$url;
+          }
+          var match = PATH_MATCH.exec(url);
+          if (match[1] || url === '')
+            this.path(decodeURIComponent(match[1]));
+          if (match[2] || match[1] || url === '')
+            this.search(match[3] || '');
+          this.hash(match[5] || '');
+          return this;
+        },
+        protocol: locationGetter('$$protocol'),
+        host: locationGetter('$$host'),
+        port: locationGetter('$$port'),
+        path: locationGetterSetter('$$path', function(path) {
+          path = path !== null ? path.toString() : '';
+          return path.charAt(0) == '/' ? path : '/' + path;
+        }),
+        search: function(search, paramValue) {
+          switch (arguments.length) {
+            case 0:
+              return this.$$search;
+            case 1:
+              if (isString(search) || isNumber(search)) {
+                search = search.toString();
+                this.$$search = parseKeyValue(search);
+              } else if (isObject(search)) {
+                search = copy(search, {});
+                forEach(search, function(value, key) {
+                  if (value == null)
+                    delete search[key];
+                });
+                this.$$search = search;
+              } else {
+                throw $locationMinErr('isrcharg', 'The first argument of the `$location#search()` call must be a string or an object.');
+              }
               break;
-            else
-              this.throwError("Invalid exponent");
+            default:
+              if (isUndefined(paramValue) || paramValue === null) {
+                delete this.$$search[search];
+              } else {
+                this.$$search[search] = paramValue;
+              }
           }
-          this.index++;
+          this.$$compose();
+          return this;
+        },
+        hash: locationGetterSetter('$$hash', function(hash) {
+          return hash !== null ? hash.toString() : '';
+        }),
+        replace: function() {
+          this.$$replace = true;
+          return this;
         }
-        this.tokens.push({
-          index: c,
-          text: a,
-          constant: !0,
-          value: Number(a)
-        });
-      },
-      readIdent: function() {
-        for (var a = this.index; this.index < this.text.length; ) {
-          var c = this.text.charAt(this.index);
-          if (!this.isIdent(c) && !this.isNumber(c))
-            break;
-          this.index++;
+      };
+      forEach([LocationHashbangInHtml5Url, LocationHashbangUrl, LocationHtml5Url], function(Location) {
+        Location.prototype = Object.create(locationPrototype);
+        Location.prototype.state = function(state) {
+          if (!arguments.length) {
+            return this.$$state;
+          }
+          if (Location !== LocationHtml5Url || !this.$$html5) {
+            throw $locationMinErr('nostate', 'History API state support is available only ' + 'in HTML5 mode and only in browsers supporting HTML5 History API');
+          }
+          this.$$state = isUndefined(state) ? null : state;
+          return this;
+        };
+      });
+      function locationGetter(property) {
+        return function() {
+          return this[property];
+        };
+      }
+      function locationGetterSetter(property, preprocess) {
+        return function(value) {
+          if (isUndefined(value)) {
+            return this[property];
+          }
+          this[property] = preprocess(value);
+          this.$$compose();
+          return this;
+        };
+      }
+      function $LocationProvider() {
+        var hashPrefix = '',
+            html5Mode = {
+              enabled: false,
+              requireBase: true,
+              rewriteLinks: true
+            };
+        this.hashPrefix = function(prefix) {
+          if (isDefined(prefix)) {
+            hashPrefix = prefix;
+            return this;
+          } else {
+            return hashPrefix;
+          }
+        };
+        this.html5Mode = function(mode) {
+          if (isBoolean(mode)) {
+            html5Mode.enabled = mode;
+            return this;
+          } else if (isObject(mode)) {
+            if (isBoolean(mode.enabled)) {
+              html5Mode.enabled = mode.enabled;
+            }
+            if (isBoolean(mode.requireBase)) {
+              html5Mode.requireBase = mode.requireBase;
+            }
+            if (isBoolean(mode.rewriteLinks)) {
+              html5Mode.rewriteLinks = mode.rewriteLinks;
+            }
+            return this;
+          } else {
+            return html5Mode;
+          }
+        };
+        this.$get = ['$rootScope', '$browser', '$sniffer', '$rootElement', '$window', function($rootScope, $browser, $sniffer, $rootElement, $window) {
+          var $location,
+              LocationMode,
+              baseHref = $browser.baseHref(),
+              initialUrl = $browser.url(),
+              appBase;
+          if (html5Mode.enabled) {
+            if (!baseHref && html5Mode.requireBase) {
+              throw $locationMinErr('nobase', "$location in HTML5 mode requires a <base> tag to be present!");
+            }
+            appBase = serverBase(initialUrl) + (baseHref || '/');
+            LocationMode = $sniffer.history ? LocationHtml5Url : LocationHashbangInHtml5Url;
+          } else {
+            appBase = stripHash(initialUrl);
+            LocationMode = LocationHashbangUrl;
+          }
+          $location = new LocationMode(appBase, '#' + hashPrefix);
+          $location.$$parseLinkUrl(initialUrl, initialUrl);
+          $location.$$state = $browser.state();
+          var IGNORE_URI_REGEXP = /^\s*(javascript|mailto):/i;
+          function setBrowserUrlWithFallback(url, replace, state) {
+            var oldUrl = $location.url();
+            var oldState = $location.$$state;
+            try {
+              $browser.url(url, replace, state);
+              $location.$$state = $browser.state();
+            } catch (e) {
+              $location.url(oldUrl);
+              $location.$$state = oldState;
+              throw e;
+            }
+          }
+          $rootElement.on('click', function(event) {
+            if (!html5Mode.rewriteLinks || event.ctrlKey || event.metaKey || event.shiftKey || event.which == 2 || event.button == 2)
+              return ;
+            var elm = jqLite(event.target);
+            while (nodeName_(elm[0]) !== 'a') {
+              if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0])
+                return ;
+            }
+            var absHref = elm.prop('href');
+            var relHref = elm.attr('href') || elm.attr('xlink:href');
+            if (isObject(absHref) && absHref.toString() === '[object SVGAnimatedString]') {
+              absHref = urlResolve(absHref.animVal).href;
+            }
+            if (IGNORE_URI_REGEXP.test(absHref))
+              return ;
+            if (absHref && !elm.attr('target') && !event.isDefaultPrevented()) {
+              if ($location.$$parseLinkUrl(absHref, relHref)) {
+                event.preventDefault();
+                if ($location.absUrl() != $browser.url()) {
+                  $rootScope.$apply();
+                  $window.angular['ff-684208-preventDefault'] = true;
+                }
+              }
+            }
+          });
+          if (trimEmptyHash($location.absUrl()) != trimEmptyHash(initialUrl)) {
+            $browser.url($location.absUrl(), true);
+          }
+          var initializing = true;
+          $browser.onUrlChange(function(newUrl, newState) {
+            $rootScope.$evalAsync(function() {
+              var oldUrl = $location.absUrl();
+              var oldState = $location.$$state;
+              var defaultPrevented;
+              $location.$$parse(newUrl);
+              $location.$$state = newState;
+              defaultPrevented = $rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl, newState, oldState).defaultPrevented;
+              if ($location.absUrl() !== newUrl)
+                return ;
+              if (defaultPrevented) {
+                $location.$$parse(oldUrl);
+                $location.$$state = oldState;
+                setBrowserUrlWithFallback(oldUrl, false, oldState);
+              } else {
+                initializing = false;
+                afterLocationChange(oldUrl, oldState);
+              }
+            });
+            if (!$rootScope.$$phase)
+              $rootScope.$digest();
+          });
+          $rootScope.$watch(function $locationWatch() {
+            var oldUrl = trimEmptyHash($browser.url());
+            var newUrl = trimEmptyHash($location.absUrl());
+            var oldState = $browser.state();
+            var currentReplace = $location.$$replace;
+            var urlOrStateChanged = oldUrl !== newUrl || ($location.$$html5 && $sniffer.history && oldState !== $location.$$state);
+            if (initializing || urlOrStateChanged) {
+              initializing = false;
+              $rootScope.$evalAsync(function() {
+                var newUrl = $location.absUrl();
+                var defaultPrevented = $rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl, $location.$$state, oldState).defaultPrevented;
+                if ($location.absUrl() !== newUrl)
+                  return ;
+                if (defaultPrevented) {
+                  $location.$$parse(oldUrl);
+                  $location.$$state = oldState;
+                } else {
+                  if (urlOrStateChanged) {
+                    setBrowserUrlWithFallback(newUrl, currentReplace, oldState === $location.$$state ? null : $location.$$state);
+                  }
+                  afterLocationChange(oldUrl, oldState);
+                }
+              });
+            }
+            $location.$$replace = false;
+          });
+          return $location;
+          function afterLocationChange(oldUrl, oldState) {
+            $rootScope.$broadcast('$locationChangeSuccess', $location.absUrl(), oldUrl, $location.$$state, oldState);
+          }
+        }];
+      }
+      function $LogProvider() {
+        var debug = true,
+            self = this;
+        this.debugEnabled = function(flag) {
+          if (isDefined(flag)) {
+            debug = flag;
+            return this;
+          } else {
+            return debug;
+          }
+        };
+        this.$get = ['$window', function($window) {
+          return {
+            log: consoleLog('log'),
+            info: consoleLog('info'),
+            warn: consoleLog('warn'),
+            error: consoleLog('error'),
+            debug: (function() {
+              var fn = consoleLog('debug');
+              return function() {
+                if (debug) {
+                  fn.apply(self, arguments);
+                }
+              };
+            }())
+          };
+          function formatError(arg) {
+            if (arg instanceof Error) {
+              if (arg.stack) {
+                arg = (arg.message && arg.stack.indexOf(arg.message) === -1) ? 'Error: ' + arg.message + '\n' + arg.stack : arg.stack;
+              } else if (arg.sourceURL) {
+                arg = arg.message + '\n' + arg.sourceURL + ':' + arg.line;
+              }
+            }
+            return arg;
+          }
+          function consoleLog(type) {
+            var console = $window.console || {},
+                logFn = console[type] || console.log || noop,
+                hasApply = false;
+            try {
+              hasApply = !!logFn.apply;
+            } catch (e) {}
+            if (hasApply) {
+              return function() {
+                var args = [];
+                forEach(arguments, function(arg) {
+                  args.push(formatError(arg));
+                });
+                return logFn.apply(console, args);
+              };
+            }
+            return function(arg1, arg2) {
+              logFn(arg1, arg2 == null ? '' : arg2);
+            };
+          }
+        }];
+      }
+      var $parseMinErr = minErr('$parse');
+      function ensureSafeMemberName(name, fullExpression) {
+        if (name === "__defineGetter__" || name === "__defineSetter__" || name === "__lookupGetter__" || name === "__lookupSetter__" || name === "__proto__") {
+          throw $parseMinErr('isecfld', 'Attempting to access a disallowed field in Angular expressions! ' + 'Expression: {0}', fullExpression);
         }
-        this.tokens.push({
-          index: a,
-          text: this.text.slice(a, this.index),
-          identifier: !0
-        });
-      },
-      readString: function(a) {
-        var c = this.index;
-        this.index++;
-        for (var d = "",
-            e = a,
-            f = !1; this.index < this.text.length; ) {
-          var g = this.text.charAt(this.index),
-              e = e + g;
-          if (f)
-            "u" === g ? (f = this.text.substring(this.index + 1, this.index + 5), f.match(/[\da-f]{4}/i) || this.throwError("Invalid unicode escape [\\u" + f + "]"), this.index += 4, d += String.fromCharCode(parseInt(f, 16))) : d += pg[g] || g, f = !1;
-          else if ("\\" === g)
-            f = !0;
-          else {
-            if (g === a) {
+        return name;
+      }
+      function ensureSafeObject(obj, fullExpression) {
+        if (obj) {
+          if (obj.constructor === obj) {
+            throw $parseMinErr('isecfn', 'Referencing Function in Angular expressions is disallowed! Expression: {0}', fullExpression);
+          } else if (obj.window === obj) {
+            throw $parseMinErr('isecwindow', 'Referencing the Window in Angular expressions is disallowed! Expression: {0}', fullExpression);
+          } else if (obj.children && (obj.nodeName || (obj.prop && obj.attr && obj.find))) {
+            throw $parseMinErr('isecdom', 'Referencing DOM nodes in Angular expressions is disallowed! Expression: {0}', fullExpression);
+          } else if (obj === Object) {
+            throw $parseMinErr('isecobj', 'Referencing Object in Angular expressions is disallowed! Expression: {0}', fullExpression);
+          }
+        }
+        return obj;
+      }
+      var CALL = Function.prototype.call;
+      var APPLY = Function.prototype.apply;
+      var BIND = Function.prototype.bind;
+      function ensureSafeFunction(obj, fullExpression) {
+        if (obj) {
+          if (obj.constructor === obj) {
+            throw $parseMinErr('isecfn', 'Referencing Function in Angular expressions is disallowed! Expression: {0}', fullExpression);
+          } else if (obj === CALL || obj === APPLY || obj === BIND) {
+            throw $parseMinErr('isecff', 'Referencing call, apply or bind in Angular expressions is disallowed! Expression: {0}', fullExpression);
+          }
+        }
+      }
+      var OPERATORS = createMap();
+      forEach('+ - * / % === !== == != < > <= >= && || ! = |'.split(' '), function(operator) {
+        OPERATORS[operator] = true;
+      });
+      var ESCAPE = {
+        "n": "\n",
+        "f": "\f",
+        "r": "\r",
+        "t": "\t",
+        "v": "\v",
+        "'": "'",
+        '"': '"'
+      };
+      var Lexer = function(options) {
+        this.options = options;
+      };
+      Lexer.prototype = {
+        constructor: Lexer,
+        lex: function(text) {
+          this.text = text;
+          this.index = 0;
+          this.tokens = [];
+          while (this.index < this.text.length) {
+            var ch = this.text.charAt(this.index);
+            if (ch === '"' || ch === "'") {
+              this.readString(ch);
+            } else if (this.isNumber(ch) || ch === '.' && this.isNumber(this.peek())) {
+              this.readNumber();
+            } else if (this.isIdent(ch)) {
+              this.readIdent();
+            } else if (this.is(ch, '(){}[].,;:?')) {
+              this.tokens.push({
+                index: this.index,
+                text: ch
+              });
+              this.index++;
+            } else if (this.isWhitespace(ch)) {
+              this.index++;
+            } else {
+              var ch2 = ch + this.peek();
+              var ch3 = ch2 + this.peek(2);
+              var op1 = OPERATORS[ch];
+              var op2 = OPERATORS[ch2];
+              var op3 = OPERATORS[ch3];
+              if (op1 || op2 || op3) {
+                var token = op3 ? ch3 : (op2 ? ch2 : ch);
+                this.tokens.push({
+                  index: this.index,
+                  text: token,
+                  operator: true
+                });
+                this.index += token.length;
+              } else {
+                this.throwError('Unexpected next character ', this.index, this.index + 1);
+              }
+            }
+          }
+          return this.tokens;
+        },
+        is: function(ch, chars) {
+          return chars.indexOf(ch) !== -1;
+        },
+        peek: function(i) {
+          var num = i || 1;
+          return (this.index + num < this.text.length) ? this.text.charAt(this.index + num) : false;
+        },
+        isNumber: function(ch) {
+          return ('0' <= ch && ch <= '9') && typeof ch === "string";
+        },
+        isWhitespace: function(ch) {
+          return (ch === ' ' || ch === '\r' || ch === '\t' || ch === '\n' || ch === '\v' || ch === '\u00A0');
+        },
+        isIdent: function(ch) {
+          return ('a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || '_' === ch || ch === '$');
+        },
+        isExpOperator: function(ch) {
+          return (ch === '-' || ch === '+' || this.isNumber(ch));
+        },
+        throwError: function(error, start, end) {
+          end = end || this.index;
+          var colStr = (isDefined(start) ? 's ' + start + '-' + this.index + ' [' + this.text.substring(start, end) + ']' : ' ' + end);
+          throw $parseMinErr('lexerr', 'Lexer Error: {0} at column{1} in expression [{2}].', error, colStr, this.text);
+        },
+        readNumber: function() {
+          var number = '';
+          var start = this.index;
+          while (this.index < this.text.length) {
+            var ch = lowercase(this.text.charAt(this.index));
+            if (ch == '.' || this.isNumber(ch)) {
+              number += ch;
+            } else {
+              var peekCh = this.peek();
+              if (ch == 'e' && this.isExpOperator(peekCh)) {
+                number += ch;
+              } else if (this.isExpOperator(ch) && peekCh && this.isNumber(peekCh) && number.charAt(number.length - 1) == 'e') {
+                number += ch;
+              } else if (this.isExpOperator(ch) && (!peekCh || !this.isNumber(peekCh)) && number.charAt(number.length - 1) == 'e') {
+                this.throwError('Invalid exponent');
+              } else {
+                break;
+              }
+            }
+            this.index++;
+          }
+          this.tokens.push({
+            index: start,
+            text: number,
+            constant: true,
+            value: Number(number)
+          });
+        },
+        readIdent: function() {
+          var start = this.index;
+          while (this.index < this.text.length) {
+            var ch = this.text.charAt(this.index);
+            if (!(this.isIdent(ch) || this.isNumber(ch))) {
+              break;
+            }
+            this.index++;
+          }
+          this.tokens.push({
+            index: start,
+            text: this.text.slice(start, this.index),
+            identifier: true
+          });
+        },
+        readString: function(quote) {
+          var start = this.index;
+          this.index++;
+          var string = '';
+          var rawString = quote;
+          var escape = false;
+          while (this.index < this.text.length) {
+            var ch = this.text.charAt(this.index);
+            rawString += ch;
+            if (escape) {
+              if (ch === 'u') {
+                var hex = this.text.substring(this.index + 1, this.index + 5);
+                if (!hex.match(/[\da-f]{4}/i)) {
+                  this.throwError('Invalid unicode escape [\\u' + hex + ']');
+                }
+                this.index += 4;
+                string += String.fromCharCode(parseInt(hex, 16));
+              } else {
+                var rep = ESCAPE[ch];
+                string = string + (rep || ch);
+              }
+              escape = false;
+            } else if (ch === '\\') {
+              escape = true;
+            } else if (ch === quote) {
               this.index++;
               this.tokens.push({
-                index: c,
-                text: e,
-                constant: !0,
-                value: d
+                index: start,
+                text: rawString,
+                constant: true,
+                value: string
               });
               return ;
+            } else {
+              string += ch;
             }
-            d += g;
+            this.index++;
           }
-          this.index++;
+          this.throwError('Unterminated quote', start);
         }
-        this.throwError("Unterminated quote", c);
-      }
-    };
-    var q = function(a, c) {
-      this.lexer = a;
-      this.options = c;
-    };
-    q.Program = "Program";
-    q.ExpressionStatement = "ExpressionStatement";
-    q.AssignmentExpression = "AssignmentExpression";
-    q.ConditionalExpression = "ConditionalExpression";
-    q.LogicalExpression = "LogicalExpression";
-    q.BinaryExpression = "BinaryExpression";
-    q.UnaryExpression = "UnaryExpression";
-    q.CallExpression = "CallExpression";
-    q.MemberExpression = "MemberExpression";
-    q.Identifier = "Identifier";
-    q.Literal = "Literal";
-    q.ArrayExpression = "ArrayExpression";
-    q.Property = "Property";
-    q.ObjectExpression = "ObjectExpression";
-    q.ThisExpression = "ThisExpression";
-    q.NGValueParameter = "NGValueParameter";
-    q.prototype = {
-      ast: function(a) {
-        this.text = a;
-        this.tokens = this.lexer.lex(a);
-        a = this.program();
-        0 !== this.tokens.length && this.throwError("is an unexpected token", this.tokens[0]);
-        return a;
-      },
-      program: function() {
-        for (var a = []; ; )
-          if (0 < this.tokens.length && !this.peek("}", ")", ";", "]") && a.push(this.expressionStatement()), !this.expect(";"))
+      };
+      var AST = function(lexer, options) {
+        this.lexer = lexer;
+        this.options = options;
+      };
+      AST.Program = 'Program';
+      AST.ExpressionStatement = 'ExpressionStatement';
+      AST.AssignmentExpression = 'AssignmentExpression';
+      AST.ConditionalExpression = 'ConditionalExpression';
+      AST.LogicalExpression = 'LogicalExpression';
+      AST.BinaryExpression = 'BinaryExpression';
+      AST.UnaryExpression = 'UnaryExpression';
+      AST.CallExpression = 'CallExpression';
+      AST.MemberExpression = 'MemberExpression';
+      AST.Identifier = 'Identifier';
+      AST.Literal = 'Literal';
+      AST.ArrayExpression = 'ArrayExpression';
+      AST.Property = 'Property';
+      AST.ObjectExpression = 'ObjectExpression';
+      AST.ThisExpression = 'ThisExpression';
+      AST.NGValueParameter = 'NGValueParameter';
+      AST.prototype = {
+        ast: function(text) {
+          this.text = text;
+          this.tokens = this.lexer.lex(text);
+          var value = this.program();
+          if (this.tokens.length !== 0) {
+            this.throwError('is an unexpected token', this.tokens[0]);
+          }
+          return value;
+        },
+        program: function() {
+          var body = [];
+          while (true) {
+            if (this.tokens.length > 0 && !this.peek('}', ')', ';', ']'))
+              body.push(this.expressionStatement());
+            if (!this.expect(';')) {
+              return {
+                type: AST.Program,
+                body: body
+              };
+            }
+          }
+        },
+        expressionStatement: function() {
+          return {
+            type: AST.ExpressionStatement,
+            expression: this.filterChain()
+          };
+        },
+        filterChain: function() {
+          var left = this.expression();
+          var token;
+          while ((token = this.expect('|'))) {
+            left = this.filter(left);
+          }
+          return left;
+        },
+        expression: function() {
+          return this.assignment();
+        },
+        assignment: function() {
+          var result = this.ternary();
+          if (this.expect('=')) {
+            result = {
+              type: AST.AssignmentExpression,
+              left: result,
+              right: this.assignment(),
+              operator: '='
+            };
+          }
+          return result;
+        },
+        ternary: function() {
+          var test = this.logicalOR();
+          var alternate;
+          var consequent;
+          if (this.expect('?')) {
+            alternate = this.expression();
+            if (this.consume(':')) {
+              consequent = this.expression();
+              return {
+                type: AST.ConditionalExpression,
+                test: test,
+                alternate: alternate,
+                consequent: consequent
+              };
+            }
+          }
+          return test;
+        },
+        logicalOR: function() {
+          var left = this.logicalAND();
+          while (this.expect('||')) {
+            left = {
+              type: AST.LogicalExpression,
+              operator: '||',
+              left: left,
+              right: this.logicalAND()
+            };
+          }
+          return left;
+        },
+        logicalAND: function() {
+          var left = this.equality();
+          while (this.expect('&&')) {
+            left = {
+              type: AST.LogicalExpression,
+              operator: '&&',
+              left: left,
+              right: this.equality()
+            };
+          }
+          return left;
+        },
+        equality: function() {
+          var left = this.relational();
+          var token;
+          while ((token = this.expect('==', '!=', '===', '!=='))) {
+            left = {
+              type: AST.BinaryExpression,
+              operator: token.text,
+              left: left,
+              right: this.relational()
+            };
+          }
+          return left;
+        },
+        relational: function() {
+          var left = this.additive();
+          var token;
+          while ((token = this.expect('<', '>', '<=', '>='))) {
+            left = {
+              type: AST.BinaryExpression,
+              operator: token.text,
+              left: left,
+              right: this.additive()
+            };
+          }
+          return left;
+        },
+        additive: function() {
+          var left = this.multiplicative();
+          var token;
+          while ((token = this.expect('+', '-'))) {
+            left = {
+              type: AST.BinaryExpression,
+              operator: token.text,
+              left: left,
+              right: this.multiplicative()
+            };
+          }
+          return left;
+        },
+        multiplicative: function() {
+          var left = this.unary();
+          var token;
+          while ((token = this.expect('*', '/', '%'))) {
+            left = {
+              type: AST.BinaryExpression,
+              operator: token.text,
+              left: left,
+              right: this.unary()
+            };
+          }
+          return left;
+        },
+        unary: function() {
+          var token;
+          if ((token = this.expect('+', '-', '!'))) {
             return {
-              type: q.Program,
-              body: a
+              type: AST.UnaryExpression,
+              operator: token.text,
+              prefix: true,
+              argument: this.unary()
             };
-      },
-      expressionStatement: function() {
-        return {
-          type: q.ExpressionStatement,
-          expression: this.filterChain()
-        };
-      },
-      filterChain: function() {
-        for (var a = this.expression(); this.expect("|"); )
-          a = this.filter(a);
-        return a;
-      },
-      expression: function() {
-        return this.assignment();
-      },
-      assignment: function() {
-        var a = this.ternary();
-        this.expect("=") && (a = {
-          type: q.AssignmentExpression,
-          left: a,
-          right: this.assignment(),
-          operator: "="
-        });
-        return a;
-      },
-      ternary: function() {
-        var a = this.logicalOR(),
-            c,
-            d;
-        return this.expect("?") && (c = this.expression(), this.consume(":")) ? (d = this.expression(), {
-          type: q.ConditionalExpression,
-          test: a,
-          alternate: c,
-          consequent: d
-        }) : a;
-      },
-      logicalOR: function() {
-        for (var a = this.logicalAND(); this.expect("||"); )
-          a = {
-            type: q.LogicalExpression,
-            operator: "||",
-            left: a,
-            right: this.logicalAND()
-          };
-        return a;
-      },
-      logicalAND: function() {
-        for (var a = this.equality(); this.expect("&&"); )
-          a = {
-            type: q.LogicalExpression,
-            operator: "&&",
-            left: a,
-            right: this.equality()
-          };
-        return a;
-      },
-      equality: function() {
-        for (var a = this.relational(),
-            c; c = this.expect("==", "!=", "===", "!=="); )
-          a = {
-            type: q.BinaryExpression,
-            operator: c.text,
-            left: a,
-            right: this.relational()
-          };
-        return a;
-      },
-      relational: function() {
-        for (var a = this.additive(),
-            c; c = this.expect("<", ">", "<=", ">="); )
-          a = {
-            type: q.BinaryExpression,
-            operator: c.text,
-            left: a,
-            right: this.additive()
-          };
-        return a;
-      },
-      additive: function() {
-        for (var a = this.multiplicative(),
-            c; c = this.expect("+", "-"); )
-          a = {
-            type: q.BinaryExpression,
-            operator: c.text,
-            left: a,
-            right: this.multiplicative()
-          };
-        return a;
-      },
-      multiplicative: function() {
-        for (var a = this.unary(),
-            c; c = this.expect("*", "/", "%"); )
-          a = {
-            type: q.BinaryExpression,
-            operator: c.text,
-            left: a,
-            right: this.unary()
-          };
-        return a;
-      },
-      unary: function() {
-        var a;
-        return (a = this.expect("+", "-", "!")) ? {
-          type: q.UnaryExpression,
-          operator: a.text,
-          prefix: !0,
-          argument: this.unary()
-        } : this.primary();
-      },
-      primary: function() {
-        var a;
-        this.expect("(") ? (a = this.filterChain(), this.consume(")")) : this.expect("[") ? a = this.arrayDeclaration() : this.expect("{") ? a = this.object() : this.constants.hasOwnProperty(this.peek().text) ? a = ua(this.constants[this.consume().text]) : this.peek().identifier ? a = this.identifier() : this.peek().constant ? a = this.constant() : this.throwError("not a primary expression", this.peek());
-        for (var c; c = this.expect("(", "[", "."); )
-          "(" === c.text ? (a = {
-            type: q.CallExpression,
-            callee: a,
-            arguments: this.parseArguments()
-          }, this.consume(")")) : "[" === c.text ? (a = {
-            type: q.MemberExpression,
-            object: a,
-            property: this.expression(),
-            computed: !0
-          }, this.consume("]")) : "." === c.text ? a = {
-            type: q.MemberExpression,
-            object: a,
-            property: this.identifier(),
-            computed: !1
-          } : this.throwError("IMPOSSIBLE");
-        return a;
-      },
-      filter: function(a) {
-        a = [a];
-        for (var c = {
-          type: q.CallExpression,
-          callee: this.identifier(),
-          arguments: a,
-          filter: !0
-        }; this.expect(":"); )
-          a.push(this.expression());
-        return c;
-      },
-      parseArguments: function() {
-        var a = [];
-        if (")" !== this.peekToken().text) {
-          do
-            a.push(this.expression());
- while (this.expect(","));
-        }
-        return a;
-      },
-      identifier: function() {
-        var a = this.consume();
-        a.identifier || this.throwError("is not a valid identifier", a);
-        return {
-          type: q.Identifier,
-          name: a.text
-        };
-      },
-      constant: function() {
-        return {
-          type: q.Literal,
-          value: this.consume().value
-        };
-      },
-      arrayDeclaration: function() {
-        var a = [];
-        if ("]" !== this.peekToken().text) {
-          do {
-            if (this.peek("]"))
-              break;
-            a.push(this.expression());
-          } while (this.expect(","));
-        }
-        this.consume("]");
-        return {
-          type: q.ArrayExpression,
-          elements: a
-        };
-      },
-      object: function() {
-        var a = [],
-            c;
-        if ("}" !== this.peekToken().text) {
-          do {
-            if (this.peek("}"))
-              break;
-            c = {
-              type: q.Property,
-              kind: "init"
-            };
-            this.peek().constant ? c.key = this.constant() : this.peek().identifier ? c.key = this.identifier() : this.throwError("invalid key", this.peek());
-            this.consume(":");
-            c.value = this.expression();
-            a.push(c);
-          } while (this.expect(","));
-        }
-        this.consume("}");
-        return {
-          type: q.ObjectExpression,
-          properties: a
-        };
-      },
-      throwError: function(a, c) {
-        throw ca("syntax", c.text, a, c.index + 1, this.text, this.text.substring(c.index));
-      },
-      consume: function(a) {
-        if (0 === this.tokens.length)
-          throw ca("ueoe", this.text);
-        var c = this.expect(a);
-        c || this.throwError("is unexpected, expecting [" + a + "]", this.peek());
-        return c;
-      },
-      peekToken: function() {
-        if (0 === this.tokens.length)
-          throw ca("ueoe", this.text);
-        return this.tokens[0];
-      },
-      peek: function(a, c, d, e) {
-        return this.peekAhead(0, a, c, d, e);
-      },
-      peekAhead: function(a, c, d, e, f) {
-        if (this.tokens.length > a) {
-          a = this.tokens[a];
-          var g = a.text;
-          if (g === c || g === d || g === e || g === f || !(c || d || e || f))
-            return a;
-        }
-        return !1;
-      },
-      expect: function(a, c, d, e) {
-        return (a = this.peek(a, c, d, e)) ? (this.tokens.shift(), a) : !1;
-      },
-      constants: {
-        "true": {
-          type: q.Literal,
-          value: !0
+          } else {
+            return this.primary();
+          }
         },
-        "false": {
-          type: q.Literal,
-          value: !1
+        primary: function() {
+          var primary;
+          if (this.expect('(')) {
+            primary = this.filterChain();
+            this.consume(')');
+          } else if (this.expect('[')) {
+            primary = this.arrayDeclaration();
+          } else if (this.expect('{')) {
+            primary = this.object();
+          } else if (this.constants.hasOwnProperty(this.peek().text)) {
+            primary = copy(this.constants[this.consume().text]);
+          } else if (this.peek().identifier) {
+            primary = this.identifier();
+          } else if (this.peek().constant) {
+            primary = this.constant();
+          } else {
+            this.throwError('not a primary expression', this.peek());
+          }
+          var next;
+          while ((next = this.expect('(', '[', '.'))) {
+            if (next.text === '(') {
+              primary = {
+                type: AST.CallExpression,
+                callee: primary,
+                arguments: this.parseArguments()
+              };
+              this.consume(')');
+            } else if (next.text === '[') {
+              primary = {
+                type: AST.MemberExpression,
+                object: primary,
+                property: this.expression(),
+                computed: true
+              };
+              this.consume(']');
+            } else if (next.text === '.') {
+              primary = {
+                type: AST.MemberExpression,
+                object: primary,
+                property: this.identifier(),
+                computed: false
+              };
+            } else {
+              this.throwError('IMPOSSIBLE');
+            }
+          }
+          return primary;
         },
-        "null": {
-          type: q.Literal,
-          value: null
+        filter: function(baseExpression) {
+          var args = [baseExpression];
+          var result = {
+            type: AST.CallExpression,
+            callee: this.identifier(),
+            arguments: args,
+            filter: true
+          };
+          while (this.expect(':')) {
+            args.push(this.expression());
+          }
+          return result;
         },
-        undefined: {
-          type: q.Literal,
-          value: u
+        parseArguments: function() {
+          var args = [];
+          if (this.peekToken().text !== ')') {
+            do {
+              args.push(this.expression());
+            } while (this.expect(','));
+          }
+          return args;
         },
-        "this": {type: q.ThisExpression}
+        identifier: function() {
+          var token = this.consume();
+          if (!token.identifier) {
+            this.throwError('is not a valid identifier', token);
+          }
+          return {
+            type: AST.Identifier,
+            name: token.text
+          };
+        },
+        constant: function() {
+          return {
+            type: AST.Literal,
+            value: this.consume().value
+          };
+        },
+        arrayDeclaration: function() {
+          var elements = [];
+          if (this.peekToken().text !== ']') {
+            do {
+              if (this.peek(']')) {
+                break;
+              }
+              elements.push(this.expression());
+            } while (this.expect(','));
+          }
+          this.consume(']');
+          return {
+            type: AST.ArrayExpression,
+            elements: elements
+          };
+        },
+        object: function() {
+          var properties = [],
+              property;
+          if (this.peekToken().text !== '}') {
+            do {
+              if (this.peek('}')) {
+                break;
+              }
+              property = {
+                type: AST.Property,
+                kind: 'init'
+              };
+              if (this.peek().constant) {
+                property.key = this.constant();
+              } else if (this.peek().identifier) {
+                property.key = this.identifier();
+              } else {
+                this.throwError("invalid key", this.peek());
+              }
+              this.consume(':');
+              property.value = this.expression();
+              properties.push(property);
+            } while (this.expect(','));
+          }
+          this.consume('}');
+          return {
+            type: AST.ObjectExpression,
+            properties: properties
+          };
+        },
+        throwError: function(msg, token) {
+          throw $parseMinErr('syntax', 'Syntax Error: Token \'{0}\' {1} at column {2} of the expression [{3}] starting at [{4}].', token.text, msg, (token.index + 1), this.text, this.text.substring(token.index));
+        },
+        consume: function(e1) {
+          if (this.tokens.length === 0) {
+            throw $parseMinErr('ueoe', 'Unexpected end of expression: {0}', this.text);
+          }
+          var token = this.expect(e1);
+          if (!token) {
+            this.throwError('is unexpected, expecting [' + e1 + ']', this.peek());
+          }
+          return token;
+        },
+        peekToken: function() {
+          if (this.tokens.length === 0) {
+            throw $parseMinErr('ueoe', 'Unexpected end of expression: {0}', this.text);
+          }
+          return this.tokens[0];
+        },
+        peek: function(e1, e2, e3, e4) {
+          return this.peekAhead(0, e1, e2, e3, e4);
+        },
+        peekAhead: function(i, e1, e2, e3, e4) {
+          if (this.tokens.length > i) {
+            var token = this.tokens[i];
+            var t = token.text;
+            if (t === e1 || t === e2 || t === e3 || t === e4 || (!e1 && !e2 && !e3 && !e4)) {
+              return token;
+            }
+          }
+          return false;
+        },
+        expect: function(e1, e2, e3, e4) {
+          var token = this.peek(e1, e2, e3, e4);
+          if (token) {
+            this.tokens.shift();
+            return token;
+          }
+          return false;
+        },
+        constants: {
+          'true': {
+            type: AST.Literal,
+            value: true
+          },
+          'false': {
+            type: AST.Literal,
+            value: false
+          },
+          'null': {
+            type: AST.Literal,
+            value: null
+          },
+          'undefined': {
+            type: AST.Literal,
+            value: undefined
+          },
+          'this': {type: AST.ThisExpression}
+        }
+      };
+      function ifDefined(v, d) {
+        return typeof v !== 'undefined' ? v : d;
       }
-    };
-    qd.prototype = {
-      compile: function(a, c) {
-        var d = this,
-            e = this.astBuilder.ast(a);
-        this.state = {
-          nextId: 0,
-          filters: {},
-          expensiveChecks: c,
-          fn: {
-            vars: [],
-            body: [],
-            own: {}
-          },
-          assign: {
-            vars: [],
-            body: [],
-            own: {}
-          },
-          inputs: []
-        };
-        U(e, d.$filter);
-        var f = "",
-            g;
-        this.stage = "assign";
-        if (g = od(e))
-          this.state.computing = "assign", f = this.nextId(), this.recurse(g, f), f = "fn.assign=" + this.generateFunction("assign", "s,v,l");
-        g = md(e.body);
-        d.stage = "inputs";
-        n(g, function(a, c) {
-          var e = "fn" + c;
-          d.state[e] = {
-            vars: [],
-            body: [],
-            own: {}
+      function plusFn(l, r) {
+        if (typeof l === 'undefined')
+          return r;
+        if (typeof r === 'undefined')
+          return l;
+        return l + r;
+      }
+      function isStateless($filter, filterName) {
+        var fn = $filter(filterName);
+        return !fn.$stateful;
+      }
+      function findConstantAndWatchExpressions(ast, $filter) {
+        var allConstants;
+        var argsToWatch;
+        switch (ast.type) {
+          case AST.Program:
+            allConstants = true;
+            forEach(ast.body, function(expr) {
+              findConstantAndWatchExpressions(expr.expression, $filter);
+              allConstants = allConstants && expr.expression.constant;
+            });
+            ast.constant = allConstants;
+            break;
+          case AST.Literal:
+            ast.constant = true;
+            ast.toWatch = [];
+            break;
+          case AST.UnaryExpression:
+            findConstantAndWatchExpressions(ast.argument, $filter);
+            ast.constant = ast.argument.constant;
+            ast.toWatch = ast.argument.toWatch;
+            break;
+          case AST.BinaryExpression:
+            findConstantAndWatchExpressions(ast.left, $filter);
+            findConstantAndWatchExpressions(ast.right, $filter);
+            ast.constant = ast.left.constant && ast.right.constant;
+            ast.toWatch = ast.left.toWatch.concat(ast.right.toWatch);
+            break;
+          case AST.LogicalExpression:
+            findConstantAndWatchExpressions(ast.left, $filter);
+            findConstantAndWatchExpressions(ast.right, $filter);
+            ast.constant = ast.left.constant && ast.right.constant;
+            ast.toWatch = ast.constant ? [] : [ast];
+            break;
+          case AST.ConditionalExpression:
+            findConstantAndWatchExpressions(ast.test, $filter);
+            findConstantAndWatchExpressions(ast.alternate, $filter);
+            findConstantAndWatchExpressions(ast.consequent, $filter);
+            ast.constant = ast.test.constant && ast.alternate.constant && ast.consequent.constant;
+            ast.toWatch = ast.constant ? [] : [ast];
+            break;
+          case AST.Identifier:
+            ast.constant = false;
+            ast.toWatch = [ast];
+            break;
+          case AST.MemberExpression:
+            findConstantAndWatchExpressions(ast.object, $filter);
+            if (ast.computed) {
+              findConstantAndWatchExpressions(ast.property, $filter);
+            }
+            ast.constant = ast.object.constant && (!ast.computed || ast.property.constant);
+            ast.toWatch = [ast];
+            break;
+          case AST.CallExpression:
+            allConstants = ast.filter ? isStateless($filter, ast.callee.name) : false;
+            argsToWatch = [];
+            forEach(ast.arguments, function(expr) {
+              findConstantAndWatchExpressions(expr, $filter);
+              allConstants = allConstants && expr.constant;
+              if (!expr.constant) {
+                argsToWatch.push.apply(argsToWatch, expr.toWatch);
+              }
+            });
+            ast.constant = allConstants;
+            ast.toWatch = ast.filter && isStateless($filter, ast.callee.name) ? argsToWatch : [ast];
+            break;
+          case AST.AssignmentExpression:
+            findConstantAndWatchExpressions(ast.left, $filter);
+            findConstantAndWatchExpressions(ast.right, $filter);
+            ast.constant = ast.left.constant && ast.right.constant;
+            ast.toWatch = [ast];
+            break;
+          case AST.ArrayExpression:
+            allConstants = true;
+            argsToWatch = [];
+            forEach(ast.elements, function(expr) {
+              findConstantAndWatchExpressions(expr, $filter);
+              allConstants = allConstants && expr.constant;
+              if (!expr.constant) {
+                argsToWatch.push.apply(argsToWatch, expr.toWatch);
+              }
+            });
+            ast.constant = allConstants;
+            ast.toWatch = argsToWatch;
+            break;
+          case AST.ObjectExpression:
+            allConstants = true;
+            argsToWatch = [];
+            forEach(ast.properties, function(property) {
+              findConstantAndWatchExpressions(property.value, $filter);
+              allConstants = allConstants && property.value.constant;
+              if (!property.value.constant) {
+                argsToWatch.push.apply(argsToWatch, property.value.toWatch);
+              }
+            });
+            ast.constant = allConstants;
+            ast.toWatch = argsToWatch;
+            break;
+          case AST.ThisExpression:
+            ast.constant = false;
+            ast.toWatch = [];
+            break;
+        }
+      }
+      function getInputs(body) {
+        if (body.length != 1)
+          return ;
+        var lastExpression = body[0].expression;
+        var candidate = lastExpression.toWatch;
+        if (candidate.length !== 1)
+          return candidate;
+        return candidate[0] !== lastExpression ? candidate : undefined;
+      }
+      function isAssignable(ast) {
+        return ast.type === AST.Identifier || ast.type === AST.MemberExpression;
+      }
+      function assignableAST(ast) {
+        if (ast.body.length === 1 && isAssignable(ast.body[0].expression)) {
+          return {
+            type: AST.AssignmentExpression,
+            left: ast.body[0].expression,
+            right: {type: AST.NGValueParameter},
+            operator: '='
           };
-          d.state.computing = e;
-          var f = d.nextId();
-          d.recurse(a, f);
-          d.return_(f);
-          d.state.inputs.push(e);
-          a.watchId = c;
-        });
-        this.state.computing = "fn";
-        this.stage = "main";
-        this.recurse(e);
-        f = '"' + this.USE + " " + this.STRICT + '";\n' + this.filterPrefix() + "var fn=" + this.generateFunction("fn", "s,l,a,i") + f + this.watchFns() + "return fn;";
-        f = (new Function("$filter", "ensureSafeMemberName", "ensureSafeObject", "ensureSafeFunction", "ifDefined", "plus", "text", f))(this.$filter, Ba, na, kd, Wf, ld, a);
-        this.state = this.stage = u;
-        f.literal = pd(e);
-        f.constant = e.constant;
-        return f;
-      },
-      USE: "use",
-      STRICT: "strict",
-      watchFns: function() {
-        var a = [],
-            c = this.state.inputs,
-            d = this;
-        n(c, function(c) {
-          a.push("var " + c + "=" + d.generateFunction(c, "s"));
-        });
-        c.length && a.push("fn.inputs=[" + c.join(",") + "];");
-        return a.join("");
-      },
-      generateFunction: function(a, c) {
-        return "function(" + c + "){" + this.varsPrefix(a) + this.body(a) + "};";
-      },
-      filterPrefix: function() {
-        var a = [],
-            c = this;
-        n(this.state.filters, function(d, e) {
-          a.push(d + "=$filter(" + c.escape(e) + ")");
-        });
-        return a.length ? "var " + a.join(",") + ";" : "";
-      },
-      varsPrefix: function(a) {
-        return this.state[a].vars.length ? "var " + this.state[a].vars.join(",") + ";" : "";
-      },
-      body: function(a) {
-        return this.state[a].body.join("");
-      },
-      recurse: function(a, c, d, e, f, g) {
-        var h,
-            l,
-            k = this,
-            m,
-            r;
-        e = e || w;
-        if (!g && y(a.watchId))
-          c = c || this.nextId(), this.if_("i", this.lazyAssign(c, this.computedMember("i", a.watchId)), this.lazyRecurse(a, c, d, e, f, !0));
-        else
-          switch (a.type) {
-            case q.Program:
-              n(a.body, function(c, d) {
-                k.recurse(c.expression, u, u, function(a) {
-                  l = a;
+        }
+      }
+      function isLiteral(ast) {
+        return ast.body.length === 0 || ast.body.length === 1 && (ast.body[0].expression.type === AST.Literal || ast.body[0].expression.type === AST.ArrayExpression || ast.body[0].expression.type === AST.ObjectExpression);
+      }
+      function isConstant(ast) {
+        return ast.constant;
+      }
+      function ASTCompiler(astBuilder, $filter) {
+        this.astBuilder = astBuilder;
+        this.$filter = $filter;
+      }
+      ASTCompiler.prototype = {
+        compile: function(expression, expensiveChecks) {
+          var self = this;
+          var ast = this.astBuilder.ast(expression);
+          this.state = {
+            nextId: 0,
+            filters: {},
+            expensiveChecks: expensiveChecks,
+            fn: {
+              vars: [],
+              body: [],
+              own: {}
+            },
+            assign: {
+              vars: [],
+              body: [],
+              own: {}
+            },
+            inputs: []
+          };
+          findConstantAndWatchExpressions(ast, self.$filter);
+          var extra = '';
+          var assignable;
+          this.stage = 'assign';
+          if ((assignable = assignableAST(ast))) {
+            this.state.computing = 'assign';
+            var result = this.nextId();
+            this.recurse(assignable, result);
+            extra = 'fn.assign=' + this.generateFunction('assign', 's,v,l');
+          }
+          var toWatch = getInputs(ast.body);
+          self.stage = 'inputs';
+          forEach(toWatch, function(watch, key) {
+            var fnKey = 'fn' + key;
+            self.state[fnKey] = {
+              vars: [],
+              body: [],
+              own: {}
+            };
+            self.state.computing = fnKey;
+            var intoId = self.nextId();
+            self.recurse(watch, intoId);
+            self.return_(intoId);
+            self.state.inputs.push(fnKey);
+            watch.watchId = key;
+          });
+          this.state.computing = 'fn';
+          this.stage = 'main';
+          this.recurse(ast);
+          var fnString = '"' + this.USE + ' ' + this.STRICT + '";\n' + this.filterPrefix() + 'var fn=' + this.generateFunction('fn', 's,l,a,i') + extra + this.watchFns() + 'return fn;';
+          var fn = (new Function('$filter', 'ensureSafeMemberName', 'ensureSafeObject', 'ensureSafeFunction', 'ifDefined', 'plus', 'text', fnString))(this.$filter, ensureSafeMemberName, ensureSafeObject, ensureSafeFunction, ifDefined, plusFn, expression);
+          this.state = this.stage = undefined;
+          fn.literal = isLiteral(ast);
+          fn.constant = isConstant(ast);
+          return fn;
+        },
+        USE: 'use',
+        STRICT: 'strict',
+        watchFns: function() {
+          var result = [];
+          var fns = this.state.inputs;
+          var self = this;
+          forEach(fns, function(name) {
+            result.push('var ' + name + '=' + self.generateFunction(name, 's'));
+          });
+          if (fns.length) {
+            result.push('fn.inputs=[' + fns.join(',') + '];');
+          }
+          return result.join('');
+        },
+        generateFunction: function(name, params) {
+          return 'function(' + params + '){' + this.varsPrefix(name) + this.body(name) + '};';
+        },
+        filterPrefix: function() {
+          var parts = [];
+          var self = this;
+          forEach(this.state.filters, function(id, filter) {
+            parts.push(id + '=$filter(' + self.escape(filter) + ')');
+          });
+          if (parts.length)
+            return 'var ' + parts.join(',') + ';';
+          return '';
+        },
+        varsPrefix: function(section) {
+          return this.state[section].vars.length ? 'var ' + this.state[section].vars.join(',') + ';' : '';
+        },
+        body: function(section) {
+          return this.state[section].body.join('');
+        },
+        recurse: function(ast, intoId, nameId, recursionFn, create, skipWatchIdCheck) {
+          var left,
+              right,
+              self = this,
+              args,
+              expression;
+          recursionFn = recursionFn || noop;
+          if (!skipWatchIdCheck && isDefined(ast.watchId)) {
+            intoId = intoId || this.nextId();
+            this.if_('i', this.lazyAssign(intoId, this.computedMember('i', ast.watchId)), this.lazyRecurse(ast, intoId, nameId, recursionFn, create, true));
+            return ;
+          }
+          switch (ast.type) {
+            case AST.Program:
+              forEach(ast.body, function(expression, pos) {
+                self.recurse(expression.expression, undefined, undefined, function(expr) {
+                  right = expr;
                 });
-                d !== a.body.length - 1 ? k.current().body.push(l, ";") : k.return_(l);
+                if (pos !== ast.body.length - 1) {
+                  self.current().body.push(right, ';');
+                } else {
+                  self.return_(right);
+                }
               });
               break;
-            case q.Literal:
-              r = this.escape(a.value);
-              this.assign(c, r);
-              e(r);
+            case AST.Literal:
+              expression = this.escape(ast.value);
+              this.assign(intoId, expression);
+              recursionFn(expression);
               break;
-            case q.UnaryExpression:
-              this.recurse(a.argument, u, u, function(a) {
-                l = a;
+            case AST.UnaryExpression:
+              this.recurse(ast.argument, undefined, undefined, function(expr) {
+                right = expr;
               });
-              r = a.operator + "(" + this.ifDefined(l, 0) + ")";
-              this.assign(c, r);
-              e(r);
+              expression = ast.operator + '(' + this.ifDefined(right, 0) + ')';
+              this.assign(intoId, expression);
+              recursionFn(expression);
               break;
-            case q.BinaryExpression:
-              this.recurse(a.left, u, u, function(a) {
-                h = a;
+            case AST.BinaryExpression:
+              this.recurse(ast.left, undefined, undefined, function(expr) {
+                left = expr;
               });
-              this.recurse(a.right, u, u, function(a) {
-                l = a;
+              this.recurse(ast.right, undefined, undefined, function(expr) {
+                right = expr;
               });
-              r = "+" === a.operator ? this.plus(h, l) : "-" === a.operator ? this.ifDefined(h, 0) + a.operator + this.ifDefined(l, 0) : "(" + h + ")" + a.operator + "(" + l + ")";
-              this.assign(c, r);
-              e(r);
+              if (ast.operator === '+') {
+                expression = this.plus(left, right);
+              } else if (ast.operator === '-') {
+                expression = this.ifDefined(left, 0) + ast.operator + this.ifDefined(right, 0);
+              } else {
+                expression = '(' + left + ')' + ast.operator + '(' + right + ')';
+              }
+              this.assign(intoId, expression);
+              recursionFn(expression);
               break;
-            case q.LogicalExpression:
-              c = c || this.nextId();
-              k.recurse(a.left, c);
-              k.if_("&&" === a.operator ? c : k.not(c), k.lazyRecurse(a.right, c));
-              e(c);
+            case AST.LogicalExpression:
+              intoId = intoId || this.nextId();
+              self.recurse(ast.left, intoId);
+              self.if_(ast.operator === '&&' ? intoId : self.not(intoId), self.lazyRecurse(ast.right, intoId));
+              recursionFn(intoId);
               break;
-            case q.ConditionalExpression:
-              c = c || this.nextId();
-              k.recurse(a.test, c);
-              k.if_(c, k.lazyRecurse(a.alternate, c), k.lazyRecurse(a.consequent, c));
-              e(c);
+            case AST.ConditionalExpression:
+              intoId = intoId || this.nextId();
+              self.recurse(ast.test, intoId);
+              self.if_(intoId, self.lazyRecurse(ast.alternate, intoId), self.lazyRecurse(ast.consequent, intoId));
+              recursionFn(intoId);
               break;
-            case q.Identifier:
-              c = c || this.nextId();
-              d && (d.context = "inputs" === k.stage ? "s" : this.assign(this.nextId(), this.getHasOwnProperty("l", a.name) + "?l:s"), d.computed = !1, d.name = a.name);
-              Ba(a.name);
-              k.if_("inputs" === k.stage || k.not(k.getHasOwnProperty("l", a.name)), function() {
-                k.if_("inputs" === k.stage || "s", function() {
-                  f && 1 !== f && k.if_(k.not(k.nonComputedMember("s", a.name)), k.lazyAssign(k.nonComputedMember("s", a.name), "{}"));
-                  k.assign(c, k.nonComputedMember("s", a.name));
-                });
-              }, c && k.lazyAssign(c, k.nonComputedMember("l", a.name)));
-              (k.state.expensiveChecks || Fb(a.name)) && k.addEnsureSafeObject(c);
-              e(c);
-              break;
-            case q.MemberExpression:
-              h = d && (d.context = this.nextId()) || this.nextId();
-              c = c || this.nextId();
-              k.recurse(a.object, h, u, function() {
-                k.if_(k.notNull(h), function() {
-                  if (a.computed)
-                    l = k.nextId(), k.recurse(a.property, l), k.addEnsureSafeMemberName(l), f && 1 !== f && k.if_(k.not(k.computedMember(h, l)), k.lazyAssign(k.computedMember(h, l), "{}")), r = k.ensureSafeObject(k.computedMember(h, l)), k.assign(c, r), d && (d.computed = !0, d.name = l);
-                  else {
-                    Ba(a.property.name);
-                    f && 1 !== f && k.if_(k.not(k.nonComputedMember(h, a.property.name)), k.lazyAssign(k.nonComputedMember(h, a.property.name), "{}"));
-                    r = k.nonComputedMember(h, a.property.name);
-                    if (k.state.expensiveChecks || Fb(a.property.name))
-                      r = k.ensureSafeObject(r);
-                    k.assign(c, r);
-                    d && (d.computed = !1, d.name = a.property.name);
+            case AST.Identifier:
+              intoId = intoId || this.nextId();
+              if (nameId) {
+                nameId.context = self.stage === 'inputs' ? 's' : this.assign(this.nextId(), this.getHasOwnProperty('l', ast.name) + '?l:s');
+                nameId.computed = false;
+                nameId.name = ast.name;
+              }
+              ensureSafeMemberName(ast.name);
+              self.if_(self.stage === 'inputs' || self.not(self.getHasOwnProperty('l', ast.name)), function() {
+                self.if_(self.stage === 'inputs' || 's', function() {
+                  if (create && create !== 1) {
+                    self.if_(self.not(self.nonComputedMember('s', ast.name)), self.lazyAssign(self.nonComputedMember('s', ast.name), '{}'));
                   }
-                  e(c);
+                  self.assign(intoId, self.nonComputedMember('s', ast.name));
                 });
-              }, !!f);
+              }, intoId && self.lazyAssign(intoId, self.nonComputedMember('l', ast.name)));
+              if (self.state.expensiveChecks || isPossiblyDangerousMemberName(ast.name)) {
+                self.addEnsureSafeObject(intoId);
+              }
+              recursionFn(intoId);
               break;
-            case q.CallExpression:
-              c = c || this.nextId();
-              a.filter ? (l = k.filter(a.callee.name), m = [], n(a.arguments, function(a) {
-                var c = k.nextId();
-                k.recurse(a, c);
-                m.push(c);
-              }), r = l + "(" + m.join(",") + ")", k.assign(c, r), e(c)) : (l = k.nextId(), h = {}, m = [], k.recurse(a.callee, l, h, function() {
-                k.if_(k.notNull(l), function() {
-                  k.addEnsureSafeFunction(l);
-                  n(a.arguments, function(a) {
-                    k.recurse(a, k.nextId(), u, function(a) {
-                      m.push(k.ensureSafeObject(a));
+            case AST.MemberExpression:
+              left = nameId && (nameId.context = this.nextId()) || this.nextId();
+              intoId = intoId || this.nextId();
+              self.recurse(ast.object, left, undefined, function() {
+                self.if_(self.notNull(left), function() {
+                  if (ast.computed) {
+                    right = self.nextId();
+                    self.recurse(ast.property, right);
+                    self.addEnsureSafeMemberName(right);
+                    if (create && create !== 1) {
+                      self.if_(self.not(self.computedMember(left, right)), self.lazyAssign(self.computedMember(left, right), '{}'));
+                    }
+                    expression = self.ensureSafeObject(self.computedMember(left, right));
+                    self.assign(intoId, expression);
+                    if (nameId) {
+                      nameId.computed = true;
+                      nameId.name = right;
+                    }
+                  } else {
+                    ensureSafeMemberName(ast.property.name);
+                    if (create && create !== 1) {
+                      self.if_(self.not(self.nonComputedMember(left, ast.property.name)), self.lazyAssign(self.nonComputedMember(left, ast.property.name), '{}'));
+                    }
+                    expression = self.nonComputedMember(left, ast.property.name);
+                    if (self.state.expensiveChecks || isPossiblyDangerousMemberName(ast.property.name)) {
+                      expression = self.ensureSafeObject(expression);
+                    }
+                    self.assign(intoId, expression);
+                    if (nameId) {
+                      nameId.computed = false;
+                      nameId.name = ast.property.name;
+                    }
+                  }
+                  recursionFn(intoId);
+                });
+              }, !!create);
+              break;
+            case AST.CallExpression:
+              intoId = intoId || this.nextId();
+              if (ast.filter) {
+                right = self.filter(ast.callee.name);
+                args = [];
+                forEach(ast.arguments, function(expr) {
+                  var argument = self.nextId();
+                  self.recurse(expr, argument);
+                  args.push(argument);
+                });
+                expression = right + '(' + args.join(',') + ')';
+                self.assign(intoId, expression);
+                recursionFn(intoId);
+              } else {
+                right = self.nextId();
+                left = {};
+                args = [];
+                self.recurse(ast.callee, right, left, function() {
+                  self.if_(self.notNull(right), function() {
+                    self.addEnsureSafeFunction(right);
+                    forEach(ast.arguments, function(expr) {
+                      self.recurse(expr, self.nextId(), undefined, function(argument) {
+                        args.push(self.ensureSafeObject(argument));
+                      });
                     });
+                    if (left.name) {
+                      if (!self.state.expensiveChecks) {
+                        self.addEnsureSafeObject(left.context);
+                      }
+                      expression = self.member(left.context, left.name, left.computed) + '(' + args.join(',') + ')';
+                    } else {
+                      expression = right + '(' + args.join(',') + ')';
+                    }
+                    expression = self.ensureSafeObject(expression);
+                    self.assign(intoId, expression);
+                    recursionFn(intoId);
                   });
-                  h.name ? (k.state.expensiveChecks || k.addEnsureSafeObject(h.context), r = k.member(h.context, h.name, h.computed) + "(" + m.join(",") + ")") : r = l + "(" + m.join(",") + ")";
-                  r = k.ensureSafeObject(r);
-                  k.assign(c, r);
-                  e(c);
                 });
-              }));
+              }
               break;
-            case q.AssignmentExpression:
-              l = this.nextId();
-              h = {};
-              if (!nd(a.left))
-                throw ca("lval");
-              this.recurse(a.left, u, h, function() {
-                k.if_(k.notNull(h.context), function() {
-                  k.recurse(a.right, l);
-                  k.addEnsureSafeObject(k.member(h.context, h.name, h.computed));
-                  r = k.member(h.context, h.name, h.computed) + a.operator + l;
-                  k.assign(c, r);
-                  e(c || r);
+            case AST.AssignmentExpression:
+              right = this.nextId();
+              left = {};
+              if (!isAssignable(ast.left)) {
+                throw $parseMinErr('lval', 'Trying to assing a value to a non l-value');
+              }
+              this.recurse(ast.left, undefined, left, function() {
+                self.if_(self.notNull(left.context), function() {
+                  self.recurse(ast.right, right);
+                  self.addEnsureSafeObject(self.member(left.context, left.name, left.computed));
+                  expression = self.member(left.context, left.name, left.computed) + ast.operator + right;
+                  self.assign(intoId, expression);
+                  recursionFn(intoId || expression);
                 });
               }, 1);
               break;
-            case q.ArrayExpression:
-              m = [];
-              n(a.elements, function(a) {
-                k.recurse(a, k.nextId(), u, function(a) {
-                  m.push(a);
+            case AST.ArrayExpression:
+              args = [];
+              forEach(ast.elements, function(expr) {
+                self.recurse(expr, self.nextId(), undefined, function(argument) {
+                  args.push(argument);
                 });
               });
-              r = "[" + m.join(",") + "]";
-              this.assign(c, r);
-              e(r);
+              expression = '[' + args.join(',') + ']';
+              this.assign(intoId, expression);
+              recursionFn(expression);
               break;
-            case q.ObjectExpression:
-              m = [];
-              n(a.properties, function(a) {
-                k.recurse(a.value, k.nextId(), u, function(c) {
-                  m.push(k.escape(a.key.type === q.Identifier ? a.key.name : "" + a.key.value) + ":" + c);
+            case AST.ObjectExpression:
+              args = [];
+              forEach(ast.properties, function(property) {
+                self.recurse(property.value, self.nextId(), undefined, function(expr) {
+                  args.push(self.escape(property.key.type === AST.Identifier ? property.key.name : ('' + property.key.value)) + ':' + expr);
                 });
               });
-              r = "{" + m.join(",") + "}";
-              this.assign(c, r);
-              e(r);
+              expression = '{' + args.join(',') + '}';
+              this.assign(intoId, expression);
+              recursionFn(expression);
               break;
-            case q.ThisExpression:
-              this.assign(c, "s");
-              e("s");
+            case AST.ThisExpression:
+              this.assign(intoId, 's');
+              recursionFn('s');
               break;
-            case q.NGValueParameter:
-              this.assign(c, "v"), e("v");
+            case AST.NGValueParameter:
+              this.assign(intoId, 'v');
+              recursionFn('v');
+              break;
           }
-      },
-      getHasOwnProperty: function(a, c) {
-        var d = a + "." + c,
-            e = this.current().own;
-        e.hasOwnProperty(d) || (e[d] = this.nextId(!1, a + "&&(" + this.escape(c) + " in " + a + ")"));
-        return e[d];
-      },
-      assign: function(a, c) {
-        if (a)
-          return this.current().body.push(a, "=", c, ";"), a;
-      },
-      filter: function(a) {
-        this.state.filters.hasOwnProperty(a) || (this.state.filters[a] = this.nextId(!0));
-        return this.state.filters[a];
-      },
-      ifDefined: function(a, c) {
-        return "ifDefined(" + a + "," + this.escape(c) + ")";
-      },
-      plus: function(a, c) {
-        return "plus(" + a + "," + c + ")";
-      },
-      return_: function(a) {
-        this.current().body.push("return ", a, ";");
-      },
-      if_: function(a, c, d) {
-        if (!0 === a)
-          c();
-        else {
-          var e = this.current().body;
-          e.push("if(", a, "){");
-          c();
-          e.push("}");
-          d && (e.push("else{"), d(), e.push("}"));
+        },
+        getHasOwnProperty: function(element, property) {
+          var key = element + '.' + property;
+          var own = this.current().own;
+          if (!own.hasOwnProperty(key)) {
+            own[key] = this.nextId(false, element + '&&(' + this.escape(property) + ' in ' + element + ')');
+          }
+          return own[key];
+        },
+        assign: function(id, value) {
+          if (!id)
+            return ;
+          this.current().body.push(id, '=', value, ';');
+          return id;
+        },
+        filter: function(filterName) {
+          if (!this.state.filters.hasOwnProperty(filterName)) {
+            this.state.filters[filterName] = this.nextId(true);
+          }
+          return this.state.filters[filterName];
+        },
+        ifDefined: function(id, defaultValue) {
+          return 'ifDefined(' + id + ',' + this.escape(defaultValue) + ')';
+        },
+        plus: function(left, right) {
+          return 'plus(' + left + ',' + right + ')';
+        },
+        return_: function(id) {
+          this.current().body.push('return ', id, ';');
+        },
+        if_: function(test, alternate, consequent) {
+          if (test === true) {
+            alternate();
+          } else {
+            var body = this.current().body;
+            body.push('if(', test, '){');
+            alternate();
+            body.push('}');
+            if (consequent) {
+              body.push('else{');
+              consequent();
+              body.push('}');
+            }
+          }
+        },
+        not: function(expression) {
+          return '!(' + expression + ')';
+        },
+        notNull: function(expression) {
+          return expression + '!=null';
+        },
+        nonComputedMember: function(left, right) {
+          return left + '.' + right;
+        },
+        computedMember: function(left, right) {
+          return left + '[' + right + ']';
+        },
+        member: function(left, right, computed) {
+          if (computed)
+            return this.computedMember(left, right);
+          return this.nonComputedMember(left, right);
+        },
+        addEnsureSafeObject: function(item) {
+          this.current().body.push(this.ensureSafeObject(item), ';');
+        },
+        addEnsureSafeMemberName: function(item) {
+          this.current().body.push(this.ensureSafeMemberName(item), ';');
+        },
+        addEnsureSafeFunction: function(item) {
+          this.current().body.push(this.ensureSafeFunction(item), ';');
+        },
+        ensureSafeObject: function(item) {
+          return 'ensureSafeObject(' + item + ',text)';
+        },
+        ensureSafeMemberName: function(item) {
+          return 'ensureSafeMemberName(' + item + ',text)';
+        },
+        ensureSafeFunction: function(item) {
+          return 'ensureSafeFunction(' + item + ',text)';
+        },
+        lazyRecurse: function(ast, intoId, nameId, recursionFn, create, skipWatchIdCheck) {
+          var self = this;
+          return function() {
+            self.recurse(ast, intoId, nameId, recursionFn, create, skipWatchIdCheck);
+          };
+        },
+        lazyAssign: function(id, value) {
+          var self = this;
+          return function() {
+            self.assign(id, value);
+          };
+        },
+        stringEscapeRegex: /[^ a-zA-Z0-9]/g,
+        stringEscapeFn: function(c) {
+          return '\\u' + ('0000' + c.charCodeAt(0).toString(16)).slice(-4);
+        },
+        escape: function(value) {
+          if (isString(value))
+            return "'" + value.replace(this.stringEscapeRegex, this.stringEscapeFn) + "'";
+          if (isNumber(value))
+            return value.toString();
+          if (value === true)
+            return 'true';
+          if (value === false)
+            return 'false';
+          if (value === null)
+            return 'null';
+          if (typeof value === 'undefined')
+            return 'undefined';
+          throw $parseMinErr('esc', 'IMPOSSIBLE');
+        },
+        nextId: function(skip, init) {
+          var id = 'v' + (this.state.nextId++);
+          if (!skip) {
+            this.current().vars.push(id + (init ? '=' + init : ''));
+          }
+          return id;
+        },
+        current: function() {
+          return this.state[this.state.computing];
         }
-      },
-      not: function(a) {
-        return "!(" + a + ")";
-      },
-      notNull: function(a) {
-        return a + "!=null";
-      },
-      nonComputedMember: function(a, c) {
-        return a + "." + c;
-      },
-      computedMember: function(a, c) {
-        return a + "[" + c + "]";
-      },
-      member: function(a, c, d) {
-        return d ? this.computedMember(a, c) : this.nonComputedMember(a, c);
-      },
-      addEnsureSafeObject: function(a) {
-        this.current().body.push(this.ensureSafeObject(a), ";");
-      },
-      addEnsureSafeMemberName: function(a) {
-        this.current().body.push(this.ensureSafeMemberName(a), ";");
-      },
-      addEnsureSafeFunction: function(a) {
-        this.current().body.push(this.ensureSafeFunction(a), ";");
-      },
-      ensureSafeObject: function(a) {
-        return "ensureSafeObject(" + a + ",text)";
-      },
-      ensureSafeMemberName: function(a) {
-        return "ensureSafeMemberName(" + a + ",text)";
-      },
-      ensureSafeFunction: function(a) {
-        return "ensureSafeFunction(" + a + ",text)";
-      },
-      lazyRecurse: function(a, c, d, e, f, g) {
-        var h = this;
-        return function() {
-          h.recurse(a, c, d, e, f, g);
-        };
-      },
-      lazyAssign: function(a, c) {
-        var d = this;
-        return function() {
-          d.assign(a, c);
-        };
-      },
-      stringEscapeRegex: /[^ a-zA-Z0-9]/g,
-      stringEscapeFn: function(a) {
-        return "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
-      },
-      escape: function(a) {
-        if (L(a))
-          return "'" + a.replace(this.stringEscapeRegex, this.stringEscapeFn) + "'";
-        if (V(a))
-          return a.toString();
-        if (!0 === a)
-          return "true";
-        if (!1 === a)
-          return "false";
-        if (null === a)
-          return "null";
-        if ("undefined" === typeof a)
-          return "undefined";
-        throw ca("esc");
-      },
-      nextId: function(a, c) {
-        var d = "v" + this.state.nextId++;
-        a || this.current().vars.push(d + (c ? "=" + c : ""));
-        return d;
-      },
-      current: function() {
-        return this.state[this.state.computing];
+      };
+      function ASTInterpreter(astBuilder, $filter) {
+        this.astBuilder = astBuilder;
+        this.$filter = $filter;
       }
-    };
-    rd.prototype = {
-      compile: function(a, c) {
-        var d = this,
-            e = this.astBuilder.ast(a);
-        this.expression = a;
-        this.expensiveChecks = c;
-        U(e, d.$filter);
-        var f,
-            g;
-        if (f = od(e))
-          g = this.recurse(f);
-        f = md(e.body);
-        var h;
-        f && (h = [], n(f, function(a, c) {
-          var e = d.recurse(a);
-          a.input = e;
-          h.push(e);
-          a.watchId = c;
-        }));
-        var l = [];
-        n(e.body, function(a) {
-          l.push(d.recurse(a.expression));
-        });
-        f = 0 === e.body.length ? function() {} : 1 === e.body.length ? l[0] : function(a, c) {
-          var d;
-          n(l, function(e) {
-            d = e(a, c);
+      ASTInterpreter.prototype = {
+        compile: function(expression, expensiveChecks) {
+          var self = this;
+          var ast = this.astBuilder.ast(expression);
+          this.expression = expression;
+          this.expensiveChecks = expensiveChecks;
+          findConstantAndWatchExpressions(ast, self.$filter);
+          var assignable;
+          var assign;
+          if ((assignable = assignableAST(ast))) {
+            assign = this.recurse(assignable);
+          }
+          var toWatch = getInputs(ast.body);
+          var inputs;
+          if (toWatch) {
+            inputs = [];
+            forEach(toWatch, function(watch, key) {
+              var input = self.recurse(watch);
+              watch.input = input;
+              inputs.push(input);
+              watch.watchId = key;
+            });
+          }
+          var expressions = [];
+          forEach(ast.body, function(expression) {
+            expressions.push(self.recurse(expression.expression));
           });
-          return d;
-        };
-        g && (f.assign = function(a, c, d) {
-          return g(a, d, c);
-        });
-        h && (f.inputs = h);
-        f.literal = pd(e);
-        f.constant = e.constant;
-        return f;
-      },
-      recurse: function(a, c, d) {
-        var e,
-            f,
-            g = this,
-            h;
-        if (a.input)
-          return this.inputs(a.input, a.watchId);
-        switch (a.type) {
-          case q.Literal:
-            return this.value(a.value, c);
-          case q.UnaryExpression:
-            return f = this.recurse(a.argument), this["unary" + a.operator](f, c);
-          case q.BinaryExpression:
-            return e = this.recurse(a.left), f = this.recurse(a.right), this["binary" + a.operator](e, f, c);
-          case q.LogicalExpression:
-            return e = this.recurse(a.left), f = this.recurse(a.right), this["binary" + a.operator](e, f, c);
-          case q.ConditionalExpression:
-            return this["ternary?:"](this.recurse(a.test), this.recurse(a.alternate), this.recurse(a.consequent), c);
-          case q.Identifier:
-            return Ba(a.name, g.expression), g.identifier(a.name, g.expensiveChecks || Fb(a.name), c, d, g.expression);
-          case q.MemberExpression:
-            return e = this.recurse(a.object, !1, !!d), a.computed || (Ba(a.property.name, g.expression), f = a.property.name), a.computed && (f = this.recurse(a.property)), a.computed ? this.computedMember(e, f, c, d, g.expression) : this.nonComputedMember(e, f, g.expensiveChecks, c, d, g.expression);
-          case q.CallExpression:
-            return h = [], n(a.arguments, function(a) {
-              h.push(g.recurse(a));
-            }), a.filter && (f = this.$filter(a.callee.name)), a.filter || (f = this.recurse(a.callee, !0)), a.filter ? function(a, d, e, g) {
-              for (var n = [],
-                  q = 0; q < h.length; ++q)
-                n.push(h[q](a, d, e, g));
-              a = f.apply(u, n, g);
-              return c ? {
-                context: u,
-                name: u,
-                value: a
-              } : a;
-            } : function(a, d, e, r) {
-              var n = f(a, d, e, r),
-                  q;
-              if (null != n.value) {
-                na(n.context, g.expression);
-                kd(n.value, g.expression);
-                q = [];
-                for (var u = 0; u < h.length; ++u)
-                  q.push(na(h[u](a, d, e, r), g.expression));
-                q = na(n.value.apply(n.context, q), g.expression);
-              }
-              return c ? {value: q} : q;
+          var fn = ast.body.length === 0 ? function() {} : ast.body.length === 1 ? expressions[0] : function(scope, locals) {
+            var lastValue;
+            forEach(expressions, function(exp) {
+              lastValue = exp(scope, locals);
+            });
+            return lastValue;
+          };
+          if (assign) {
+            fn.assign = function(scope, value, locals) {
+              return assign(scope, locals, value);
             };
-          case q.AssignmentExpression:
-            return e = this.recurse(a.left, !0, 1), f = this.recurse(a.right), function(a, d, h, n) {
-              var s = e(a, d, h, n);
-              a = f(a, d, h, n);
-              na(s.value, g.expression);
-              s.context[s.name] = a;
-              return c ? {value: a} : a;
-            };
-          case q.ArrayExpression:
-            return h = [], n(a.elements, function(a) {
-              h.push(g.recurse(a));
-            }), function(a, d, e, f) {
-              for (var g = [],
-                  n = 0; n < h.length; ++n)
-                g.push(h[n](a, d, e, f));
-              return c ? {value: g} : g;
-            };
-          case q.ObjectExpression:
-            return h = [], n(a.properties, function(a) {
-              h.push({
-                key: a.key.type === q.Identifier ? a.key.name : "" + a.key.value,
-                value: g.recurse(a.value)
-              });
-            }), function(a, d, e, f) {
-              for (var g = {},
-                  n = 0; n < h.length; ++n)
-                g[h[n].key] = h[n].value(a, d, e, f);
-              return c ? {value: g} : g;
-            };
-          case q.ThisExpression:
-            return function(a) {
-              return c ? {value: a} : a;
-            };
-          case q.NGValueParameter:
-            return function(a, d, e, f) {
-              return c ? {value: e} : e;
-            };
-        }
-      },
-      "unary+": function(a, c) {
-        return function(d, e, f, g) {
-          d = a(d, e, f, g);
-          d = y(d) ? +d : 0;
-          return c ? {value: d} : d;
-        };
-      },
-      "unary-": function(a, c) {
-        return function(d, e, f, g) {
-          d = a(d, e, f, g);
-          d = y(d) ? -d : 0;
-          return c ? {value: d} : d;
-        };
-      },
-      "unary!": function(a, c) {
-        return function(d, e, f, g) {
-          d = !a(d, e, f, g);
-          return c ? {value: d} : d;
-        };
-      },
-      "binary+": function(a, c, d) {
-        return function(e, f, g, h) {
-          var l = a(e, f, g, h);
-          e = c(e, f, g, h);
-          l = ld(l, e);
-          return d ? {value: l} : l;
-        };
-      },
-      "binary-": function(a, c, d) {
-        return function(e, f, g, h) {
-          var l = a(e, f, g, h);
-          e = c(e, f, g, h);
-          l = (y(l) ? l : 0) - (y(e) ? e : 0);
-          return d ? {value: l} : l;
-        };
-      },
-      "binary*": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) * c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary/": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) / c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary%": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) % c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary===": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) === c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary!==": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) !== c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary==": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) == c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary!=": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) != c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary<": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) < c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary>": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) > c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary<=": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) <= c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary>=": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) >= c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary&&": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) && c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "binary||": function(a, c, d) {
-        return function(e, f, g, h) {
-          e = a(e, f, g, h) || c(e, f, g, h);
-          return d ? {value: e} : e;
-        };
-      },
-      "ternary?:": function(a, c, d, e) {
-        return function(f, g, h, l) {
-          f = a(f, g, h, l) ? c(f, g, h, l) : d(f, g, h, l);
-          return e ? {value: f} : f;
-        };
-      },
-      value: function(a, c) {
-        return function() {
-          return c ? {
-            context: u,
-            name: u,
-            value: a
-          } : a;
-        };
-      },
-      identifier: function(a, c, d, e, f) {
-        return function(g, h, l, k) {
-          g = h && a in h ? h : g;
-          e && 1 !== e && g && !g[a] && (g[a] = {});
-          h = g ? g[a] : u;
-          c && na(h, f);
-          return d ? {
-            context: g,
-            name: a,
-            value: h
-          } : h;
-        };
-      },
-      computedMember: function(a, c, d, e, f) {
-        return function(g, h, l, k) {
-          var m = a(g, h, l, k),
-              n,
-              s;
-          null != m && (n = c(g, h, l, k), Ba(n, f), e && 1 !== e && m && !m[n] && (m[n] = {}), s = m[n], na(s, f));
-          return d ? {
-            context: m,
-            name: n,
-            value: s
-          } : s;
-        };
-      },
-      nonComputedMember: function(a, c, d, e, f, g) {
-        return function(h, l, k, m) {
-          h = a(h, l, k, m);
-          f && 1 !== f && h && !h[c] && (h[c] = {});
-          l = null != h ? h[c] : u;
-          (d || Fb(c)) && na(l, g);
-          return e ? {
-            context: h,
-            name: c,
-            value: l
-          } : l;
-        };
-      },
-      inputs: function(a, c) {
-        return function(d, e, f, g) {
-          return g ? g[c] : a(d, e, f);
-        };
-      }
-    };
-    var hc = function(a, c, d) {
-      this.lexer = a;
-      this.$filter = c;
-      this.options = d;
-      this.ast = new q(this.lexer);
-      this.astCompiler = d.csp ? new rd(this.ast, c) : new qd(this.ast, c);
-    };
-    hc.prototype = {
-      constructor: hc,
-      parse: function(a) {
-        return this.astCompiler.compile(a, this.options.expensiveChecks);
-      }
-    };
-    ga();
-    ga();
-    var Xf = Object.prototype.valueOf,
-        Ca = F("$sce"),
-        oa = {
-          HTML: "html",
-          CSS: "css",
-          URL: "url",
-          RESOURCE_URL: "resourceUrl",
-          JS: "js"
+          }
+          if (inputs) {
+            fn.inputs = inputs;
+          }
+          fn.literal = isLiteral(ast);
+          fn.constant = isConstant(ast);
+          return fn;
         },
-        ea = F("$compile"),
-        Z = W.createElement("a"),
-        vd = Aa(N.location.href);
-    wd.$inject = ["$document"];
-    Kc.$inject = ["$provide"];
-    xd.$inject = ["$locale"];
-    zd.$inject = ["$locale"];
-    var Cd = ".",
-        gg = {
-          yyyy: $("FullYear", 4),
-          yy: $("FullYear", 2, 0, !0),
-          y: $("FullYear", 1),
-          MMMM: Hb("Month"),
-          MMM: Hb("Month", !0),
-          MM: $("Month", 2, 1),
-          M: $("Month", 1, 1),
-          dd: $("Date", 2),
-          d: $("Date", 1),
-          HH: $("Hours", 2),
-          H: $("Hours", 1),
-          hh: $("Hours", 2, -12),
-          h: $("Hours", 1, -12),
-          mm: $("Minutes", 2),
-          m: $("Minutes", 1),
-          ss: $("Seconds", 2),
-          s: $("Seconds", 1),
-          sss: $("Milliseconds", 3),
-          EEEE: Hb("Day"),
-          EEE: Hb("Day", !0),
-          a: function(a, c) {
-            return 12 > a.getHours() ? c.AMPMS[0] : c.AMPMS[1];
-          },
-          Z: function(a, c, d) {
-            a = -1 * d;
-            return a = (0 <= a ? "+" : "") + (Gb(Math[0 < a ? "floor" : "ceil"](a / 60), 2) + Gb(Math.abs(a % 60), 2));
-          },
-          ww: Ed(2),
-          w: Ed(1),
-          G: jc,
-          GG: jc,
-          GGG: jc,
-          GGGG: function(a, c) {
-            return 0 >= a.getFullYear() ? c.ERANAMES[0] : c.ERANAMES[1];
+        recurse: function(ast, context, create) {
+          var left,
+              right,
+              self = this,
+              args,
+              expression;
+          if (ast.input) {
+            return this.inputs(ast.input, ast.watchId);
+          }
+          switch (ast.type) {
+            case AST.Literal:
+              return this.value(ast.value, context);
+            case AST.UnaryExpression:
+              right = this.recurse(ast.argument);
+              return this['unary' + ast.operator](right, context);
+            case AST.BinaryExpression:
+              left = this.recurse(ast.left);
+              right = this.recurse(ast.right);
+              return this['binary' + ast.operator](left, right, context);
+            case AST.LogicalExpression:
+              left = this.recurse(ast.left);
+              right = this.recurse(ast.right);
+              return this['binary' + ast.operator](left, right, context);
+            case AST.ConditionalExpression:
+              return this['ternary?:'](this.recurse(ast.test), this.recurse(ast.alternate), this.recurse(ast.consequent), context);
+            case AST.Identifier:
+              ensureSafeMemberName(ast.name, self.expression);
+              return self.identifier(ast.name, self.expensiveChecks || isPossiblyDangerousMemberName(ast.name), context, create, self.expression);
+            case AST.MemberExpression:
+              left = this.recurse(ast.object, false, !!create);
+              if (!ast.computed) {
+                ensureSafeMemberName(ast.property.name, self.expression);
+                right = ast.property.name;
+              }
+              if (ast.computed)
+                right = this.recurse(ast.property);
+              return ast.computed ? this.computedMember(left, right, context, create, self.expression) : this.nonComputedMember(left, right, self.expensiveChecks, context, create, self.expression);
+            case AST.CallExpression:
+              args = [];
+              forEach(ast.arguments, function(expr) {
+                args.push(self.recurse(expr));
+              });
+              if (ast.filter)
+                right = this.$filter(ast.callee.name);
+              if (!ast.filter)
+                right = this.recurse(ast.callee, true);
+              return ast.filter ? function(scope, locals, assign, inputs) {
+                var values = [];
+                for (var i = 0; i < args.length; ++i) {
+                  values.push(args[i](scope, locals, assign, inputs));
+                }
+                var value = right.apply(undefined, values, inputs);
+                return context ? {
+                  context: undefined,
+                  name: undefined,
+                  value: value
+                } : value;
+              } : function(scope, locals, assign, inputs) {
+                var rhs = right(scope, locals, assign, inputs);
+                var value;
+                if (rhs.value != null) {
+                  ensureSafeObject(rhs.context, self.expression);
+                  ensureSafeFunction(rhs.value, self.expression);
+                  var values = [];
+                  for (var i = 0; i < args.length; ++i) {
+                    values.push(ensureSafeObject(args[i](scope, locals, assign, inputs), self.expression));
+                  }
+                  value = ensureSafeObject(rhs.value.apply(rhs.context, values), self.expression);
+                }
+                return context ? {value: value} : value;
+              };
+            case AST.AssignmentExpression:
+              left = this.recurse(ast.left, true, 1);
+              right = this.recurse(ast.right);
+              return function(scope, locals, assign, inputs) {
+                var lhs = left(scope, locals, assign, inputs);
+                var rhs = right(scope, locals, assign, inputs);
+                ensureSafeObject(lhs.value, self.expression);
+                lhs.context[lhs.name] = rhs;
+                return context ? {value: rhs} : rhs;
+              };
+            case AST.ArrayExpression:
+              args = [];
+              forEach(ast.elements, function(expr) {
+                args.push(self.recurse(expr));
+              });
+              return function(scope, locals, assign, inputs) {
+                var value = [];
+                for (var i = 0; i < args.length; ++i) {
+                  value.push(args[i](scope, locals, assign, inputs));
+                }
+                return context ? {value: value} : value;
+              };
+            case AST.ObjectExpression:
+              args = [];
+              forEach(ast.properties, function(property) {
+                args.push({
+                  key: property.key.type === AST.Identifier ? property.key.name : ('' + property.key.value),
+                  value: self.recurse(property.value)
+                });
+              });
+              return function(scope, locals, assign, inputs) {
+                var value = {};
+                for (var i = 0; i < args.length; ++i) {
+                  value[args[i].key] = args[i].value(scope, locals, assign, inputs);
+                }
+                return context ? {value: value} : value;
+              };
+            case AST.ThisExpression:
+              return function(scope) {
+                return context ? {value: scope} : scope;
+              };
+            case AST.NGValueParameter:
+              return function(scope, locals, assign, inputs) {
+                return context ? {value: assign} : assign;
+              };
           }
         },
-        fg = /((?:[^yMdHhmsaZEwG']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|d+|H+|h+|m+|s+|a|Z|G+|w+))(.*)/,
-        eg = /^\-?\d+$/;
-    yd.$inject = ["$locale"];
-    var bg = qa(E),
-        cg = qa(pb);
-    Ad.$inject = ["$parse"];
-    var he = qa({
-      restrict: "E",
-      compile: function(a, c) {
-        if (!c.href && !c.xlinkHref)
-          return function(a, c) {
-            if ("a" === c[0].nodeName.toLowerCase()) {
-              var f = "[object SVGAnimatedString]" === sa.call(c.prop("href")) ? "xlink:href" : "href";
-              c.on("click", function(a) {
-                c.attr(f) || a.preventDefault();
-              });
+        'unary+': function(argument, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = argument(scope, locals, assign, inputs);
+            if (isDefined(arg)) {
+              arg = +arg;
+            } else {
+              arg = 0;
+            }
+            return context ? {value: arg} : arg;
+          };
+        },
+        'unary-': function(argument, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = argument(scope, locals, assign, inputs);
+            if (isDefined(arg)) {
+              arg = -arg;
+            } else {
+              arg = 0;
+            }
+            return context ? {value: arg} : arg;
+          };
+        },
+        'unary!': function(argument, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = !argument(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary+': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var lhs = left(scope, locals, assign, inputs);
+            var rhs = right(scope, locals, assign, inputs);
+            var arg = plusFn(lhs, rhs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary-': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var lhs = left(scope, locals, assign, inputs);
+            var rhs = right(scope, locals, assign, inputs);
+            var arg = (isDefined(lhs) ? lhs : 0) - (isDefined(rhs) ? rhs : 0);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary*': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) * right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary/': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) / right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary%': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) % right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary===': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) === right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary!==': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) !== right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary==': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) == right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary!=': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) != right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary<': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) < right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary>': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) > right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary<=': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) <= right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary>=': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) >= right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary&&': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) && right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'binary||': function(left, right, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = left(scope, locals, assign, inputs) || right(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        'ternary?:': function(test, alternate, consequent, context) {
+          return function(scope, locals, assign, inputs) {
+            var arg = test(scope, locals, assign, inputs) ? alternate(scope, locals, assign, inputs) : consequent(scope, locals, assign, inputs);
+            return context ? {value: arg} : arg;
+          };
+        },
+        value: function(value, context) {
+          return function() {
+            return context ? {
+              context: undefined,
+              name: undefined,
+              value: value
+            } : value;
+          };
+        },
+        identifier: function(name, expensiveChecks, context, create, expression) {
+          return function(scope, locals, assign, inputs) {
+            var base = locals && (name in locals) ? locals : scope;
+            if (create && create !== 1 && base && !(base[name])) {
+              base[name] = {};
+            }
+            var value = base ? base[name] : undefined;
+            if (expensiveChecks) {
+              ensureSafeObject(value, expression);
+            }
+            if (context) {
+              return {
+                context: base,
+                name: name,
+                value: value
+              };
+            } else {
+              return value;
             }
           };
-      }
-    }),
-        qb = {};
-    n(zb, function(a, c) {
-      function d(a, d, f) {
-        a.$watch(f[e], function(a) {
-          f.$set(c, !!a);
-        });
-      }
-      if ("multiple" != a) {
-        var e = xa("ng-" + c),
-            f = d;
-        "checked" === a && (f = function(a, c, f) {
-          f.ngModel !== f[e] && d(a, c, f);
-        });
-        qb[e] = function() {
-          return {
-            restrict: "A",
-            priority: 100,
-            link: f
+        },
+        computedMember: function(left, right, context, create, expression) {
+          return function(scope, locals, assign, inputs) {
+            var lhs = left(scope, locals, assign, inputs);
+            var rhs;
+            var value;
+            if (lhs != null) {
+              rhs = right(scope, locals, assign, inputs);
+              ensureSafeMemberName(rhs, expression);
+              if (create && create !== 1 && lhs && !(lhs[rhs])) {
+                lhs[rhs] = {};
+              }
+              value = lhs[rhs];
+              ensureSafeObject(value, expression);
+            }
+            if (context) {
+              return {
+                context: lhs,
+                name: rhs,
+                value: value
+              };
+            } else {
+              return value;
+            }
           };
-        };
+        },
+        nonComputedMember: function(left, right, expensiveChecks, context, create, expression) {
+          return function(scope, locals, assign, inputs) {
+            var lhs = left(scope, locals, assign, inputs);
+            if (create && create !== 1 && lhs && !(lhs[right])) {
+              lhs[right] = {};
+            }
+            var value = lhs != null ? lhs[right] : undefined;
+            if (expensiveChecks || isPossiblyDangerousMemberName(right)) {
+              ensureSafeObject(value, expression);
+            }
+            if (context) {
+              return {
+                context: lhs,
+                name: right,
+                value: value
+              };
+            } else {
+              return value;
+            }
+          };
+        },
+        inputs: function(input, watchId) {
+          return function(scope, value, locals, inputs) {
+            if (inputs)
+              return inputs[watchId];
+            return input(scope, value, locals);
+          };
+        }
+      };
+      var Parser = function(lexer, $filter, options) {
+        this.lexer = lexer;
+        this.$filter = $filter;
+        this.options = options;
+        this.ast = new AST(this.lexer);
+        this.astCompiler = options.csp ? new ASTInterpreter(this.ast, $filter) : new ASTCompiler(this.ast, $filter);
+      };
+      Parser.prototype = {
+        constructor: Parser,
+        parse: function(text) {
+          return this.astCompiler.compile(text, this.options.expensiveChecks);
+        }
+      };
+      function setter(obj, path, setValue, fullExp) {
+        ensureSafeObject(obj, fullExp);
+        var element = path.split('.'),
+            key;
+        for (var i = 0; element.length > 1; i++) {
+          key = ensureSafeMemberName(element.shift(), fullExp);
+          var propertyObj = ensureSafeObject(obj[key], fullExp);
+          if (!propertyObj) {
+            propertyObj = {};
+            obj[key] = propertyObj;
+          }
+          obj = propertyObj;
+        }
+        key = ensureSafeMemberName(element.shift(), fullExp);
+        ensureSafeObject(obj[key], fullExp);
+        obj[key] = setValue;
+        return setValue;
       }
-    });
-    n(Tc, function(a, c) {
-      qb[c] = function() {
-        return {
-          priority: 100,
-          link: function(a, e, f) {
-            if ("ngPattern" === c && "/" == f.ngPattern.charAt(0) && (e = f.ngPattern.match(ig))) {
-              f.$set("ngPattern", new RegExp(e[1], e[2]));
+      var getterFnCacheDefault = createMap();
+      var getterFnCacheExpensive = createMap();
+      function isPossiblyDangerousMemberName(name) {
+        return name == 'constructor';
+      }
+      var objectValueOf = Object.prototype.valueOf;
+      function getValueOf(value) {
+        return isFunction(value.valueOf) ? value.valueOf() : objectValueOf.call(value);
+      }
+      function $ParseProvider() {
+        var cacheDefault = createMap();
+        var cacheExpensive = createMap();
+        this.$get = ['$filter', '$sniffer', function($filter, $sniffer) {
+          var $parseOptions = {
+            csp: $sniffer.csp,
+            expensiveChecks: false
+          },
+              $parseOptionsExpensive = {
+                csp: $sniffer.csp,
+                expensiveChecks: true
+              };
+          return function $parse(exp, interceptorFn, expensiveChecks) {
+            var parsedExpression,
+                oneTime,
+                cacheKey;
+            switch (typeof exp) {
+              case 'string':
+                exp = exp.trim();
+                cacheKey = exp;
+                var cache = (expensiveChecks ? cacheExpensive : cacheDefault);
+                parsedExpression = cache[cacheKey];
+                if (!parsedExpression) {
+                  if (exp.charAt(0) === ':' && exp.charAt(1) === ':') {
+                    oneTime = true;
+                    exp = exp.substring(2);
+                  }
+                  var parseOptions = expensiveChecks ? $parseOptionsExpensive : $parseOptions;
+                  var lexer = new Lexer(parseOptions);
+                  var parser = new Parser(lexer, $filter, parseOptions);
+                  parsedExpression = parser.parse(exp);
+                  if (parsedExpression.constant) {
+                    parsedExpression.$$watchDelegate = constantWatchDelegate;
+                  } else if (oneTime) {
+                    parsedExpression.$$watchDelegate = parsedExpression.literal ? oneTimeLiteralWatchDelegate : oneTimeWatchDelegate;
+                  } else if (parsedExpression.inputs) {
+                    parsedExpression.$$watchDelegate = inputsWatchDelegate;
+                  }
+                  cache[cacheKey] = parsedExpression;
+                }
+                return addInterceptor(parsedExpression, interceptorFn);
+              case 'function':
+                return addInterceptor(exp, interceptorFn);
+              default:
+                return noop;
+            }
+          };
+          function expressionInputDirtyCheck(newValue, oldValueOfValue) {
+            if (newValue == null || oldValueOfValue == null) {
+              return newValue === oldValueOfValue;
+            }
+            if (typeof newValue === 'object') {
+              newValue = getValueOf(newValue);
+              if (typeof newValue === 'object') {
+                return false;
+              }
+            }
+            return newValue === oldValueOfValue || (newValue !== newValue && oldValueOfValue !== oldValueOfValue);
+          }
+          function inputsWatchDelegate(scope, listener, objectEquality, parsedExpression, prettyPrintExpression) {
+            var inputExpressions = parsedExpression.inputs;
+            var lastResult;
+            if (inputExpressions.length === 1) {
+              var oldInputValueOf = expressionInputDirtyCheck;
+              inputExpressions = inputExpressions[0];
+              return scope.$watch(function expressionInputWatch(scope) {
+                var newInputValue = inputExpressions(scope);
+                if (!expressionInputDirtyCheck(newInputValue, oldInputValueOf)) {
+                  lastResult = parsedExpression(scope, undefined, undefined, [newInputValue]);
+                  oldInputValueOf = newInputValue && getValueOf(newInputValue);
+                }
+                return lastResult;
+              }, listener, objectEquality, prettyPrintExpression);
+            }
+            var oldInputValueOfValues = [];
+            var oldInputValues = [];
+            for (var i = 0,
+                ii = inputExpressions.length; i < ii; i++) {
+              oldInputValueOfValues[i] = expressionInputDirtyCheck;
+              oldInputValues[i] = null;
+            }
+            return scope.$watch(function expressionInputsWatch(scope) {
+              var changed = false;
+              for (var i = 0,
+                  ii = inputExpressions.length; i < ii; i++) {
+                var newInputValue = inputExpressions[i](scope);
+                if (changed || (changed = !expressionInputDirtyCheck(newInputValue, oldInputValueOfValues[i]))) {
+                  oldInputValues[i] = newInputValue;
+                  oldInputValueOfValues[i] = newInputValue && getValueOf(newInputValue);
+                }
+              }
+              if (changed) {
+                lastResult = parsedExpression(scope, undefined, undefined, oldInputValues);
+              }
+              return lastResult;
+            }, listener, objectEquality, prettyPrintExpression);
+          }
+          function oneTimeWatchDelegate(scope, listener, objectEquality, parsedExpression) {
+            var unwatch,
+                lastValue;
+            return unwatch = scope.$watch(function oneTimeWatch(scope) {
+              return parsedExpression(scope);
+            }, function oneTimeListener(value, old, scope) {
+              lastValue = value;
+              if (isFunction(listener)) {
+                listener.apply(this, arguments);
+              }
+              if (isDefined(value)) {
+                scope.$$postDigest(function() {
+                  if (isDefined(lastValue)) {
+                    unwatch();
+                  }
+                });
+              }
+            }, objectEquality);
+          }
+          function oneTimeLiteralWatchDelegate(scope, listener, objectEquality, parsedExpression) {
+            var unwatch,
+                lastValue;
+            return unwatch = scope.$watch(function oneTimeWatch(scope) {
+              return parsedExpression(scope);
+            }, function oneTimeListener(value, old, scope) {
+              lastValue = value;
+              if (isFunction(listener)) {
+                listener.call(this, value, old, scope);
+              }
+              if (isAllDefined(value)) {
+                scope.$$postDigest(function() {
+                  if (isAllDefined(lastValue))
+                    unwatch();
+                });
+              }
+            }, objectEquality);
+            function isAllDefined(value) {
+              var allDefined = true;
+              forEach(value, function(val) {
+                if (!isDefined(val))
+                  allDefined = false;
+              });
+              return allDefined;
+            }
+          }
+          function constantWatchDelegate(scope, listener, objectEquality, parsedExpression) {
+            var unwatch;
+            return unwatch = scope.$watch(function constantWatch(scope) {
+              return parsedExpression(scope);
+            }, function constantListener(value, old, scope) {
+              if (isFunction(listener)) {
+                listener.apply(this, arguments);
+              }
+              unwatch();
+            }, objectEquality);
+          }
+          function addInterceptor(parsedExpression, interceptorFn) {
+            if (!interceptorFn)
+              return parsedExpression;
+            var watchDelegate = parsedExpression.$$watchDelegate;
+            var regularWatch = watchDelegate !== oneTimeLiteralWatchDelegate && watchDelegate !== oneTimeWatchDelegate;
+            var fn = regularWatch ? function regularInterceptedExpression(scope, locals, assign, inputs) {
+              var value = parsedExpression(scope, locals, assign, inputs);
+              return interceptorFn(value, scope, locals);
+            } : function oneTimeInterceptedExpression(scope, locals, assign, inputs) {
+              var value = parsedExpression(scope, locals, assign, inputs);
+              var result = interceptorFn(value, scope, locals);
+              return isDefined(value) ? result : value;
+            };
+            if (parsedExpression.$$watchDelegate && parsedExpression.$$watchDelegate !== inputsWatchDelegate) {
+              fn.$$watchDelegate = parsedExpression.$$watchDelegate;
+            } else if (!interceptorFn.$stateful) {
+              fn.$$watchDelegate = inputsWatchDelegate;
+              fn.inputs = parsedExpression.inputs ? parsedExpression.inputs : [parsedExpression];
+            }
+            return fn;
+          }
+        }];
+      }
+      function $QProvider() {
+        this.$get = ['$rootScope', '$exceptionHandler', function($rootScope, $exceptionHandler) {
+          return qFactory(function(callback) {
+            $rootScope.$evalAsync(callback);
+          }, $exceptionHandler);
+        }];
+      }
+      function $$QProvider() {
+        this.$get = ['$browser', '$exceptionHandler', function($browser, $exceptionHandler) {
+          return qFactory(function(callback) {
+            $browser.defer(callback);
+          }, $exceptionHandler);
+        }];
+      }
+      function qFactory(nextTick, exceptionHandler) {
+        var $qMinErr = minErr('$q', TypeError);
+        function callOnce(self, resolveFn, rejectFn) {
+          var called = false;
+          function wrap(fn) {
+            return function(value) {
+              if (called)
+                return ;
+              called = true;
+              fn.call(self, value);
+            };
+          }
+          return [wrap(resolveFn), wrap(rejectFn)];
+        }
+        var defer = function() {
+          return new Deferred();
+        };
+        function Promise() {
+          this.$$state = {status: 0};
+        }
+        Promise.prototype = {
+          then: function(onFulfilled, onRejected, progressBack) {
+            var result = new Deferred();
+            this.$$state.pending = this.$$state.pending || [];
+            this.$$state.pending.push([result, onFulfilled, onRejected, progressBack]);
+            if (this.$$state.status > 0)
+              scheduleProcessQueue(this.$$state);
+            return result.promise;
+          },
+          "catch": function(callback) {
+            return this.then(null, callback);
+          },
+          "finally": function(callback, progressBack) {
+            return this.then(function(value) {
+              return handleCallback(value, true, callback);
+            }, function(error) {
+              return handleCallback(error, false, callback);
+            }, progressBack);
+          }
+        };
+        function simpleBind(context, fn) {
+          return function(value) {
+            fn.call(context, value);
+          };
+        }
+        function processQueue(state) {
+          var fn,
+              deferred,
+              pending;
+          pending = state.pending;
+          state.processScheduled = false;
+          state.pending = undefined;
+          for (var i = 0,
+              ii = pending.length; i < ii; ++i) {
+            deferred = pending[i][0];
+            fn = pending[i][state.status];
+            try {
+              if (isFunction(fn)) {
+                deferred.resolve(fn(state.value));
+              } else if (state.status === 1) {
+                deferred.resolve(state.value);
+              } else {
+                deferred.reject(state.value);
+              }
+            } catch (e) {
+              deferred.reject(e);
+              exceptionHandler(e);
+            }
+          }
+        }
+        function scheduleProcessQueue(state) {
+          if (state.processScheduled || !state.pending)
+            return ;
+          state.processScheduled = true;
+          nextTick(function() {
+            processQueue(state);
+          });
+        }
+        function Deferred() {
+          this.promise = new Promise();
+          this.resolve = simpleBind(this, this.resolve);
+          this.reject = simpleBind(this, this.reject);
+          this.notify = simpleBind(this, this.notify);
+        }
+        Deferred.prototype = {
+          resolve: function(val) {
+            if (this.promise.$$state.status)
               return ;
+            if (val === this.promise) {
+              this.$$reject($qMinErr('qcycle', "Expected promise to be resolved with value other than itself '{0}'", val));
+            } else {
+              this.$$resolve(val);
             }
-            a.$watch(f[c], function(a) {
-              f.$set(c, a);
-            });
-          }
-        };
-      };
-    });
-    n(["src", "srcset", "href"], function(a) {
-      var c = xa("ng-" + a);
-      qb[c] = function() {
-        return {
-          priority: 99,
-          link: function(d, e, f) {
-            var g = a,
-                h = a;
-            "href" === a && "[object SVGAnimatedString]" === sa.call(e.prop("href")) && (h = "xlinkHref", f.$attr[h] = "xlink:href", g = null);
-            f.$observe(c, function(c) {
-              c ? (f.$set(h, c), gb && g && e.prop(g, f[h])) : "href" === a && f.$set(h, null);
-            });
-          }
-        };
-      };
-    });
-    var Ib = {
-      $addControl: w,
-      $$renameControl: function(a, c) {
-        a.$name = c;
-      },
-      $removeControl: w,
-      $setValidity: w,
-      $setDirty: w,
-      $setPristine: w,
-      $setSubmitted: w
-    };
-    Fd.$inject = ["$element", "$attrs", "$scope", "$animate", "$interpolate"];
-    var Nd = function(a) {
-      return ["$timeout", function(c) {
-        return {
-          name: "form",
-          restrict: a ? "EAC" : "E",
-          controller: Fd,
-          compile: function(d, e) {
-            d.addClass(Sa).addClass(jb);
-            var f = e.name ? "name" : a && e.ngForm ? "ngForm" : !1;
-            return {pre: function(a, d, e, k) {
-                if (!("action" in e)) {
-                  var m = function(c) {
-                    a.$apply(function() {
-                      k.$commitViewValue();
-                      k.$setSubmitted();
-                    });
-                    c.preventDefault();
-                  };
-                  d[0].addEventListener("submit", m, !1);
-                  d.on("$destroy", function() {
-                    c(function() {
-                      d[0].removeEventListener("submit", m, !1);
-                    }, 0, !1);
-                  });
+          },
+          $$resolve: function(val) {
+            var then,
+                fns;
+            fns = callOnce(this, this.$$resolve, this.$$reject);
+            try {
+              if ((isObject(val) || isFunction(val)))
+                then = val && val.then;
+              if (isFunction(then)) {
+                this.promise.$$state.status = -1;
+                then.call(val, fns[0], fns[1], this.notify);
+              } else {
+                this.promise.$$state.value = val;
+                this.promise.$$state.status = 1;
+                scheduleProcessQueue(this.promise.$$state);
+              }
+            } catch (e) {
+              fns[1](e);
+              exceptionHandler(e);
+            }
+          },
+          reject: function(reason) {
+            if (this.promise.$$state.status)
+              return ;
+            this.$$reject(reason);
+          },
+          $$reject: function(reason) {
+            this.promise.$$state.value = reason;
+            this.promise.$$state.status = 2;
+            scheduleProcessQueue(this.promise.$$state);
+          },
+          notify: function(progress) {
+            var callbacks = this.promise.$$state.pending;
+            if ((this.promise.$$state.status <= 0) && callbacks && callbacks.length) {
+              nextTick(function() {
+                var callback,
+                    result;
+                for (var i = 0,
+                    ii = callbacks.length; i < ii; i++) {
+                  result = callbacks[i][0];
+                  callback = callbacks[i][3];
+                  try {
+                    result.notify(isFunction(callback) ? callback(progress) : progress);
+                  } catch (e) {
+                    exceptionHandler(e);
+                  }
                 }
-                var n = k.$$parentForm;
-                f && (Eb(a, k.$name, k, k.$name), e.$observe(f, function(c) {
-                  k.$name !== c && (Eb(a, k.$name, u, k.$name), n.$$renameControl(k, c), Eb(a, k.$name, k, k.$name));
-                }));
-                d.on("$destroy", function() {
-                  n.$removeControl(k);
-                  f && Eb(a, e[f], u, k.$name);
-                  Q(k, Ib);
-                });
-              }};
-          }
-        };
-      }];
-    },
-        ie = Nd(),
-        ve = Nd(!0),
-        hg = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/,
-        qg = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
-        rg = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i,
-        sg = /^\s*(\-|\+)?(\d+|(\d*(\.\d*)))\s*$/,
-        Od = /^(\d{4})-(\d{2})-(\d{2})$/,
-        Pd = /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)(?::(\d\d)(\.\d{1,3})?)?$/,
-        mc = /^(\d{4})-W(\d\d)$/,
-        Qd = /^(\d{4})-(\d\d)$/,
-        Rd = /^(\d\d):(\d\d)(?::(\d\d)(\.\d{1,3})?)?$/,
-        Sd = {
-          text: function(a, c, d, e, f, g) {
-            hb(a, c, d, e, f, g);
-            kc(e);
-          },
-          date: ib("date", Od, Kb(Od, ["yyyy", "MM", "dd"]), "yyyy-MM-dd"),
-          "datetime-local": ib("datetimelocal", Pd, Kb(Pd, "yyyy MM dd HH mm ss sss".split(" ")), "yyyy-MM-ddTHH:mm:ss.sss"),
-          time: ib("time", Rd, Kb(Rd, ["HH", "mm", "ss", "sss"]), "HH:mm:ss.sss"),
-          week: ib("week", mc, function(a, c) {
-            if (da(a))
-              return a;
-            if (L(a)) {
-              mc.lastIndex = 0;
-              var d = mc.exec(a);
-              if (d) {
-                var e = +d[1],
-                    f = +d[2],
-                    g = d = 0,
-                    h = 0,
-                    l = 0,
-                    k = Dd(e),
-                    f = 7 * (f - 1);
-                c && (d = c.getHours(), g = c.getMinutes(), h = c.getSeconds(), l = c.getMilliseconds());
-                return new Date(e, 0, k.getDate() + f, d, g, h, l);
-              }
-            }
-            return NaN;
-          }, "yyyy-Www"),
-          month: ib("month", Qd, Kb(Qd, ["yyyy", "MM"]), "yyyy-MM"),
-          number: function(a, c, d, e, f, g) {
-            Hd(a, c, d, e);
-            hb(a, c, d, e, f, g);
-            e.$$parserName = "number";
-            e.$parsers.push(function(a) {
-              return e.$isEmpty(a) ? null : sg.test(a) ? parseFloat(a) : u;
-            });
-            e.$formatters.push(function(a) {
-              if (!e.$isEmpty(a)) {
-                if (!V(a))
-                  throw Lb("numfmt", a);
-                a = a.toString();
-              }
-              return a;
-            });
-            if (y(d.min) || d.ngMin) {
-              var h;
-              e.$validators.min = function(a) {
-                return e.$isEmpty(a) || v(h) || a >= h;
-              };
-              d.$observe("min", function(a) {
-                y(a) && !V(a) && (a = parseFloat(a, 10));
-                h = V(a) && !isNaN(a) ? a : u;
-                e.$validate();
               });
             }
-            if (y(d.max) || d.ngMax) {
-              var l;
-              e.$validators.max = function(a) {
-                return e.$isEmpty(a) || v(l) || a <= l;
-              };
-              d.$observe("max", function(a) {
-                y(a) && !V(a) && (a = parseFloat(a, 10));
-                l = V(a) && !isNaN(a) ? a : u;
-                e.$validate();
-              });
-            }
-          },
-          url: function(a, c, d, e, f, g) {
-            hb(a, c, d, e, f, g);
-            kc(e);
-            e.$$parserName = "url";
-            e.$validators.url = function(a, c) {
-              var d = a || c;
-              return e.$isEmpty(d) || qg.test(d);
-            };
-          },
-          email: function(a, c, d, e, f, g) {
-            hb(a, c, d, e, f, g);
-            kc(e);
-            e.$$parserName = "email";
-            e.$validators.email = function(a, c) {
-              var d = a || c;
-              return e.$isEmpty(d) || rg.test(d);
-            };
-          },
-          radio: function(a, c, d, e) {
-            v(d.name) && c.attr("name", ++lb);
-            c.on("click", function(a) {
-              c[0].checked && e.$setViewValue(d.value, a && a.type);
-            });
-            e.$render = function() {
-              c[0].checked = d.value == e.$viewValue;
-            };
-            d.$observe("value", e.$render);
-          },
-          checkbox: function(a, c, d, e, f, g, h, l) {
-            var k = Id(l, a, "ngTrueValue", d.ngTrueValue, !0),
-                m = Id(l, a, "ngFalseValue", d.ngFalseValue, !1);
-            c.on("click", function(a) {
-              e.$setViewValue(c[0].checked, a && a.type);
-            });
-            e.$render = function() {
-              c[0].checked = e.$viewValue;
-            };
-            e.$isEmpty = function(a) {
-              return !1 === a;
-            };
-            e.$formatters.push(function(a) {
-              return ka(a, k);
-            });
-            e.$parsers.push(function(a) {
-              return a ? k : m;
-            });
-          },
-          hidden: w,
-          button: w,
-          submit: w,
-          reset: w,
-          file: w
-        },
-        Ec = ["$browser", "$sniffer", "$filter", "$parse", function(a, c, d, e) {
-          return {
-            restrict: "E",
-            require: ["?ngModel"],
-            link: {pre: function(f, g, h, l) {
-                l[0] && (Sd[E(h.type)] || Sd.text)(f, g, h, l[0], c, a, d, e);
-              }}
-          };
-        }],
-        tg = /^(true|false|\d+)$/,
-        Ne = function() {
-          return {
-            restrict: "A",
-            priority: 100,
-            compile: function(a, c) {
-              return tg.test(c.ngValue) ? function(a, c, f) {
-                f.$set("value", a.$eval(f.ngValue));
-              } : function(a, c, f) {
-                a.$watch(f.ngValue, function(a) {
-                  f.$set("value", a);
-                });
-              };
-            }
-          };
-        },
-        ne = ["$compile", function(a) {
-          return {
-            restrict: "AC",
-            compile: function(c) {
-              a.$$addBindingClass(c);
-              return function(c, e, f) {
-                a.$$addBindingInfo(e, f.ngBind);
-                e = e[0];
-                c.$watch(f.ngBind, function(a) {
-                  e.textContent = a === u ? "" : a;
-                });
-              };
-            }
-          };
-        }],
-        pe = ["$interpolate", "$compile", function(a, c) {
-          return {compile: function(d) {
-              c.$$addBindingClass(d);
-              return function(d, f, g) {
-                d = a(f.attr(g.$attr.ngBindTemplate));
-                c.$$addBindingInfo(f, d.expressions);
-                f = f[0];
-                g.$observe("ngBindTemplate", function(a) {
-                  f.textContent = a === u ? "" : a;
-                });
-              };
-            }};
-        }],
-        oe = ["$sce", "$parse", "$compile", function(a, c, d) {
-          return {
-            restrict: "A",
-            compile: function(e, f) {
-              var g = c(f.ngBindHtml),
-                  h = c(f.ngBindHtml, function(a) {
-                    return (a || "").toString();
-                  });
-              d.$$addBindingClass(e);
-              return function(c, e, f) {
-                d.$$addBindingInfo(e, f.ngBindHtml);
-                c.$watch(h, function() {
-                  e.html(a.getTrustedHtml(g(c)) || "");
-                });
-              };
-            }
-          };
-        }],
-        Me = qa({
-          restrict: "A",
-          require: "ngModel",
-          link: function(a, c, d, e) {
-            e.$viewChangeListeners.push(function() {
-              a.$eval(d.ngChange);
-            });
           }
-        }),
-        qe = lc("", !0),
-        se = lc("Odd", 0),
-        re = lc("Even", 1),
-        te = Ma({compile: function(a, c) {
-            c.$set("ngCloak", u);
-            a.removeClass("ng-cloak");
-          }}),
-        ue = [function() {
-          return {
-            restrict: "A",
-            scope: !0,
-            controller: "@",
-            priority: 500
-          };
-        }],
-        Jc = {},
-        ug = {
-          blur: !0,
-          focus: !0
         };
-    n("click dblclick mousedown mouseup mouseover mouseout mousemove mouseenter mouseleave keydown keyup keypress submit focus blur copy cut paste".split(" "), function(a) {
-      var c = xa("ng-" + a);
-      Jc[c] = ["$parse", "$rootScope", function(d, e) {
-        return {
-          restrict: "A",
-          compile: function(f, g) {
-            var h = d(g[c], null, !0);
-            return function(c, d) {
-              d.on(a, function(d) {
-                var f = function() {
-                  h(c, {$event: d});
+        var reject = function(reason) {
+          var result = new Deferred();
+          result.reject(reason);
+          return result.promise;
+        };
+        var makePromise = function makePromise(value, resolved) {
+          var result = new Deferred();
+          if (resolved) {
+            result.resolve(value);
+          } else {
+            result.reject(value);
+          }
+          return result.promise;
+        };
+        var handleCallback = function handleCallback(value, isResolved, callback) {
+          var callbackOutput = null;
+          try {
+            if (isFunction(callback))
+              callbackOutput = callback();
+          } catch (e) {
+            return makePromise(e, false);
+          }
+          if (isPromiseLike(callbackOutput)) {
+            return callbackOutput.then(function() {
+              return makePromise(value, isResolved);
+            }, function(error) {
+              return makePromise(error, false);
+            });
+          } else {
+            return makePromise(value, isResolved);
+          }
+        };
+        var when = function(value, callback, errback, progressBack) {
+          var result = new Deferred();
+          result.resolve(value);
+          return result.promise.then(callback, errback, progressBack);
+        };
+        function all(promises) {
+          var deferred = new Deferred(),
+              counter = 0,
+              results = isArray(promises) ? [] : {};
+          forEach(promises, function(promise, key) {
+            counter++;
+            when(promise).then(function(value) {
+              if (results.hasOwnProperty(key))
+                return ;
+              results[key] = value;
+              if (!(--counter))
+                deferred.resolve(results);
+            }, function(reason) {
+              if (results.hasOwnProperty(key))
+                return ;
+              deferred.reject(reason);
+            });
+          });
+          if (counter === 0) {
+            deferred.resolve(results);
+          }
+          return deferred.promise;
+        }
+        var $Q = function Q(resolver) {
+          if (!isFunction(resolver)) {
+            throw $qMinErr('norslvr', "Expected resolverFn, got '{0}'", resolver);
+          }
+          if (!(this instanceof Q)) {
+            return new Q(resolver);
+          }
+          var deferred = new Deferred();
+          function resolveFn(value) {
+            deferred.resolve(value);
+          }
+          function rejectFn(reason) {
+            deferred.reject(reason);
+          }
+          resolver(resolveFn, rejectFn);
+          return deferred.promise;
+        };
+        $Q.defer = defer;
+        $Q.reject = reject;
+        $Q.when = when;
+        $Q.all = all;
+        return $Q;
+      }
+      function $$RAFProvider() {
+        this.$get = ['$window', '$timeout', function($window, $timeout) {
+          var requestAnimationFrame = $window.requestAnimationFrame || $window.webkitRequestAnimationFrame;
+          var cancelAnimationFrame = $window.cancelAnimationFrame || $window.webkitCancelAnimationFrame || $window.webkitCancelRequestAnimationFrame;
+          var rafSupported = !!requestAnimationFrame;
+          var rafFn = rafSupported ? function(fn) {
+            var id = requestAnimationFrame(fn);
+            return function() {
+              cancelAnimationFrame(id);
+            };
+          } : function(fn) {
+            var timer = $timeout(fn, 16.66, false);
+            return function() {
+              $timeout.cancel(timer);
+            };
+          };
+          queueFn.supported = rafSupported;
+          var cancelLastRAF;
+          var taskCount = 0;
+          var taskQueue = [];
+          return queueFn;
+          function flush() {
+            for (var i = 0; i < taskQueue.length; i++) {
+              var task = taskQueue[i];
+              if (task) {
+                taskQueue[i] = null;
+                task();
+              }
+            }
+            taskCount = taskQueue.length = 0;
+          }
+          function queueFn(asyncFn) {
+            var index = taskQueue.length;
+            taskCount++;
+            taskQueue.push(asyncFn);
+            if (index === 0) {
+              cancelLastRAF = rafFn(flush);
+            }
+            return function cancelQueueFn() {
+              if (index >= 0) {
+                taskQueue[index] = null;
+                index = null;
+                if (--taskCount === 0 && cancelLastRAF) {
+                  cancelLastRAF();
+                  cancelLastRAF = null;
+                  taskQueue.length = 0;
+                }
+              }
+            };
+          }
+        }];
+      }
+      function $RootScopeProvider() {
+        var TTL = 10;
+        var $rootScopeMinErr = minErr('$rootScope');
+        var lastDirtyWatch = null;
+        var applyAsyncId = null;
+        this.digestTtl = function(value) {
+          if (arguments.length) {
+            TTL = value;
+          }
+          return TTL;
+        };
+        function createChildScopeClass(parent) {
+          function ChildScope() {
+            this.$$watchers = this.$$nextSibling = this.$$childHead = this.$$childTail = null;
+            this.$$listeners = {};
+            this.$$listenerCount = {};
+            this.$$watchersCount = 0;
+            this.$id = nextUid();
+            this.$$ChildScope = null;
+          }
+          ChildScope.prototype = parent;
+          return ChildScope;
+        }
+        this.$get = ['$injector', '$exceptionHandler', '$parse', '$browser', function($injector, $exceptionHandler, $parse, $browser) {
+          function destroyChildScope($event) {
+            $event.currentScope.$$destroyed = true;
+          }
+          function Scope() {
+            this.$id = nextUid();
+            this.$$phase = this.$parent = this.$$watchers = this.$$nextSibling = this.$$prevSibling = this.$$childHead = this.$$childTail = null;
+            this.$root = this;
+            this.$$destroyed = false;
+            this.$$listeners = {};
+            this.$$listenerCount = {};
+            this.$$watchersCount = 0;
+            this.$$isolateBindings = null;
+          }
+          Scope.prototype = {
+            constructor: Scope,
+            $new: function(isolate, parent) {
+              var child;
+              parent = parent || this;
+              if (isolate) {
+                child = new Scope();
+                child.$root = this.$root;
+              } else {
+                if (!this.$$ChildScope) {
+                  this.$$ChildScope = createChildScopeClass(this);
+                }
+                child = new this.$$ChildScope();
+              }
+              child.$parent = parent;
+              child.$$prevSibling = parent.$$childTail;
+              if (parent.$$childHead) {
+                parent.$$childTail.$$nextSibling = child;
+                parent.$$childTail = child;
+              } else {
+                parent.$$childHead = parent.$$childTail = child;
+              }
+              if (isolate || parent != this)
+                child.$on('$destroy', destroyChildScope);
+              return child;
+            },
+            $watch: function(watchExp, listener, objectEquality, prettyPrintExpression) {
+              var get = $parse(watchExp);
+              if (get.$$watchDelegate) {
+                return get.$$watchDelegate(this, listener, objectEquality, get, watchExp);
+              }
+              var scope = this,
+                  array = scope.$$watchers,
+                  watcher = {
+                    fn: listener,
+                    last: initWatchVal,
+                    get: get,
+                    exp: prettyPrintExpression || watchExp,
+                    eq: !!objectEquality
+                  };
+              lastDirtyWatch = null;
+              if (!isFunction(listener)) {
+                watcher.fn = noop;
+              }
+              if (!array) {
+                array = scope.$$watchers = [];
+              }
+              array.unshift(watcher);
+              incrementWatchersCount(this, 1);
+              return function deregisterWatch() {
+                if (arrayRemove(array, watcher) >= 0) {
+                  incrementWatchersCount(scope, -1);
+                }
+                lastDirtyWatch = null;
+              };
+            },
+            $watchGroup: function(watchExpressions, listener) {
+              var oldValues = new Array(watchExpressions.length);
+              var newValues = new Array(watchExpressions.length);
+              var deregisterFns = [];
+              var self = this;
+              var changeReactionScheduled = false;
+              var firstRun = true;
+              if (!watchExpressions.length) {
+                var shouldCall = true;
+                self.$evalAsync(function() {
+                  if (shouldCall)
+                    listener(newValues, newValues, self);
+                });
+                return function deregisterWatchGroup() {
+                  shouldCall = false;
                 };
-                ug[a] && e.$$phase ? c.$evalAsync(f) : c.$apply(f);
+              }
+              if (watchExpressions.length === 1) {
+                return this.$watch(watchExpressions[0], function watchGroupAction(value, oldValue, scope) {
+                  newValues[0] = value;
+                  oldValues[0] = oldValue;
+                  listener(newValues, (value === oldValue) ? newValues : oldValues, scope);
+                });
+              }
+              forEach(watchExpressions, function(expr, i) {
+                var unwatchFn = self.$watch(expr, function watchGroupSubAction(value, oldValue) {
+                  newValues[i] = value;
+                  oldValues[i] = oldValue;
+                  if (!changeReactionScheduled) {
+                    changeReactionScheduled = true;
+                    self.$evalAsync(watchGroupAction);
+                  }
+                });
+                deregisterFns.push(unwatchFn);
               });
-            };
+              function watchGroupAction() {
+                changeReactionScheduled = false;
+                if (firstRun) {
+                  firstRun = false;
+                  listener(newValues, newValues, self);
+                } else {
+                  listener(newValues, oldValues, self);
+                }
+              }
+              return function deregisterWatchGroup() {
+                while (deregisterFns.length) {
+                  deregisterFns.shift()();
+                }
+              };
+            },
+            $watchCollection: function(obj, listener) {
+              $watchCollectionInterceptor.$stateful = true;
+              var self = this;
+              var newValue;
+              var oldValue;
+              var veryOldValue;
+              var trackVeryOldValue = (listener.length > 1);
+              var changeDetected = 0;
+              var changeDetector = $parse(obj, $watchCollectionInterceptor);
+              var internalArray = [];
+              var internalObject = {};
+              var initRun = true;
+              var oldLength = 0;
+              function $watchCollectionInterceptor(_value) {
+                newValue = _value;
+                var newLength,
+                    key,
+                    bothNaN,
+                    newItem,
+                    oldItem;
+                if (isUndefined(newValue))
+                  return ;
+                if (!isObject(newValue)) {
+                  if (oldValue !== newValue) {
+                    oldValue = newValue;
+                    changeDetected++;
+                  }
+                } else if (isArrayLike(newValue)) {
+                  if (oldValue !== internalArray) {
+                    oldValue = internalArray;
+                    oldLength = oldValue.length = 0;
+                    changeDetected++;
+                  }
+                  newLength = newValue.length;
+                  if (oldLength !== newLength) {
+                    changeDetected++;
+                    oldValue.length = oldLength = newLength;
+                  }
+                  for (var i = 0; i < newLength; i++) {
+                    oldItem = oldValue[i];
+                    newItem = newValue[i];
+                    bothNaN = (oldItem !== oldItem) && (newItem !== newItem);
+                    if (!bothNaN && (oldItem !== newItem)) {
+                      changeDetected++;
+                      oldValue[i] = newItem;
+                    }
+                  }
+                } else {
+                  if (oldValue !== internalObject) {
+                    oldValue = internalObject = {};
+                    oldLength = 0;
+                    changeDetected++;
+                  }
+                  newLength = 0;
+                  for (key in newValue) {
+                    if (newValue.hasOwnProperty(key)) {
+                      newLength++;
+                      newItem = newValue[key];
+                      oldItem = oldValue[key];
+                      if (key in oldValue) {
+                        bothNaN = (oldItem !== oldItem) && (newItem !== newItem);
+                        if (!bothNaN && (oldItem !== newItem)) {
+                          changeDetected++;
+                          oldValue[key] = newItem;
+                        }
+                      } else {
+                        oldLength++;
+                        oldValue[key] = newItem;
+                        changeDetected++;
+                      }
+                    }
+                  }
+                  if (oldLength > newLength) {
+                    changeDetected++;
+                    for (key in oldValue) {
+                      if (!newValue.hasOwnProperty(key)) {
+                        oldLength--;
+                        delete oldValue[key];
+                      }
+                    }
+                  }
+                }
+                return changeDetected;
+              }
+              function $watchCollectionAction() {
+                if (initRun) {
+                  initRun = false;
+                  listener(newValue, newValue, self);
+                } else {
+                  listener(newValue, veryOldValue, self);
+                }
+                if (trackVeryOldValue) {
+                  if (!isObject(newValue)) {
+                    veryOldValue = newValue;
+                  } else if (isArrayLike(newValue)) {
+                    veryOldValue = new Array(newValue.length);
+                    for (var i = 0; i < newValue.length; i++) {
+                      veryOldValue[i] = newValue[i];
+                    }
+                  } else {
+                    veryOldValue = {};
+                    for (var key in newValue) {
+                      if (hasOwnProperty.call(newValue, key)) {
+                        veryOldValue[key] = newValue[key];
+                      }
+                    }
+                  }
+                }
+              }
+              return this.$watch(changeDetector, $watchCollectionAction);
+            },
+            $digest: function() {
+              var watch,
+                  value,
+                  last,
+                  watchers,
+                  length,
+                  dirty,
+                  ttl = TTL,
+                  next,
+                  current,
+                  target = this,
+                  watchLog = [],
+                  logIdx,
+                  logMsg,
+                  asyncTask;
+              beginPhase('$digest');
+              $browser.$$checkUrlChange();
+              if (this === $rootScope && applyAsyncId !== null) {
+                $browser.defer.cancel(applyAsyncId);
+                flushApplyAsync();
+              }
+              lastDirtyWatch = null;
+              do {
+                dirty = false;
+                current = target;
+                while (asyncQueue.length) {
+                  try {
+                    asyncTask = asyncQueue.shift();
+                    asyncTask.scope.$eval(asyncTask.expression, asyncTask.locals);
+                  } catch (e) {
+                    $exceptionHandler(e);
+                  }
+                  lastDirtyWatch = null;
+                }
+                traverseScopesLoop: do {
+                  if ((watchers = current.$$watchers)) {
+                    length = watchers.length;
+                    while (length--) {
+                      try {
+                        watch = watchers[length];
+                        if (watch) {
+                          if ((value = watch.get(current)) !== (last = watch.last) && !(watch.eq ? equals(value, last) : (typeof value === 'number' && typeof last === 'number' && isNaN(value) && isNaN(last)))) {
+                            dirty = true;
+                            lastDirtyWatch = watch;
+                            watch.last = watch.eq ? copy(value, null) : value;
+                            watch.fn(value, ((last === initWatchVal) ? value : last), current);
+                            if (ttl < 5) {
+                              logIdx = 4 - ttl;
+                              if (!watchLog[logIdx])
+                                watchLog[logIdx] = [];
+                              watchLog[logIdx].push({
+                                msg: isFunction(watch.exp) ? 'fn: ' + (watch.exp.name || watch.exp.toString()) : watch.exp,
+                                newVal: value,
+                                oldVal: last
+                              });
+                            }
+                          } else if (watch === lastDirtyWatch) {
+                            dirty = false;
+                            break traverseScopesLoop;
+                          }
+                        }
+                      } catch (e) {
+                        $exceptionHandler(e);
+                      }
+                    }
+                  }
+                  if (!(next = ((current.$$watchersCount && current.$$childHead) || (current !== target && current.$$nextSibling)))) {
+                    while (current !== target && !(next = current.$$nextSibling)) {
+                      current = current.$parent;
+                    }
+                  }
+                } while ((current = next));
+                if ((dirty || asyncQueue.length) && !(ttl--)) {
+                  clearPhase();
+                  throw $rootScopeMinErr('infdig', '{0} $digest() iterations reached. Aborting!\n' + 'Watchers fired in the last 5 iterations: {1}', TTL, watchLog);
+                }
+              } while (dirty || asyncQueue.length);
+              clearPhase();
+              while (postDigestQueue.length) {
+                try {
+                  postDigestQueue.shift()();
+                } catch (e) {
+                  $exceptionHandler(e);
+                }
+              }
+            },
+            $destroy: function() {
+              if (this.$$destroyed)
+                return ;
+              var parent = this.$parent;
+              this.$broadcast('$destroy');
+              this.$$destroyed = true;
+              if (this === $rootScope) {
+                $browser.$$applicationDestroyed();
+              }
+              incrementWatchersCount(this, -this.$$watchersCount);
+              for (var eventName in this.$$listenerCount) {
+                decrementListenerCount(this, this.$$listenerCount[eventName], eventName);
+              }
+              if (parent && parent.$$childHead == this)
+                parent.$$childHead = this.$$nextSibling;
+              if (parent && parent.$$childTail == this)
+                parent.$$childTail = this.$$prevSibling;
+              if (this.$$prevSibling)
+                this.$$prevSibling.$$nextSibling = this.$$nextSibling;
+              if (this.$$nextSibling)
+                this.$$nextSibling.$$prevSibling = this.$$prevSibling;
+              this.$destroy = this.$digest = this.$apply = this.$evalAsync = this.$applyAsync = noop;
+              this.$on = this.$watch = this.$watchGroup = function() {
+                return noop;
+              };
+              this.$$listeners = {};
+              this.$parent = this.$$nextSibling = this.$$prevSibling = this.$$childHead = this.$$childTail = this.$root = this.$$watchers = null;
+            },
+            $eval: function(expr, locals) {
+              return $parse(expr)(this, locals);
+            },
+            $evalAsync: function(expr, locals) {
+              if (!$rootScope.$$phase && !asyncQueue.length) {
+                $browser.defer(function() {
+                  if (asyncQueue.length) {
+                    $rootScope.$digest();
+                  }
+                });
+              }
+              asyncQueue.push({
+                scope: this,
+                expression: expr,
+                locals: locals
+              });
+            },
+            $$postDigest: function(fn) {
+              postDigestQueue.push(fn);
+            },
+            $apply: function(expr) {
+              try {
+                beginPhase('$apply');
+                return this.$eval(expr);
+              } catch (e) {
+                $exceptionHandler(e);
+              } finally {
+                clearPhase();
+                try {
+                  $rootScope.$digest();
+                } catch (e) {
+                  $exceptionHandler(e);
+                  throw e;
+                }
+              }
+            },
+            $applyAsync: function(expr) {
+              var scope = this;
+              expr && applyAsyncQueue.push($applyAsyncExpression);
+              scheduleApplyAsync();
+              function $applyAsyncExpression() {
+                scope.$eval(expr);
+              }
+            },
+            $on: function(name, listener) {
+              var namedListeners = this.$$listeners[name];
+              if (!namedListeners) {
+                this.$$listeners[name] = namedListeners = [];
+              }
+              namedListeners.push(listener);
+              var current = this;
+              do {
+                if (!current.$$listenerCount[name]) {
+                  current.$$listenerCount[name] = 0;
+                }
+                current.$$listenerCount[name]++;
+              } while ((current = current.$parent));
+              var self = this;
+              return function() {
+                var indexOfListener = namedListeners.indexOf(listener);
+                if (indexOfListener !== -1) {
+                  namedListeners[indexOfListener] = null;
+                  decrementListenerCount(self, 1, name);
+                }
+              };
+            },
+            $emit: function(name, args) {
+              var empty = [],
+                  namedListeners,
+                  scope = this,
+                  stopPropagation = false,
+                  event = {
+                    name: name,
+                    targetScope: scope,
+                    stopPropagation: function() {
+                      stopPropagation = true;
+                    },
+                    preventDefault: function() {
+                      event.defaultPrevented = true;
+                    },
+                    defaultPrevented: false
+                  },
+                  listenerArgs = concat([event], arguments, 1),
+                  i,
+                  length;
+              do {
+                namedListeners = scope.$$listeners[name] || empty;
+                event.currentScope = scope;
+                for (i = 0, length = namedListeners.length; i < length; i++) {
+                  if (!namedListeners[i]) {
+                    namedListeners.splice(i, 1);
+                    i--;
+                    length--;
+                    continue;
+                  }
+                  try {
+                    namedListeners[i].apply(null, listenerArgs);
+                  } catch (e) {
+                    $exceptionHandler(e);
+                  }
+                }
+                if (stopPropagation) {
+                  event.currentScope = null;
+                  return event;
+                }
+                scope = scope.$parent;
+              } while (scope);
+              event.currentScope = null;
+              return event;
+            },
+            $broadcast: function(name, args) {
+              var target = this,
+                  current = target,
+                  next = target,
+                  event = {
+                    name: name,
+                    targetScope: target,
+                    preventDefault: function() {
+                      event.defaultPrevented = true;
+                    },
+                    defaultPrevented: false
+                  };
+              if (!target.$$listenerCount[name])
+                return event;
+              var listenerArgs = concat([event], arguments, 1),
+                  listeners,
+                  i,
+                  length;
+              while ((current = next)) {
+                event.currentScope = current;
+                listeners = current.$$listeners[name] || [];
+                for (i = 0, length = listeners.length; i < length; i++) {
+                  if (!listeners[i]) {
+                    listeners.splice(i, 1);
+                    i--;
+                    length--;
+                    continue;
+                  }
+                  try {
+                    listeners[i].apply(null, listenerArgs);
+                  } catch (e) {
+                    $exceptionHandler(e);
+                  }
+                }
+                if (!(next = ((current.$$listenerCount[name] && current.$$childHead) || (current !== target && current.$$nextSibling)))) {
+                  while (current !== target && !(next = current.$$nextSibling)) {
+                    current = current.$parent;
+                  }
+                }
+              }
+              event.currentScope = null;
+              return event;
+            }
+          };
+          var $rootScope = new Scope();
+          var asyncQueue = $rootScope.$$asyncQueue = [];
+          var postDigestQueue = $rootScope.$$postDigestQueue = [];
+          var applyAsyncQueue = $rootScope.$$applyAsyncQueue = [];
+          return $rootScope;
+          function beginPhase(phase) {
+            if ($rootScope.$$phase) {
+              throw $rootScopeMinErr('inprog', '{0} already in progress', $rootScope.$$phase);
+            }
+            $rootScope.$$phase = phase;
           }
+          function clearPhase() {
+            $rootScope.$$phase = null;
+          }
+          function incrementWatchersCount(current, count) {
+            do {
+              current.$$watchersCount += count;
+            } while ((current = current.$parent));
+          }
+          function decrementListenerCount(current, count, name) {
+            do {
+              current.$$listenerCount[name] -= count;
+              if (current.$$listenerCount[name] === 0) {
+                delete current.$$listenerCount[name];
+              }
+            } while ((current = current.$parent));
+          }
+          function initWatchVal() {}
+          function flushApplyAsync() {
+            while (applyAsyncQueue.length) {
+              try {
+                applyAsyncQueue.shift()();
+              } catch (e) {
+                $exceptionHandler(e);
+              }
+            }
+            applyAsyncId = null;
+          }
+          function scheduleApplyAsync() {
+            if (applyAsyncId === null) {
+              applyAsyncId = $browser.defer(function() {
+                $rootScope.$apply(flushApplyAsync);
+              });
+            }
+          }
+        }];
+      }
+      function $$SanitizeUriProvider() {
+        var aHrefSanitizationWhitelist = /^\s*(https?|ftp|mailto|tel|file):/,
+            imgSrcSanitizationWhitelist = /^\s*((https?|ftp|file|blob):|data:image\/)/;
+        this.aHrefSanitizationWhitelist = function(regexp) {
+          if (isDefined(regexp)) {
+            aHrefSanitizationWhitelist = regexp;
+            return this;
+          }
+          return aHrefSanitizationWhitelist;
         };
-      }];
-    });
-    var xe = ["$animate", function(a) {
-      return {
-        multiElement: !0,
-        transclude: "element",
-        priority: 600,
-        terminal: !0,
-        restrict: "A",
-        $$tlb: !0,
-        link: function(c, d, e, f, g) {
-          var h,
-              l,
-              k;
-          c.$watch(e.ngIf, function(c) {
-            c ? l || g(function(c, f) {
-              l = f;
-              c[c.length++] = W.createComment(" end ngIf: " + e.ngIf + " ");
-              h = {clone: c};
-              a.enter(c, d.parent(), d);
-            }) : (k && (k.remove(), k = null), l && (l.$destroy(), l = null), h && (k = ob(h.clone), a.leave(k).then(function() {
-              k = null;
-            }), h = null));
+        this.imgSrcSanitizationWhitelist = function(regexp) {
+          if (isDefined(regexp)) {
+            imgSrcSanitizationWhitelist = regexp;
+            return this;
+          }
+          return imgSrcSanitizationWhitelist;
+        };
+        this.$get = function() {
+          return function sanitizeUri(uri, isImage) {
+            var regex = isImage ? imgSrcSanitizationWhitelist : aHrefSanitizationWhitelist;
+            var normalizedVal;
+            normalizedVal = urlResolve(uri).href;
+            if (normalizedVal !== '' && !normalizedVal.match(regex)) {
+              return 'unsafe:' + normalizedVal;
+            }
+            return uri;
+          };
+        };
+      }
+      var $sceMinErr = minErr('$sce');
+      var SCE_CONTEXTS = {
+        HTML: 'html',
+        CSS: 'css',
+        URL: 'url',
+        RESOURCE_URL: 'resourceUrl',
+        JS: 'js'
+      };
+      function adjustMatcher(matcher) {
+        if (matcher === 'self') {
+          return matcher;
+        } else if (isString(matcher)) {
+          if (matcher.indexOf('***') > -1) {
+            throw $sceMinErr('iwcard', 'Illegal sequence *** in string matcher.  String: {0}', matcher);
+          }
+          matcher = escapeForRegexp(matcher).replace('\\*\\*', '.*').replace('\\*', '[^:/.?&;]*');
+          return new RegExp('^' + matcher + '$');
+        } else if (isRegExp(matcher)) {
+          return new RegExp('^' + matcher.source + '$');
+        } else {
+          throw $sceMinErr('imatcher', 'Matchers may only be "self", string patterns or RegExp objects');
+        }
+      }
+      function adjustMatchers(matchers) {
+        var adjustedMatchers = [];
+        if (isDefined(matchers)) {
+          forEach(matchers, function(matcher) {
+            adjustedMatchers.push(adjustMatcher(matcher));
           });
         }
-      };
-    }],
-        ye = ["$templateRequest", "$anchorScroll", "$animate", "$sce", function(a, c, d, e) {
-          return {
-            restrict: "ECA",
-            priority: 400,
-            terminal: !0,
-            transclude: "element",
-            controller: aa.noop,
-            compile: function(f, g) {
-              var h = g.ngInclude || g.src,
-                  l = g.onload || "",
-                  k = g.autoscroll;
-              return function(f, g, n, q, u) {
-                var v = 0,
-                    t,
-                    p,
-                    x,
-                    w = function() {
-                      p && (p.remove(), p = null);
-                      t && (t.$destroy(), t = null);
-                      x && (d.leave(x).then(function() {
-                        p = null;
-                      }), p = x, x = null);
-                    };
-                f.$watch(e.parseAsResourceUrl(h), function(e) {
-                  var h = function() {
-                    !y(k) || k && !f.$eval(k) || c();
-                  },
-                      n = ++v;
-                  e ? (a(e, !0).then(function(a) {
-                    if (n === v) {
-                      var c = f.$new();
-                      q.template = a;
-                      a = u(c, function(a) {
-                        w();
-                        d.enter(a, null, g).then(h);
-                      });
-                      t = c;
-                      x = a;
-                      t.$emit("$includeContentLoaded", e);
-                      f.$eval(l);
-                    }
-                  }, function() {
-                    n === v && (w(), f.$emit("$includeContentError", e));
-                  }), f.$emit("$includeContentRequested", e)) : (w(), q.template = null);
-                });
-              };
-            }
-          };
-        }],
-        Pe = ["$compile", function(a) {
-          return {
-            restrict: "ECA",
-            priority: -400,
-            require: "ngInclude",
-            link: function(c, d, e, f) {
-              /SVG/.test(d[0].toString()) ? (d.empty(), a(Mc(f.template, W).childNodes)(c, function(a) {
-                d.append(a);
-              }, {futureParentElement: d})) : (d.html(f.template), a(d.contents())(c));
-            }
-          };
-        }],
-        ze = Ma({
-          priority: 450,
-          compile: function() {
-            return {pre: function(a, c, d) {
-                a.$eval(d.ngInit);
-              }};
+        return adjustedMatchers;
+      }
+      function $SceDelegateProvider() {
+        this.SCE_CONTEXTS = SCE_CONTEXTS;
+        var resourceUrlWhitelist = ['self'],
+            resourceUrlBlacklist = [];
+        this.resourceUrlWhitelist = function(value) {
+          if (arguments.length) {
+            resourceUrlWhitelist = adjustMatchers(value);
           }
-        }),
-        Le = function() {
-          return {
-            restrict: "A",
-            priority: 100,
-            require: "ngModel",
-            link: function(a, c, d, e) {
-              var f = c.attr(d.$attr.ngList) || ", ",
-                  g = "false" !== d.ngTrim,
-                  h = g ? T(f) : f;
-              e.$parsers.push(function(a) {
-                if (!v(a)) {
-                  var c = [];
-                  a && n(a.split(h), function(a) {
-                    a && c.push(g ? T(a) : a);
-                  });
-                  return c;
-                }
-              });
-              e.$formatters.push(function(a) {
-                return K(a) ? a.join(f) : u;
-              });
-              e.$isEmpty = function(a) {
-                return !a || !a.length;
-              };
+          return resourceUrlWhitelist;
+        };
+        this.resourceUrlBlacklist = function(value) {
+          if (arguments.length) {
+            resourceUrlBlacklist = adjustMatchers(value);
+          }
+          return resourceUrlBlacklist;
+        };
+        this.$get = ['$injector', function($injector) {
+          var htmlSanitizer = function htmlSanitizer(html) {
+            throw $sceMinErr('unsafe', 'Attempting to use an unsafe value in a safe context.');
+          };
+          if ($injector.has('$sanitize')) {
+            htmlSanitizer = $injector.get('$sanitize');
+          }
+          function matchUrl(matcher, parsedUrl) {
+            if (matcher === 'self') {
+              return urlIsSameOrigin(parsedUrl);
+            } else {
+              return !!matcher.exec(parsedUrl.href);
             }
-          };
-        },
-        jb = "ng-valid",
-        Jd = "ng-invalid",
-        Sa = "ng-pristine",
-        Jb = "ng-dirty",
-        Ld = "ng-pending",
-        Lb = new F("ngModel"),
-        vg = ["$scope", "$exceptionHandler", "$attrs", "$element", "$parse", "$animate", "$timeout", "$rootScope", "$q", "$interpolate", function(a, c, d, e, f, g, h, l, k, m) {
-          this.$modelValue = this.$viewValue = Number.NaN;
-          this.$$rawModelValue = u;
-          this.$validators = {};
-          this.$asyncValidators = {};
-          this.$parsers = [];
-          this.$formatters = [];
-          this.$viewChangeListeners = [];
-          this.$untouched = !0;
-          this.$touched = !1;
-          this.$pristine = !0;
-          this.$dirty = !1;
-          this.$valid = !0;
-          this.$invalid = !1;
-          this.$error = {};
-          this.$$success = {};
-          this.$pending = u;
-          this.$name = m(d.name || "", !1)(a);
-          var r = f(d.ngModel),
-              s = r.assign,
-              q = r,
-              H = s,
-              M = null,
-              t,
-              p = this;
-          this.$$setOptions = function(a) {
-            if ((p.$options = a) && a.getterSetter) {
-              var c = f(d.ngModel + "()"),
-                  g = f(d.ngModel + "($$$p)");
-              q = function(a) {
-                var d = r(a);
-                G(d) && (d = c(a));
-                return d;
-              };
-              H = function(a, c) {
-                G(r(a)) ? g(a, {$$$p: p.$modelValue}) : s(a, p.$modelValue);
-              };
-            } else if (!r.assign)
-              throw Lb("nonassign", d.ngModel, va(e));
-          };
-          this.$render = w;
-          this.$isEmpty = function(a) {
-            return v(a) || "" === a || null === a || a !== a;
-          };
-          var x = e.inheritedData("$formController") || Ib,
-              z = 0;
-          Gd({
-            ctrl: this,
-            $element: e,
-            set: function(a, c) {
-              a[c] = !0;
-            },
-            unset: function(a, c) {
-              delete a[c];
-            },
-            parentForm: x,
-            $animate: g
-          });
-          this.$setPristine = function() {
-            p.$dirty = !1;
-            p.$pristine = !0;
-            g.removeClass(e, Jb);
-            g.addClass(e, Sa);
-          };
-          this.$setDirty = function() {
-            p.$dirty = !0;
-            p.$pristine = !1;
-            g.removeClass(e, Sa);
-            g.addClass(e, Jb);
-            x.$setDirty();
-          };
-          this.$setUntouched = function() {
-            p.$touched = !1;
-            p.$untouched = !0;
-            g.setClass(e, "ng-untouched", "ng-touched");
-          };
-          this.$setTouched = function() {
-            p.$touched = !0;
-            p.$untouched = !1;
-            g.setClass(e, "ng-touched", "ng-untouched");
-          };
-          this.$rollbackViewValue = function() {
-            h.cancel(M);
-            p.$viewValue = p.$$lastCommittedViewValue;
-            p.$render();
-          };
-          this.$validate = function() {
-            if (!V(p.$modelValue) || !isNaN(p.$modelValue)) {
-              var a = p.$$rawModelValue,
-                  c = p.$valid,
-                  d = p.$modelValue,
-                  e = p.$options && p.$options.allowInvalid;
-              p.$$runValidators(a, p.$$lastCommittedViewValue, function(f) {
-                e || c === f || (p.$modelValue = f ? a : u, p.$modelValue !== d && p.$$writeModelToScope());
-              });
+          }
+          function isResourceUrlAllowedByPolicy(url) {
+            var parsedUrl = urlResolve(url.toString());
+            var i,
+                n,
+                allowed = false;
+            for (i = 0, n = resourceUrlWhitelist.length; i < n; i++) {
+              if (matchUrl(resourceUrlWhitelist[i], parsedUrl)) {
+                allowed = true;
+                break;
+              }
             }
-          };
-          this.$$runValidators = function(a, c, d) {
-            function e() {
-              var d = !0;
-              n(p.$validators, function(e, f) {
-                var h = e(a, c);
-                d = d && h;
-                g(f, h);
-              });
-              return d ? !0 : (n(p.$asyncValidators, function(a, c) {
-                g(c, null);
-              }), !1);
-            }
-            function f() {
-              var d = [],
-                  e = !0;
-              n(p.$asyncValidators, function(f, h) {
-                var k = f(a, c);
-                if (!k || !G(k.then))
-                  throw Lb("$asyncValidators", k);
-                g(h, u);
-                d.push(k.then(function() {
-                  g(h, !0);
-                }, function(a) {
-                  e = !1;
-                  g(h, !1);
-                }));
-              });
-              d.length ? k.all(d).then(function() {
-                h(e);
-              }, w) : h(!0);
-            }
-            function g(a, c) {
-              l === z && p.$setValidity(a, c);
-            }
-            function h(a) {
-              l === z && d(a);
-            }
-            z++;
-            var l = z;
-            (function() {
-              var a = p.$$parserName || "parse";
-              if (t === u)
-                g(a, null);
-              else
-                return t || (n(p.$validators, function(a, c) {
-                  g(c, null);
-                }), n(p.$asyncValidators, function(a, c) {
-                  g(c, null);
-                })), g(a, t), t;
-              return !0;
-            })() ? e() ? f() : h(!1) : h(!1);
-          };
-          this.$commitViewValue = function() {
-            var a = p.$viewValue;
-            h.cancel(M);
-            if (p.$$lastCommittedViewValue !== a || "" === a && p.$$hasNativeValidators)
-              p.$$lastCommittedViewValue = a, p.$pristine && this.$setDirty(), this.$$parseAndValidate();
-          };
-          this.$$parseAndValidate = function() {
-            var c = p.$$lastCommittedViewValue;
-            if (t = v(c) ? u : !0)
-              for (var d = 0; d < p.$parsers.length; d++)
-                if (c = p.$parsers[d](c), v(c)) {
-                  t = !1;
+            if (allowed) {
+              for (i = 0, n = resourceUrlBlacklist.length; i < n; i++) {
+                if (matchUrl(resourceUrlBlacklist[i], parsedUrl)) {
+                  allowed = false;
                   break;
                 }
-            V(p.$modelValue) && isNaN(p.$modelValue) && (p.$modelValue = q(a));
-            var e = p.$modelValue,
-                f = p.$options && p.$options.allowInvalid;
-            p.$$rawModelValue = c;
-            f && (p.$modelValue = c, p.$modelValue !== e && p.$$writeModelToScope());
-            p.$$runValidators(c, p.$$lastCommittedViewValue, function(a) {
-              f || (p.$modelValue = a ? c : u, p.$modelValue !== e && p.$$writeModelToScope());
-            });
-          };
-          this.$$writeModelToScope = function() {
-            H(a, p.$modelValue);
-            n(p.$viewChangeListeners, function(a) {
-              try {
-                a();
-              } catch (d) {
-                c(d);
               }
-            });
-          };
-          this.$setViewValue = function(a, c) {
-            p.$viewValue = a;
-            p.$options && !p.$options.updateOnDefault || p.$$debounceViewValueCommit(c);
-          };
-          this.$$debounceViewValueCommit = function(c) {
-            var d = 0,
-                e = p.$options;
-            e && y(e.debounce) && (e = e.debounce, V(e) ? d = e : V(e[c]) ? d = e[c] : V(e["default"]) && (d = e["default"]));
-            h.cancel(M);
-            d ? M = h(function() {
-              p.$commitViewValue();
-            }, d) : l.$$phase ? p.$commitViewValue() : a.$apply(function() {
-              p.$commitViewValue();
-            });
-          };
-          a.$watch(function() {
-            var c = q(a);
-            if (c !== p.$modelValue && (p.$modelValue === p.$modelValue || c === c)) {
-              p.$modelValue = p.$$rawModelValue = c;
-              t = u;
-              for (var d = p.$formatters,
-                  e = d.length,
-                  f = c; e--; )
-                f = d[e](f);
-              p.$viewValue !== f && (p.$viewValue = p.$$lastCommittedViewValue = f, p.$render(), p.$$runValidators(c, f, w));
             }
-            return c;
-          });
-        }],
-        Ke = ["$rootScope", function(a) {
-          return {
-            restrict: "A",
-            require: ["ngModel", "^?form", "^?ngModelOptions"],
-            controller: vg,
-            priority: 1,
-            compile: function(c) {
-              c.addClass(Sa).addClass("ng-untouched").addClass(jb);
-              return {
-                pre: function(a, c, f, g) {
-                  var h = g[0],
-                      l = g[1] || Ib;
-                  h.$$setOptions(g[2] && g[2].$options);
-                  l.$addControl(h);
-                  f.$observe("name", function(a) {
-                    h.$name !== a && l.$$renameControl(h, a);
-                  });
-                  a.$on("$destroy", function() {
-                    l.$removeControl(h);
-                  });
-                },
-                post: function(c, e, f, g) {
-                  var h = g[0];
-                  if (h.$options && h.$options.updateOn)
-                    e.on(h.$options.updateOn, function(a) {
-                      h.$$debounceViewValueCommit(a && a.type);
-                    });
-                  e.on("blur", function(e) {
-                    h.$touched || (a.$$phase ? c.$evalAsync(h.$setTouched) : c.$apply(h.$setTouched));
-                  });
-                }
+            return allowed;
+          }
+          function generateHolderType(Base) {
+            var holderType = function TrustedValueHolderType(trustedValue) {
+              this.$$unwrapTrustedValue = function() {
+                return trustedValue;
               };
+            };
+            if (Base) {
+              holderType.prototype = new Base();
             }
-          };
-        }],
-        wg = /(\s+|^)default(\s+|$)/,
-        Oe = function() {
-          return {
-            restrict: "A",
-            controller: ["$scope", "$attrs", function(a, c) {
-              var d = this;
-              this.$options = ua(a.$eval(c.ngModelOptions));
-              this.$options.updateOn !== u ? (this.$options.updateOnDefault = !1, this.$options.updateOn = T(this.$options.updateOn.replace(wg, function() {
-                d.$options.updateOnDefault = !0;
-                return " ";
-              }))) : this.$options.updateOnDefault = !0;
-            }]
-          };
-        },
-        Ae = Ma({
-          terminal: !0,
-          priority: 1E3
-        }),
-        xg = F("ngOptions"),
-        yg = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s+([\s\S]+?))?(?:\s+disable\s+when\s+([\s\S]+?))?\s+for\s+(?:([\$\w][\$\w]*)|(?:\(\s*([\$\w][\$\w]*)\s*,\s*([\$\w][\$\w]*)\s*\)))\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?$/,
-        Ie = ["$compile", "$parse", function(a, c) {
-          function d(a, d, e) {
-            function f(a, c, d, e, g) {
-              this.selectValue = a;
-              this.viewValue = c;
-              this.label = d;
-              this.group = e;
-              this.disabled = g;
+            holderType.prototype.valueOf = function sceValueOf() {
+              return this.$$unwrapTrustedValue();
+            };
+            holderType.prototype.toString = function sceToString() {
+              return this.$$unwrapTrustedValue().toString();
+            };
+            return holderType;
+          }
+          var trustedValueHolderBase = generateHolderType(),
+              byType = {};
+          byType[SCE_CONTEXTS.HTML] = generateHolderType(trustedValueHolderBase);
+          byType[SCE_CONTEXTS.CSS] = generateHolderType(trustedValueHolderBase);
+          byType[SCE_CONTEXTS.URL] = generateHolderType(trustedValueHolderBase);
+          byType[SCE_CONTEXTS.JS] = generateHolderType(trustedValueHolderBase);
+          byType[SCE_CONTEXTS.RESOURCE_URL] = generateHolderType(byType[SCE_CONTEXTS.URL]);
+          function trustAs(type, trustedValue) {
+            var Constructor = (byType.hasOwnProperty(type) ? byType[type] : null);
+            if (!Constructor) {
+              throw $sceMinErr('icontext', 'Attempted to trust a value in invalid context. Context: {0}; Value: {1}', type, trustedValue);
             }
-            var m = a.match(yg);
-            if (!m)
-              throw xg("iexp", a, va(d));
-            var n = m[5] || m[7],
-                s = m[6];
-            a = / as /.test(m[0]) && m[1];
-            var q = m[9];
-            d = c(m[2] ? m[1] : n);
-            var u = a && c(a) || d,
-                v = q && c(q),
-                t = q ? function(a, c) {
-                  return v(e, c);
-                } : function(a) {
-                  return Fa(a);
-                },
-                p = function(a, c) {
-                  return t(a, D(a, c));
-                },
-                x = c(m[2] || m[1]),
-                w = c(m[3] || ""),
-                y = c(m[4] || ""),
-                B = c(m[8]),
-                z = {},
-                D = s ? function(a, c) {
-                  z[s] = c;
-                  z[n] = a;
-                  return z;
-                } : function(a) {
-                  z[n] = a;
-                  return z;
-                };
-            return {
-              trackBy: q,
-              getTrackByValue: p,
-              getWatchables: c(B, function(a) {
-                var c = [];
-                a = a || [];
-                Object.keys(a).forEach(function(d) {
-                  var f = D(a[d], d);
-                  d = t(a[d], f);
-                  c.push(d);
-                  if (m[2] || m[1])
-                    d = x(e, f), c.push(d);
-                  m[4] && (f = y(e, f), c.push(f));
-                });
-                return c;
-              }),
-              getOptions: function() {
-                var a = [],
-                    c = {},
-                    d = B(e) || [],
-                    g;
-                if (!s && Da(d))
-                  g = d;
-                else {
-                  g = [];
-                  for (var h in d)
-                    d.hasOwnProperty(h) && "$" !== h.charAt(0) && g.push(h);
-                }
-                h = g.length;
-                for (var m = 0; m < h; m++) {
-                  var n = d === g ? m : g[m],
-                      r = D(d[n], n),
-                      v = u(e, r),
-                      n = t(v, r),
-                      z = x(e, r),
-                      M = w(e, r),
-                      r = y(e, r),
-                      v = new f(n, v, z, M, r);
-                  a.push(v);
-                  c[n] = v;
-                }
-                return {
-                  items: a,
-                  selectValueMap: c,
-                  getOptionFromViewValue: function(a) {
-                    return c[p(a)];
-                  },
-                  getViewValueFromOption: function(a) {
-                    return q ? aa.copy(a.viewValue) : a.viewValue;
-                  }
-                };
+            if (trustedValue === null || trustedValue === undefined || trustedValue === '') {
+              return trustedValue;
+            }
+            if (typeof trustedValue !== 'string') {
+              throw $sceMinErr('itype', 'Attempted to trust a non-string value in a content requiring a string: Context: {0}', type);
+            }
+            return new Constructor(trustedValue);
+          }
+          function valueOf(maybeTrusted) {
+            if (maybeTrusted instanceof trustedValueHolderBase) {
+              return maybeTrusted.$$unwrapTrustedValue();
+            } else {
+              return maybeTrusted;
+            }
+          }
+          function getTrusted(type, maybeTrusted) {
+            if (maybeTrusted === null || maybeTrusted === undefined || maybeTrusted === '') {
+              return maybeTrusted;
+            }
+            var constructor = (byType.hasOwnProperty(type) ? byType[type] : null);
+            if (constructor && maybeTrusted instanceof constructor) {
+              return maybeTrusted.$$unwrapTrustedValue();
+            }
+            if (type === SCE_CONTEXTS.RESOURCE_URL) {
+              if (isResourceUrlAllowedByPolicy(maybeTrusted)) {
+                return maybeTrusted;
+              } else {
+                throw $sceMinErr('insecurl', 'Blocked loading resource from url not allowed by $sceDelegate policy.  URL: {0}', maybeTrusted.toString());
               }
+            } else if (type === SCE_CONTEXTS.HTML) {
+              return htmlSanitizer(maybeTrusted);
+            }
+            throw $sceMinErr('unsafe', 'Attempting to use an unsafe value in a safe context.');
+          }
+          return {
+            trustAs: trustAs,
+            getTrusted: getTrusted,
+            valueOf: valueOf
+          };
+        }];
+      }
+      function $SceProvider() {
+        var enabled = true;
+        this.enabled = function(value) {
+          if (arguments.length) {
+            enabled = !!value;
+          }
+          return enabled;
+        };
+        this.$get = ['$parse', '$sceDelegate', function($parse, $sceDelegate) {
+          if (enabled && msie < 8) {
+            throw $sceMinErr('iequirks', 'Strict Contextual Escaping does not support Internet Explorer version < 11 in quirks ' + 'mode.  You can fix this by adding the text <!doctype html> to the top of your HTML ' + 'document.  See http://docs.angularjs.org/api/ng.$sce for more information.');
+          }
+          var sce = shallowCopy(SCE_CONTEXTS);
+          sce.isEnabled = function() {
+            return enabled;
+          };
+          sce.trustAs = $sceDelegate.trustAs;
+          sce.getTrusted = $sceDelegate.getTrusted;
+          sce.valueOf = $sceDelegate.valueOf;
+          if (!enabled) {
+            sce.trustAs = sce.getTrusted = function(type, value) {
+              return value;
+            };
+            sce.valueOf = identity;
+          }
+          sce.parseAs = function sceParseAs(type, expr) {
+            var parsed = $parse(expr);
+            if (parsed.literal && parsed.constant) {
+              return parsed;
+            } else {
+              return $parse(expr, function(value) {
+                return sce.getTrusted(type, value);
+              });
+            }
+          };
+          var parse = sce.parseAs,
+              getTrusted = sce.getTrusted,
+              trustAs = sce.trustAs;
+          forEach(SCE_CONTEXTS, function(enumValue, name) {
+            var lName = lowercase(name);
+            sce[camelCase("parse_as_" + lName)] = function(expr) {
+              return parse(enumValue, expr);
+            };
+            sce[camelCase("get_trusted_" + lName)] = function(value) {
+              return getTrusted(enumValue, value);
+            };
+            sce[camelCase("trust_as_" + lName)] = function(value) {
+              return trustAs(enumValue, value);
+            };
+          });
+          return sce;
+        }];
+      }
+      function $SnifferProvider() {
+        this.$get = ['$window', '$document', function($window, $document) {
+          var eventSupport = {},
+              android = toInt((/android (\d+)/.exec(lowercase(($window.navigator || {}).userAgent)) || [])[1]),
+              boxee = /Boxee/i.test(($window.navigator || {}).userAgent),
+              document = $document[0] || {},
+              vendorPrefix,
+              vendorRegex = /^(Moz|webkit|ms)(?=[A-Z])/,
+              bodyStyle = document.body && document.body.style,
+              transitions = false,
+              animations = false,
+              match;
+          if (bodyStyle) {
+            for (var prop in bodyStyle) {
+              if (match = vendorRegex.exec(prop)) {
+                vendorPrefix = match[0];
+                vendorPrefix = vendorPrefix.substr(0, 1).toUpperCase() + vendorPrefix.substr(1);
+                break;
+              }
+            }
+            if (!vendorPrefix) {
+              vendorPrefix = ('WebkitOpacity' in bodyStyle) && 'webkit';
+            }
+            transitions = !!(('transition' in bodyStyle) || (vendorPrefix + 'Transition' in bodyStyle));
+            animations = !!(('animation' in bodyStyle) || (vendorPrefix + 'Animation' in bodyStyle));
+            if (android && (!transitions || !animations)) {
+              transitions = isString(bodyStyle.webkitTransition);
+              animations = isString(bodyStyle.webkitAnimation);
+            }
+          }
+          return {
+            history: !!($window.history && $window.history.pushState && !(android < 4) && !boxee),
+            hasEvent: function(event) {
+              if (event === 'input' && msie <= 11)
+                return false;
+              if (isUndefined(eventSupport[event])) {
+                var divElm = document.createElement('div');
+                eventSupport[event] = 'on' + event in divElm;
+              }
+              return eventSupport[event];
+            },
+            csp: csp(),
+            vendorPrefix: vendorPrefix,
+            transitions: transitions,
+            animations: animations,
+            android: android
+          };
+        }];
+      }
+      var $compileMinErr = minErr('$compile');
+      function $TemplateRequestProvider() {
+        this.$get = ['$templateCache', '$http', '$q', function($templateCache, $http, $q) {
+          function handleRequestFn(tpl, ignoreRequestError) {
+            handleRequestFn.totalPendingRequests++;
+            var transformResponse = $http.defaults && $http.defaults.transformResponse;
+            if (isArray(transformResponse)) {
+              transformResponse = transformResponse.filter(function(transformer) {
+                return transformer !== defaultHttpResponseTransform;
+              });
+            } else if (transformResponse === defaultHttpResponseTransform) {
+              transformResponse = null;
+            }
+            var httpOptions = {
+              cache: $templateCache,
+              transformResponse: transformResponse
+            };
+            return $http.get(tpl, httpOptions)['finally'](function() {
+              handleRequestFn.totalPendingRequests--;
+            }).then(function(response) {
+              $templateCache.put(tpl, response.data);
+              return response.data;
+            }, handleError);
+            function handleError(resp) {
+              if (!ignoreRequestError) {
+                throw $compileMinErr('tpload', 'Failed to load template: {0} (HTTP status: {1} {2})', tpl, resp.status, resp.statusText);
+              }
+              return $q.reject(resp);
+            }
+          }
+          handleRequestFn.totalPendingRequests = 0;
+          return handleRequestFn;
+        }];
+      }
+      function $$TestabilityProvider() {
+        this.$get = ['$rootScope', '$browser', '$location', function($rootScope, $browser, $location) {
+          var testability = {};
+          testability.findBindings = function(element, expression, opt_exactMatch) {
+            var bindings = element.getElementsByClassName('ng-binding');
+            var matches = [];
+            forEach(bindings, function(binding) {
+              var dataBinding = angular.element(binding).data('$binding');
+              if (dataBinding) {
+                forEach(dataBinding, function(bindingName) {
+                  if (opt_exactMatch) {
+                    var matcher = new RegExp('(^|\\s)' + escapeForRegexp(expression) + '(\\s|\\||$)');
+                    if (matcher.test(bindingName)) {
+                      matches.push(binding);
+                    }
+                  } else {
+                    if (bindingName.indexOf(expression) != -1) {
+                      matches.push(binding);
+                    }
+                  }
+                });
+              }
+            });
+            return matches;
+          };
+          testability.findModels = function(element, expression, opt_exactMatch) {
+            var prefixes = ['ng-', 'data-ng-', 'ng\\:'];
+            for (var p = 0; p < prefixes.length; ++p) {
+              var attributeEquals = opt_exactMatch ? '=' : '*=';
+              var selector = '[' + prefixes[p] + 'model' + attributeEquals + '"' + expression + '"]';
+              var elements = element.querySelectorAll(selector);
+              if (elements.length) {
+                return elements;
+              }
+            }
+          };
+          testability.getLocation = function() {
+            return $location.url();
+          };
+          testability.setLocation = function(url) {
+            if (url !== $location.url()) {
+              $location.url(url);
+              $rootScope.$digest();
+            }
+          };
+          testability.whenStable = function(callback) {
+            $browser.notifyWhenNoOutstandingRequests(callback);
+          };
+          return testability;
+        }];
+      }
+      function $TimeoutProvider() {
+        this.$get = ['$rootScope', '$browser', '$q', '$$q', '$exceptionHandler', function($rootScope, $browser, $q, $$q, $exceptionHandler) {
+          var deferreds = {};
+          function timeout(fn, delay, invokeApply) {
+            if (!isFunction(fn)) {
+              invokeApply = delay;
+              delay = fn;
+              fn = noop;
+            }
+            var args = sliceArgs(arguments, 3),
+                skipApply = (isDefined(invokeApply) && !invokeApply),
+                deferred = (skipApply ? $$q : $q).defer(),
+                promise = deferred.promise,
+                timeoutId;
+            timeoutId = $browser.defer(function() {
+              try {
+                deferred.resolve(fn.apply(null, args));
+              } catch (e) {
+                deferred.reject(e);
+                $exceptionHandler(e);
+              } finally {
+                delete deferreds[promise.$$timeoutId];
+              }
+              if (!skipApply)
+                $rootScope.$apply();
+            }, delay);
+            promise.$$timeoutId = timeoutId;
+            deferreds[timeoutId] = deferred;
+            return promise;
+          }
+          timeout.cancel = function(promise) {
+            if (promise && promise.$$timeoutId in deferreds) {
+              deferreds[promise.$$timeoutId].reject('canceled');
+              delete deferreds[promise.$$timeoutId];
+              return $browser.defer.cancel(promise.$$timeoutId);
+            }
+            return false;
+          };
+          return timeout;
+        }];
+      }
+      var urlParsingNode = document.createElement("a");
+      var originUrl = urlResolve(window.location.href);
+      function urlResolve(url) {
+        var href = url;
+        if (msie) {
+          urlParsingNode.setAttribute("href", href);
+          href = urlParsingNode.href;
+        }
+        urlParsingNode.setAttribute('href', href);
+        return {
+          href: urlParsingNode.href,
+          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+          host: urlParsingNode.host,
+          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+          hostname: urlParsingNode.hostname,
+          port: urlParsingNode.port,
+          pathname: (urlParsingNode.pathname.charAt(0) === '/') ? urlParsingNode.pathname : '/' + urlParsingNode.pathname
+        };
+      }
+      function urlIsSameOrigin(requestUrl) {
+        var parsed = (isString(requestUrl)) ? urlResolve(requestUrl) : requestUrl;
+        return (parsed.protocol === originUrl.protocol && parsed.host === originUrl.host);
+      }
+      function $WindowProvider() {
+        this.$get = valueFn(window);
+      }
+      function $$CookieReader($document) {
+        var rawDocument = $document[0] || {};
+        var lastCookies = {};
+        var lastCookieString = '';
+        function safeDecodeURIComponent(str) {
+          try {
+            return decodeURIComponent(str);
+          } catch (e) {
+            return str;
+          }
+        }
+        return function() {
+          var cookieArray,
+              cookie,
+              i,
+              index,
+              name;
+          var currentCookieString = rawDocument.cookie || '';
+          if (currentCookieString !== lastCookieString) {
+            lastCookieString = currentCookieString;
+            cookieArray = lastCookieString.split('; ');
+            lastCookies = {};
+            for (i = 0; i < cookieArray.length; i++) {
+              cookie = cookieArray[i];
+              index = cookie.indexOf('=');
+              if (index > 0) {
+                name = safeDecodeURIComponent(cookie.substring(0, index));
+                if (lastCookies[name] === undefined) {
+                  lastCookies[name] = safeDecodeURIComponent(cookie.substring(index + 1));
+                }
+              }
+            }
+          }
+          return lastCookies;
+        };
+      }
+      $$CookieReader.$inject = ['$document'];
+      function $$CookieReaderProvider() {
+        this.$get = $$CookieReader;
+      }
+      $FilterProvider.$inject = ['$provide'];
+      function $FilterProvider($provide) {
+        var suffix = 'Filter';
+        function register(name, factory) {
+          if (isObject(name)) {
+            var filters = {};
+            forEach(name, function(filter, key) {
+              filters[key] = register(key, filter);
+            });
+            return filters;
+          } else {
+            return $provide.factory(name + suffix, factory);
+          }
+        }
+        this.register = register;
+        this.$get = ['$injector', function($injector) {
+          return function(name) {
+            return $injector.get(name + suffix);
+          };
+        }];
+        register('currency', currencyFilter);
+        register('date', dateFilter);
+        register('filter', filterFilter);
+        register('json', jsonFilter);
+        register('limitTo', limitToFilter);
+        register('lowercase', lowercaseFilter);
+        register('number', numberFilter);
+        register('orderBy', orderByFilter);
+        register('uppercase', uppercaseFilter);
+      }
+      function filterFilter() {
+        return function(array, expression, comparator) {
+          if (!isArrayLike(array)) {
+            if (array == null) {
+              return array;
+            } else {
+              throw minErr('filter')('notarray', 'Expected array but received: {0}', array);
+            }
+          }
+          var expressionType = getTypeForFilter(expression);
+          var predicateFn;
+          var matchAgainstAnyProp;
+          switch (expressionType) {
+            case 'function':
+              predicateFn = expression;
+              break;
+            case 'boolean':
+            case 'null':
+            case 'number':
+            case 'string':
+              matchAgainstAnyProp = true;
+            case 'object':
+              predicateFn = createPredicateFn(expression, comparator, matchAgainstAnyProp);
+              break;
+            default:
+              return array;
+          }
+          return Array.prototype.filter.call(array, predicateFn);
+        };
+      }
+      function hasCustomToString(obj) {
+        return isFunction(obj.toString) && obj.toString !== Object.prototype.toString;
+      }
+      function createPredicateFn(expression, comparator, matchAgainstAnyProp) {
+        var shouldMatchPrimitives = isObject(expression) && ('$' in expression);
+        var predicateFn;
+        if (comparator === true) {
+          comparator = equals;
+        } else if (!isFunction(comparator)) {
+          comparator = function(actual, expected) {
+            if (isUndefined(actual)) {
+              return false;
+            }
+            if ((actual === null) || (expected === null)) {
+              return actual === expected;
+            }
+            if (isObject(expected) || (isObject(actual) && !hasCustomToString(actual))) {
+              return false;
+            }
+            actual = lowercase('' + actual);
+            expected = lowercase('' + expected);
+            return actual.indexOf(expected) !== -1;
+          };
+        }
+        predicateFn = function(item) {
+          if (shouldMatchPrimitives && !isObject(item)) {
+            return deepCompare(item, expression.$, comparator, false);
+          }
+          return deepCompare(item, expression, comparator, matchAgainstAnyProp);
+        };
+        return predicateFn;
+      }
+      function deepCompare(actual, expected, comparator, matchAgainstAnyProp, dontMatchWholeObject) {
+        var actualType = getTypeForFilter(actual);
+        var expectedType = getTypeForFilter(expected);
+        if ((expectedType === 'string') && (expected.charAt(0) === '!')) {
+          return !deepCompare(actual, expected.substring(1), comparator, matchAgainstAnyProp);
+        } else if (isArray(actual)) {
+          return actual.some(function(item) {
+            return deepCompare(item, expected, comparator, matchAgainstAnyProp);
+          });
+        }
+        switch (actualType) {
+          case 'object':
+            var key;
+            if (matchAgainstAnyProp) {
+              for (key in actual) {
+                if ((key.charAt(0) !== '$') && deepCompare(actual[key], expected, comparator, true)) {
+                  return true;
+                }
+              }
+              return dontMatchWholeObject ? false : deepCompare(actual, expected, comparator, false);
+            } else if (expectedType === 'object') {
+              for (key in expected) {
+                var expectedVal = expected[key];
+                if (isFunction(expectedVal) || isUndefined(expectedVal)) {
+                  continue;
+                }
+                var matchAnyProperty = key === '$';
+                var actualVal = matchAnyProperty ? actual : actual[key];
+                if (!deepCompare(actualVal, expectedVal, comparator, matchAnyProperty, matchAnyProperty)) {
+                  return false;
+                }
+              }
+              return true;
+            } else {
+              return comparator(actual, expected);
+            }
+            break;
+          case 'function':
+            return false;
+          default:
+            return comparator(actual, expected);
+        }
+      }
+      function getTypeForFilter(val) {
+        return (val === null) ? 'null' : typeof val;
+      }
+      currencyFilter.$inject = ['$locale'];
+      function currencyFilter($locale) {
+        var formats = $locale.NUMBER_FORMATS;
+        return function(amount, currencySymbol, fractionSize) {
+          if (isUndefined(currencySymbol)) {
+            currencySymbol = formats.CURRENCY_SYM;
+          }
+          if (isUndefined(fractionSize)) {
+            fractionSize = formats.PATTERNS[1].maxFrac;
+          }
+          return (amount == null) ? amount : formatNumber(amount, formats.PATTERNS[1], formats.GROUP_SEP, formats.DECIMAL_SEP, fractionSize).replace(/\u00A4/g, currencySymbol);
+        };
+      }
+      numberFilter.$inject = ['$locale'];
+      function numberFilter($locale) {
+        var formats = $locale.NUMBER_FORMATS;
+        return function(number, fractionSize) {
+          return (number == null) ? number : formatNumber(number, formats.PATTERNS[0], formats.GROUP_SEP, formats.DECIMAL_SEP, fractionSize);
+        };
+      }
+      var DECIMAL_SEP = '.';
+      function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
+        if (isObject(number))
+          return '';
+        var isNegative = number < 0;
+        number = Math.abs(number);
+        var isInfinity = number === Infinity;
+        if (!isInfinity && !isFinite(number))
+          return '';
+        var numStr = number + '',
+            formatedText = '',
+            hasExponent = false,
+            parts = [];
+        if (isInfinity)
+          formatedText = '\u221e';
+        if (!isInfinity && numStr.indexOf('e') !== -1) {
+          var match = numStr.match(/([\d\.]+)e(-?)(\d+)/);
+          if (match && match[2] == '-' && match[3] > fractionSize + 1) {
+            number = 0;
+          } else {
+            formatedText = numStr;
+            hasExponent = true;
+          }
+        }
+        if (!isInfinity && !hasExponent) {
+          var fractionLen = (numStr.split(DECIMAL_SEP)[1] || '').length;
+          if (isUndefined(fractionSize)) {
+            fractionSize = Math.min(Math.max(pattern.minFrac, fractionLen), pattern.maxFrac);
+          }
+          number = +(Math.round(+(number.toString() + 'e' + fractionSize)).toString() + 'e' + -fractionSize);
+          var fraction = ('' + number).split(DECIMAL_SEP);
+          var whole = fraction[0];
+          fraction = fraction[1] || '';
+          var i,
+              pos = 0,
+              lgroup = pattern.lgSize,
+              group = pattern.gSize;
+          if (whole.length >= (lgroup + group)) {
+            pos = whole.length - lgroup;
+            for (i = 0; i < pos; i++) {
+              if ((pos - i) % group === 0 && i !== 0) {
+                formatedText += groupSep;
+              }
+              formatedText += whole.charAt(i);
+            }
+          }
+          for (i = pos; i < whole.length; i++) {
+            if ((whole.length - i) % lgroup === 0 && i !== 0) {
+              formatedText += groupSep;
+            }
+            formatedText += whole.charAt(i);
+          }
+          while (fraction.length < fractionSize) {
+            fraction += '0';
+          }
+          if (fractionSize && fractionSize !== "0")
+            formatedText += decimalSep + fraction.substr(0, fractionSize);
+        } else {
+          if (fractionSize > 0 && number < 1) {
+            formatedText = number.toFixed(fractionSize);
+            number = parseFloat(formatedText);
+          }
+        }
+        if (number === 0) {
+          isNegative = false;
+        }
+        parts.push(isNegative ? pattern.negPre : pattern.posPre, formatedText, isNegative ? pattern.negSuf : pattern.posSuf);
+        return parts.join('');
+      }
+      function padNumber(num, digits, trim) {
+        var neg = '';
+        if (num < 0) {
+          neg = '-';
+          num = -num;
+        }
+        num = '' + num;
+        while (num.length < digits)
+          num = '0' + num;
+        if (trim) {
+          num = num.substr(num.length - digits);
+        }
+        return neg + num;
+      }
+      function dateGetter(name, size, offset, trim) {
+        offset = offset || 0;
+        return function(date) {
+          var value = date['get' + name]();
+          if (offset > 0 || value > -offset) {
+            value += offset;
+          }
+          if (value === 0 && offset == -12)
+            value = 12;
+          return padNumber(value, size, trim);
+        };
+      }
+      function dateStrGetter(name, shortForm) {
+        return function(date, formats) {
+          var value = date['get' + name]();
+          var get = uppercase(shortForm ? ('SHORT' + name) : name);
+          return formats[get][value];
+        };
+      }
+      function timeZoneGetter(date, formats, offset) {
+        var zone = -1 * offset;
+        var paddedZone = (zone >= 0) ? "+" : "";
+        paddedZone += padNumber(Math[zone > 0 ? 'floor' : 'ceil'](zone / 60), 2) + padNumber(Math.abs(zone % 60), 2);
+        return paddedZone;
+      }
+      function getFirstThursdayOfYear(year) {
+        var dayOfWeekOnFirst = (new Date(year, 0, 1)).getDay();
+        return new Date(year, 0, ((dayOfWeekOnFirst <= 4) ? 5 : 12) - dayOfWeekOnFirst);
+      }
+      function getThursdayThisWeek(datetime) {
+        return new Date(datetime.getFullYear(), datetime.getMonth(), datetime.getDate() + (4 - datetime.getDay()));
+      }
+      function weekGetter(size) {
+        return function(date) {
+          var firstThurs = getFirstThursdayOfYear(date.getFullYear()),
+              thisThurs = getThursdayThisWeek(date);
+          var diff = +thisThurs - +firstThurs,
+              result = 1 + Math.round(diff / 6.048e8);
+          return padNumber(result, size);
+        };
+      }
+      function ampmGetter(date, formats) {
+        return date.getHours() < 12 ? formats.AMPMS[0] : formats.AMPMS[1];
+      }
+      function eraGetter(date, formats) {
+        return date.getFullYear() <= 0 ? formats.ERAS[0] : formats.ERAS[1];
+      }
+      function longEraGetter(date, formats) {
+        return date.getFullYear() <= 0 ? formats.ERANAMES[0] : formats.ERANAMES[1];
+      }
+      var DATE_FORMATS = {
+        yyyy: dateGetter('FullYear', 4),
+        yy: dateGetter('FullYear', 2, 0, true),
+        y: dateGetter('FullYear', 1),
+        MMMM: dateStrGetter('Month'),
+        MMM: dateStrGetter('Month', true),
+        MM: dateGetter('Month', 2, 1),
+        M: dateGetter('Month', 1, 1),
+        dd: dateGetter('Date', 2),
+        d: dateGetter('Date', 1),
+        HH: dateGetter('Hours', 2),
+        H: dateGetter('Hours', 1),
+        hh: dateGetter('Hours', 2, -12),
+        h: dateGetter('Hours', 1, -12),
+        mm: dateGetter('Minutes', 2),
+        m: dateGetter('Minutes', 1),
+        ss: dateGetter('Seconds', 2),
+        s: dateGetter('Seconds', 1),
+        sss: dateGetter('Milliseconds', 3),
+        EEEE: dateStrGetter('Day'),
+        EEE: dateStrGetter('Day', true),
+        a: ampmGetter,
+        Z: timeZoneGetter,
+        ww: weekGetter(2),
+        w: weekGetter(1),
+        G: eraGetter,
+        GG: eraGetter,
+        GGG: eraGetter,
+        GGGG: longEraGetter
+      };
+      var DATE_FORMATS_SPLIT = /((?:[^yMdHhmsaZEwG']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|d+|H+|h+|m+|s+|a|Z|G+|w+))(.*)/,
+          NUMBER_STRING = /^\-?\d+$/;
+      dateFilter.$inject = ['$locale'];
+      function dateFilter($locale) {
+        var R_ISO8601_STR = /^(\d{4})-?(\d\d)-?(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
+        function jsonStringToDate(string) {
+          var match;
+          if (match = string.match(R_ISO8601_STR)) {
+            var date = new Date(0),
+                tzHour = 0,
+                tzMin = 0,
+                dateSetter = match[8] ? date.setUTCFullYear : date.setFullYear,
+                timeSetter = match[8] ? date.setUTCHours : date.setHours;
+            if (match[9]) {
+              tzHour = toInt(match[9] + match[10]);
+              tzMin = toInt(match[9] + match[11]);
+            }
+            dateSetter.call(date, toInt(match[1]), toInt(match[2]) - 1, toInt(match[3]));
+            var h = toInt(match[4] || 0) - tzHour;
+            var m = toInt(match[5] || 0) - tzMin;
+            var s = toInt(match[6] || 0);
+            var ms = Math.round(parseFloat('0.' + (match[7] || 0)) * 1000);
+            timeSetter.call(date, h, m, s, ms);
+            return date;
+          }
+          return string;
+        }
+        return function(date, format, timezone) {
+          var text = '',
+              parts = [],
+              fn,
+              match;
+          format = format || 'mediumDate';
+          format = $locale.DATETIME_FORMATS[format] || format;
+          if (isString(date)) {
+            date = NUMBER_STRING.test(date) ? toInt(date) : jsonStringToDate(date);
+          }
+          if (isNumber(date)) {
+            date = new Date(date);
+          }
+          if (!isDate(date) || !isFinite(date.getTime())) {
+            return date;
+          }
+          while (format) {
+            match = DATE_FORMATS_SPLIT.exec(format);
+            if (match) {
+              parts = concat(parts, match, 1);
+              format = parts.pop();
+            } else {
+              parts.push(format);
+              format = null;
+            }
+          }
+          var dateTimezoneOffset = date.getTimezoneOffset();
+          if (timezone) {
+            dateTimezoneOffset = timezoneToOffset(timezone, date.getTimezoneOffset());
+            date = convertTimezoneToLocal(date, timezone, true);
+          }
+          forEach(parts, function(value) {
+            fn = DATE_FORMATS[value];
+            text += fn ? fn(date, $locale.DATETIME_FORMATS, dateTimezoneOffset) : value.replace(/(^'|'$)/g, '').replace(/''/g, "'");
+          });
+          return text;
+        };
+      }
+      function jsonFilter() {
+        return function(object, spacing) {
+          if (isUndefined(spacing)) {
+            spacing = 2;
+          }
+          return toJson(object, spacing);
+        };
+      }
+      var lowercaseFilter = valueFn(lowercase);
+      var uppercaseFilter = valueFn(uppercase);
+      function limitToFilter() {
+        return function(input, limit, begin) {
+          if (Math.abs(Number(limit)) === Infinity) {
+            limit = Number(limit);
+          } else {
+            limit = toInt(limit);
+          }
+          if (isNaN(limit))
+            return input;
+          if (isNumber(input))
+            input = input.toString();
+          if (!isArray(input) && !isString(input))
+            return input;
+          begin = (!begin || isNaN(begin)) ? 0 : toInt(begin);
+          begin = (begin < 0 && begin >= -input.length) ? input.length + begin : begin;
+          if (limit >= 0) {
+            return input.slice(begin, begin + limit);
+          } else {
+            if (begin === 0) {
+              return input.slice(limit, input.length);
+            } else {
+              return input.slice(Math.max(0, begin + limit), begin);
+            }
+          }
+        };
+      }
+      orderByFilter.$inject = ['$parse'];
+      function orderByFilter($parse) {
+        return function(array, sortPredicate, reverseOrder) {
+          if (!(isArrayLike(array)))
+            return array;
+          sortPredicate = isArray(sortPredicate) ? sortPredicate : [sortPredicate];
+          if (sortPredicate.length === 0) {
+            sortPredicate = ['+'];
+          }
+          sortPredicate = sortPredicate.map(function(predicate) {
+            var descending = false,
+                get = predicate || identity;
+            if (isString(predicate)) {
+              if ((predicate.charAt(0) == '+' || predicate.charAt(0) == '-')) {
+                descending = predicate.charAt(0) == '-';
+                predicate = predicate.substring(1);
+              }
+              if (predicate === '') {
+                return reverseComparator(compare, descending);
+              }
+              get = $parse(predicate);
+              if (get.constant) {
+                var key = get();
+                return reverseComparator(function(a, b) {
+                  return compare(a[key], b[key]);
+                }, descending);
+              }
+            }
+            return reverseComparator(function(a, b) {
+              return compare(get(a), get(b));
+            }, descending);
+          });
+          return slice.call(array).sort(reverseComparator(comparator, reverseOrder));
+          function comparator(o1, o2) {
+            for (var i = 0; i < sortPredicate.length; i++) {
+              var comp = sortPredicate[i](o1, o2);
+              if (comp !== 0)
+                return comp;
+            }
+            return 0;
+          }
+          function reverseComparator(comp, descending) {
+            return descending ? function(a, b) {
+              return comp(b, a);
+            } : comp;
+          }
+          function isPrimitive(value) {
+            switch (typeof value) {
+              case 'number':
+              case 'boolean':
+              case 'string':
+                return true;
+              default:
+                return false;
+            }
+          }
+          function objectToString(value) {
+            if (value === null)
+              return 'null';
+            if (typeof value.valueOf === 'function') {
+              value = value.valueOf();
+              if (isPrimitive(value))
+                return value;
+            }
+            if (typeof value.toString === 'function') {
+              value = value.toString();
+              if (isPrimitive(value))
+                return value;
+            }
+            return '';
+          }
+          function compare(v1, v2) {
+            var t1 = typeof v1;
+            var t2 = typeof v2;
+            if (t1 === t2 && t1 === "object") {
+              v1 = objectToString(v1);
+              v2 = objectToString(v2);
+            }
+            if (t1 === t2) {
+              if (t1 === "string") {
+                v1 = v1.toLowerCase();
+                v2 = v2.toLowerCase();
+              }
+              if (v1 === v2)
+                return 0;
+              return v1 < v2 ? -1 : 1;
+            } else {
+              return t1 < t2 ? -1 : 1;
+            }
+          }
+        };
+      }
+      function ngDirective(directive) {
+        if (isFunction(directive)) {
+          directive = {link: directive};
+        }
+        directive.restrict = directive.restrict || 'AC';
+        return valueFn(directive);
+      }
+      var htmlAnchorDirective = valueFn({
+        restrict: 'E',
+        compile: function(element, attr) {
+          if (!attr.href && !attr.xlinkHref) {
+            return function(scope, element) {
+              if (element[0].nodeName.toLowerCase() !== 'a')
+                return ;
+              var href = toString.call(element.prop('href')) === '[object SVGAnimatedString]' ? 'xlink:href' : 'href';
+              element.on('click', function(event) {
+                if (!element.attr(href)) {
+                  event.preventDefault();
+                }
+              });
             };
           }
-          var e = W.createElement("option"),
-              f = W.createElement("optgroup");
-          return {
-            restrict: "A",
-            terminal: !0,
-            require: ["select", "?ngModel"],
-            link: function(c, h, l, k) {
-              function m(a, c) {
-                a.element = c;
-                c.disabled = a.disabled;
-                a.value !== c.value && (c.value = a.selectValue);
-                a.label !== c.label && (c.label = a.label, c.textContent = a.label);
-              }
-              function r(a, c, d, e) {
-                c && E(c.nodeName) === d ? d = c : (d = e.cloneNode(!1), c ? a.insertBefore(d, c) : a.appendChild(d));
-                return d;
-              }
-              function q(a) {
-                for (var c; a; )
-                  c = a.nextSibling, Xb(a), a = c;
-              }
-              function u(a) {
-                var c = p && p[0],
-                    d = O && O[0];
-                if (c || d)
-                  for (; a && (a === c || a === d); )
-                    a = a.nextSibling;
-                return a;
-              }
-              function v() {
-                var a = D && t.readValue();
-                D = C.getOptions();
-                var c = {},
-                    d = h[0].firstChild;
-                B && h.prepend(p);
-                d = u(d);
-                D.items.forEach(function(a) {
-                  var g,
-                      k;
-                  a.group ? (g = c[a.group], g || (g = r(h[0], d, "optgroup", f), d = g.nextSibling, g.label = a.group, g = c[a.group] = {
-                    groupElement: g,
-                    currentOptionElement: g.firstChild
-                  }), k = r(g.groupElement, g.currentOptionElement, "option", e), m(a, k), g.currentOptionElement = k.nextSibling) : (k = r(h[0], d, "option", e), m(a, k), d = k.nextSibling);
-                });
-                Object.keys(c).forEach(function(a) {
-                  q(c[a].currentOptionElement);
-                });
-                q(d);
-                w.$render();
-                if (!w.$isEmpty(a)) {
-                  var g = t.readValue();
-                  if (C.trackBy && !ka(a, g) || a !== g)
-                    w.$setViewValue(g), w.$render();
-                }
-              }
-              var w = k[1];
-              if (w) {
-                var t = k[0];
-                k = l.multiple;
-                for (var p,
-                    x = 0,
-                    y = h.children(),
-                    I = y.length; x < I; x++)
-                  if ("" === y[x].value) {
-                    p = y.eq(x);
-                    break;
-                  }
-                var B = !!p,
-                    O = z(e.cloneNode(!1));
-                O.val("?");
-                var D,
-                    C = d(l.ngOptions, h, c);
-                k ? (w.$isEmpty = function(a) {
-                  return !a || 0 === a.length;
-                }, t.writeValue = function(a) {
-                  D.items.forEach(function(a) {
-                    a.element.selected = !1;
-                  });
-                  a && a.forEach(function(a) {
-                    (a = D.getOptionFromViewValue(a)) && !a.disabled && (a.element.selected = !0);
-                  });
-                }, t.readValue = function() {
-                  var a = h.val() || [],
-                      c = [];
-                  n(a, function(a) {
-                    a = D.selectValueMap[a];
-                    a.disabled || c.push(D.getViewValueFromOption(a));
-                  });
-                  return c;
-                }, C.trackBy && c.$watchCollection(function() {
-                  if (K(w.$viewValue))
-                    return w.$viewValue.map(function(a) {
-                      return C.getTrackByValue(a);
-                    });
-                }, function() {
-                  w.$render();
-                })) : (t.writeValue = function(a) {
-                  var c = D.getOptionFromViewValue(a);
-                  c && !c.disabled ? h[0].value !== c.selectValue && (O.remove(), B || p.remove(), h[0].value = c.selectValue, c.element.selected = !0, c.element.setAttribute("selected", "selected")) : null === a || B ? (O.remove(), B || h.prepend(p), h.val(""), p.prop("selected", !0), p.attr("selected", !0)) : (B || p.remove(), h.prepend(O), h.val("?"), O.prop("selected", !0), O.attr("selected", !0));
-                }, t.readValue = function() {
-                  var a = D.selectValueMap[h.val()];
-                  return a && !a.disabled ? (B || p.remove(), O.remove(), D.getViewValueFromOption(a)) : null;
-                }, C.trackBy && c.$watch(function() {
-                  return C.getTrackByValue(w.$viewValue);
-                }, function() {
-                  w.$render();
-                }));
-                B ? (p.remove(), a(p)(c), p.removeClass("ng-scope")) : p = z(e.cloneNode(!1));
-                v();
-                c.$watchCollection(C.getWatchables, v);
-              }
-            }
-          };
-        }],
-        Be = ["$locale", "$interpolate", "$log", function(a, c, d) {
-          var e = /{}/g,
-              f = /^when(Minus)?(.+)$/;
-          return {link: function(g, h, l) {
-              function k(a) {
-                h.text(a || "");
-              }
-              var m = l.count,
-                  r = l.$attr.when && h.attr(l.$attr.when),
-                  q = l.offset || 0,
-                  u = g.$eval(r) || {},
-                  z = {},
-                  y = c.startSymbol(),
-                  t = c.endSymbol(),
-                  p = y + m + "-" + q + t,
-                  x = aa.noop,
-                  C;
-              n(l, function(a, c) {
-                var d = f.exec(c);
-                d && (d = (d[1] ? "-" : "") + E(d[2]), u[d] = h.attr(l.$attr[c]));
-              });
-              n(u, function(a, d) {
-                z[d] = c(a.replace(e, p));
-              });
-              g.$watch(m, function(c) {
-                var e = parseFloat(c),
-                    f = isNaN(e);
-                f || e in u || (e = a.pluralCat(e - q));
-                e === C || f && V(C) && isNaN(C) || (x(), f = z[e], v(f) ? (null != c && d.debug("ngPluralize: no rule defined for '" + e + "' in " + r), x = w, k()) : x = g.$watch(f, k), C = e);
-              });
-            }};
-        }],
-        Ce = ["$parse", "$animate", function(a, c) {
-          var d = F("ngRepeat"),
-              e = function(a, c, d, e, k, m, n) {
-                a[d] = e;
-                k && (a[k] = m);
-                a.$index = c;
-                a.$first = 0 === c;
-                a.$last = c === n - 1;
-                a.$middle = !(a.$first || a.$last);
-                a.$odd = !(a.$even = 0 === (c & 1));
-              };
-          return {
-            restrict: "A",
-            multiElement: !0,
-            transclude: "element",
-            priority: 1E3,
-            terminal: !0,
-            $$tlb: !0,
-            compile: function(f, g) {
-              var h = g.ngRepeat,
-                  l = W.createComment(" end ngRepeat: " + h + " "),
-                  k = h.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
-              if (!k)
-                throw d("iexp", h);
-              var m = k[1],
-                  r = k[2],
-                  q = k[3],
-                  v = k[4],
-                  k = m.match(/^(?:(\s*[\$\w]+)|\(\s*([\$\w]+)\s*,\s*([\$\w]+)\s*\))$/);
-              if (!k)
-                throw d("iidexp", m);
-              var w = k[3] || k[1],
-                  y = k[2];
-              if (q && (!/^[$a-zA-Z_][$a-zA-Z0-9_]*$/.test(q) || /^(null|undefined|this|\$index|\$first|\$middle|\$last|\$even|\$odd|\$parent|\$root|\$id)$/.test(q)))
-                throw d("badident", q);
-              var t,
-                  p,
-                  x,
-                  C,
-                  I = {$id: Fa};
-              v ? t = a(v) : (x = function(a, c) {
-                return Fa(c);
-              }, C = function(a) {
-                return a;
-              });
-              return function(a, f, g, k, m) {
-                t && (p = function(c, d, e) {
-                  y && (I[y] = c);
-                  I[w] = d;
-                  I.$index = e;
-                  return t(a, I);
-                });
-                var v = ga();
-                a.$watchCollection(r, function(g) {
-                  var k,
-                      r,
-                      t = f[0],
-                      A,
-                      D = ga(),
-                      I,
-                      G,
-                      L,
-                      F,
-                      K,
-                      E,
-                      N;
-                  q && (a[q] = g);
-                  if (Da(g))
-                    K = g, r = p || x;
-                  else
-                    for (N in r = p || C, K = [], g)
-                      g.hasOwnProperty(N) && "$" !== N.charAt(0) && K.push(N);
-                  I = K.length;
-                  N = Array(I);
-                  for (k = 0; k < I; k++)
-                    if (G = g === K ? k : K[k], L = g[G], F = r(G, L, k), v[F])
-                      E = v[F], delete v[F], D[F] = E, N[k] = E;
-                    else {
-                      if (D[F])
-                        throw n(N, function(a) {
-                          a && a.scope && (v[a.id] = a);
-                        }), d("dupes", h, F, L);
-                      N[k] = {
-                        id: F,
-                        scope: u,
-                        clone: u
-                      };
-                      D[F] = !0;
-                    }
-                  for (A in v) {
-                    E = v[A];
-                    F = ob(E.clone);
-                    c.leave(F);
-                    if (F[0].parentNode)
-                      for (k = 0, r = F.length; k < r; k++)
-                        F[k].$$NG_REMOVED = !0;
-                    E.scope.$destroy();
-                  }
-                  for (k = 0; k < I; k++)
-                    if (G = g === K ? k : K[k], L = g[G], E = N[k], E.scope) {
-                      A = t;
-                      do
-                        A = A.nextSibling;
- while (A && A.$$NG_REMOVED);
-                      E.clone[0] != A && c.move(ob(E.clone), null, z(t));
-                      t = E.clone[E.clone.length - 1];
-                      e(E.scope, k, w, L, y, G, I);
-                    } else
-                      m(function(a, d) {
-                        E.scope = d;
-                        var f = l.cloneNode(!1);
-                        a[a.length++] = f;
-                        c.enter(a, null, z(t));
-                        t = f;
-                        E.clone = a;
-                        D[E.id] = E;
-                        e(E.scope, k, w, L, y, G, I);
-                      });
-                  v = D;
-                });
-              };
-            }
-          };
-        }],
-        De = ["$animate", function(a) {
-          return {
-            restrict: "A",
-            multiElement: !0,
-            link: function(c, d, e) {
-              c.$watch(e.ngShow, function(c) {
-                a[c ? "removeClass" : "addClass"](d, "ng-hide", {tempClasses: "ng-hide-animate"});
-              });
-            }
-          };
-        }],
-        we = ["$animate", function(a) {
-          return {
-            restrict: "A",
-            multiElement: !0,
-            link: function(c, d, e) {
-              c.$watch(e.ngHide, function(c) {
-                a[c ? "addClass" : "removeClass"](d, "ng-hide", {tempClasses: "ng-hide-animate"});
-              });
-            }
-          };
-        }],
-        Ee = Ma(function(a, c, d) {
-          a.$watch(d.ngStyle, function(a, d) {
-            d && a !== d && n(d, function(a, d) {
-              c.css(d, "");
-            });
-            a && c.css(a);
-          }, !0);
-        }),
-        Fe = ["$animate", function(a) {
-          return {
-            require: "ngSwitch",
-            controller: ["$scope", function() {
-              this.cases = {};
-            }],
-            link: function(c, d, e, f) {
-              var g = [],
-                  h = [],
-                  l = [],
-                  k = [],
-                  m = function(a, c) {
-                    return function() {
-                      a.splice(c, 1);
-                    };
-                  };
-              c.$watch(e.ngSwitch || e.on, function(c) {
-                var d,
-                    e;
-                d = 0;
-                for (e = l.length; d < e; ++d)
-                  a.cancel(l[d]);
-                d = l.length = 0;
-                for (e = k.length; d < e; ++d) {
-                  var q = ob(h[d].clone);
-                  k[d].$destroy();
-                  (l[d] = a.leave(q)).then(m(l, d));
-                }
-                h.length = 0;
-                k.length = 0;
-                (g = f.cases["!" + c] || f.cases["?"]) && n(g, function(c) {
-                  c.transclude(function(d, e) {
-                    k.push(e);
-                    var f = c.element;
-                    d[d.length++] = W.createComment(" end ngSwitchWhen: ");
-                    h.push({clone: d});
-                    a.enter(d, f.parent(), f);
-                  });
-                });
-              });
-            }
-          };
-        }],
-        Ge = Ma({
-          transclude: "element",
-          priority: 1200,
-          require: "^ngSwitch",
-          multiElement: !0,
-          link: function(a, c, d, e, f) {
-            e.cases["!" + d.ngSwitchWhen] = e.cases["!" + d.ngSwitchWhen] || [];
-            e.cases["!" + d.ngSwitchWhen].push({
-              transclude: f,
-              element: c
-            });
-          }
-        }),
-        He = Ma({
-          transclude: "element",
-          priority: 1200,
-          require: "^ngSwitch",
-          multiElement: !0,
-          link: function(a, c, d, e, f) {
-            e.cases["?"] = e.cases["?"] || [];
-            e.cases["?"].push({
-              transclude: f,
-              element: c
-            });
-          }
-        }),
-        Je = Ma({
-          restrict: "EAC",
-          link: function(a, c, d, e, f) {
-            if (!f)
-              throw F("ngTransclude")("orphan", va(c));
-            f(function(a) {
-              c.empty();
-              c.append(a);
-            });
-          }
-        }),
-        je = ["$templateCache", function(a) {
-          return {
-            restrict: "E",
-            terminal: !0,
-            compile: function(c, d) {
-              "text/ng-template" == d.type && a.put(d.id, c[0].text);
-            }
-          };
-        }],
-        zg = {
-          $setViewValue: w,
-          $render: w
-        },
-        Ag = ["$element", "$scope", "$attrs", function(a, c, d) {
-          var e = this,
-              f = new Ra;
-          e.ngModelCtrl = zg;
-          e.unknownOption = z(W.createElement("option"));
-          e.renderUnknownOption = function(c) {
-            c = "? " + Fa(c) + " ?";
-            e.unknownOption.val(c);
-            a.prepend(e.unknownOption);
-            a.val(c);
-          };
-          c.$on("$destroy", function() {
-            e.renderUnknownOption = w;
+        }
+      });
+      var ngAttributeAliasDirectives = {};
+      forEach(BOOLEAN_ATTR, function(propName, attrName) {
+        if (propName == "multiple")
+          return ;
+        function defaultLinkFn(scope, element, attr) {
+          scope.$watch(attr[normalized], function ngBooleanAttrWatchAction(value) {
+            attr.$set(attrName, !!value);
           });
-          e.removeUnknownOption = function() {
-            e.unknownOption.parent() && e.unknownOption.remove();
+        }
+        var normalized = directiveNormalize('ng-' + attrName);
+        var linkFn = defaultLinkFn;
+        if (propName === 'checked') {
+          linkFn = function(scope, element, attr) {
+            if (attr.ngModel !== attr[normalized]) {
+              defaultLinkFn(scope, element, attr);
+            }
           };
-          e.readValue = function() {
-            e.removeUnknownOption();
-            return a.val();
-          };
-          e.writeValue = function(c) {
-            e.hasOption(c) ? (e.removeUnknownOption(), a.val(c), "" === c && e.emptyOption.prop("selected", !0)) : null == c && e.emptyOption ? (e.removeUnknownOption(), a.val("")) : e.renderUnknownOption(c);
-          };
-          e.addOption = function(a, c) {
-            Qa(a, '"option value"');
-            "" === a && (e.emptyOption = c);
-            var d = f.get(a) || 0;
-            f.put(a, d + 1);
-          };
-          e.removeOption = function(a) {
-            var c = f.get(a);
-            c && (1 === c ? (f.remove(a), "" === a && (e.emptyOption = u)) : f.put(a, c - 1));
-          };
-          e.hasOption = function(a) {
-            return !!f.get(a);
-          };
-        }],
-        ke = function() {
+        }
+        ngAttributeAliasDirectives[normalized] = function() {
           return {
-            restrict: "E",
-            require: ["select", "?ngModel"],
-            controller: Ag,
-            link: function(a, c, d, e) {
-              var f = e[1];
-              if (f) {
-                var g = e[0];
-                g.ngModelCtrl = f;
-                f.$render = function() {
-                  g.writeValue(f.$viewValue);
-                };
-                c.on("change", function() {
-                  a.$apply(function() {
-                    f.$setViewValue(g.readValue());
-                  });
-                });
-                if (d.multiple) {
-                  g.readValue = function() {
-                    var a = [];
-                    n(c.find("option"), function(c) {
-                      c.selected && a.push(c.value);
-                    });
-                    return a;
-                  };
-                  g.writeValue = function(a) {
-                    var d = new Ra(a);
-                    n(c.find("option"), function(a) {
-                      a.selected = y(d.get(a.value));
-                    });
-                  };
-                  var h,
-                      l = NaN;
-                  a.$watch(function() {
-                    l !== f.$viewValue || ka(h, f.$viewValue) || (h = fa(f.$viewValue), f.$render());
-                    l = f.$viewValue;
-                  });
-                  f.$isEmpty = function(a) {
-                    return !a || 0 === a.length;
-                  };
+            restrict: 'A',
+            priority: 100,
+            link: linkFn
+          };
+        };
+      });
+      forEach(ALIASED_ATTR, function(htmlAttr, ngAttr) {
+        ngAttributeAliasDirectives[ngAttr] = function() {
+          return {
+            priority: 100,
+            link: function(scope, element, attr) {
+              if (ngAttr === "ngPattern" && attr.ngPattern.charAt(0) == "/") {
+                var match = attr.ngPattern.match(REGEX_STRING_REGEXP);
+                if (match) {
+                  attr.$set("ngPattern", new RegExp(match[1], match[2]));
+                  return ;
                 }
               }
-            }
-          };
-        },
-        me = ["$interpolate", function(a) {
-          function c(a) {
-            a[0].hasAttribute("selected") && (a[0].selected = !0);
-          }
-          return {
-            restrict: "E",
-            priority: 100,
-            compile: function(d, e) {
-              if (v(e.value)) {
-                var f = a(d.text(), !0);
-                f || e.$set("value", d.text());
-              }
-              return function(a, d, e) {
-                var k = d.parent(),
-                    m = k.data("$selectController") || k.parent().data("$selectController");
-                m && m.ngModelCtrl && (f ? a.$watch(f, function(a, f) {
-                  e.$set("value", a);
-                  f !== a && m.removeOption(f);
-                  m.addOption(a, d);
-                  m.ngModelCtrl.$render();
-                  c(d);
-                }) : (m.addOption(e.value, d), m.ngModelCtrl.$render(), c(d)), d.on("$destroy", function() {
-                  m.removeOption(e.value);
-                  m.ngModelCtrl.$render();
-                }));
-              };
-            }
-          };
-        }],
-        le = qa({
-          restrict: "E",
-          terminal: !1
-        }),
-        Gc = function() {
-          return {
-            restrict: "A",
-            require: "?ngModel",
-            link: function(a, c, d, e) {
-              e && (d.required = !0, e.$validators.required = function(a, c) {
-                return !d.required || !e.$isEmpty(c);
-              }, d.$observe("required", function() {
-                e.$validate();
-              }));
-            }
-          };
-        },
-        Fc = function() {
-          return {
-            restrict: "A",
-            require: "?ngModel",
-            link: function(a, c, d, e) {
-              if (e) {
-                var f,
-                    g = d.ngPattern || d.pattern;
-                d.$observe("pattern", function(a) {
-                  L(a) && 0 < a.length && (a = new RegExp("^" + a + "$"));
-                  if (a && !a.test)
-                    throw F("ngPattern")("noregexp", g, a, va(c));
-                  f = a || u;
-                  e.$validate();
-                });
-                e.$validators.pattern = function(a) {
-                  return e.$isEmpty(a) || v(f) || f.test(a);
-                };
-              }
-            }
-          };
-        },
-        Ic = function() {
-          return {
-            restrict: "A",
-            require: "?ngModel",
-            link: function(a, c, d, e) {
-              if (e) {
-                var f = -1;
-                d.$observe("maxlength", function(a) {
-                  a = Y(a);
-                  f = isNaN(a) ? -1 : a;
-                  e.$validate();
-                });
-                e.$validators.maxlength = function(a, c) {
-                  return 0 > f || e.$isEmpty(c) || c.length <= f;
-                };
-              }
-            }
-          };
-        },
-        Hc = function() {
-          return {
-            restrict: "A",
-            require: "?ngModel",
-            link: function(a, c, d, e) {
-              if (e) {
-                var f = 0;
-                d.$observe("minlength", function(a) {
-                  f = Y(a) || 0;
-                  e.$validate();
-                });
-                e.$validators.minlength = function(a, c) {
-                  return e.$isEmpty(c) || c.length >= f;
-                };
-              }
+              scope.$watch(attr[ngAttr], function ngAttrAliasWatchAction(value) {
+                attr.$set(ngAttr, value);
+              });
             }
           };
         };
-    N.angular.bootstrap ? console.log("WARNING: Tried to load angular more than once.") : (be(), de(aa), z(W).ready(function() {
-      Yd(W, zc);
-    }));
-  })(window, document);
-  !window.angular.$$csp() && window.angular.element(document).find("head").prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
+      });
+      forEach(['src', 'srcset', 'href'], function(attrName) {
+        var normalized = directiveNormalize('ng-' + attrName);
+        ngAttributeAliasDirectives[normalized] = function() {
+          return {
+            priority: 99,
+            link: function(scope, element, attr) {
+              var propName = attrName,
+                  name = attrName;
+              if (attrName === 'href' && toString.call(element.prop('href')) === '[object SVGAnimatedString]') {
+                name = 'xlinkHref';
+                attr.$attr[name] = 'xlink:href';
+                propName = null;
+              }
+              attr.$observe(normalized, function(value) {
+                if (!value) {
+                  if (attrName === 'href') {
+                    attr.$set(name, null);
+                  }
+                  return ;
+                }
+                attr.$set(name, value);
+                if (msie && propName)
+                  element.prop(propName, attr[name]);
+              });
+            }
+          };
+        };
+      });
+      var nullFormCtrl = {
+        $addControl: noop,
+        $$renameControl: nullFormRenameControl,
+        $removeControl: noop,
+        $setValidity: noop,
+        $setDirty: noop,
+        $setPristine: noop,
+        $setSubmitted: noop
+      },
+          SUBMITTED_CLASS = 'ng-submitted';
+      function nullFormRenameControl(control, name) {
+        control.$name = name;
+      }
+      FormController.$inject = ['$element', '$attrs', '$scope', '$animate', '$interpolate'];
+      function FormController(element, attrs, $scope, $animate, $interpolate) {
+        var form = this,
+            controls = [];
+        var parentForm = form.$$parentForm = element.parent().controller('form') || nullFormCtrl;
+        form.$error = {};
+        form.$$success = {};
+        form.$pending = undefined;
+        form.$name = $interpolate(attrs.name || attrs.ngForm || '')($scope);
+        form.$dirty = false;
+        form.$pristine = true;
+        form.$valid = true;
+        form.$invalid = false;
+        form.$submitted = false;
+        parentForm.$addControl(form);
+        form.$rollbackViewValue = function() {
+          forEach(controls, function(control) {
+            control.$rollbackViewValue();
+          });
+        };
+        form.$commitViewValue = function() {
+          forEach(controls, function(control) {
+            control.$commitViewValue();
+          });
+        };
+        form.$addControl = function(control) {
+          assertNotHasOwnProperty(control.$name, 'input');
+          controls.push(control);
+          if (control.$name) {
+            form[control.$name] = control;
+          }
+        };
+        form.$$renameControl = function(control, newName) {
+          var oldName = control.$name;
+          if (form[oldName] === control) {
+            delete form[oldName];
+          }
+          form[newName] = control;
+          control.$name = newName;
+        };
+        form.$removeControl = function(control) {
+          if (control.$name && form[control.$name] === control) {
+            delete form[control.$name];
+          }
+          forEach(form.$pending, function(value, name) {
+            form.$setValidity(name, null, control);
+          });
+          forEach(form.$error, function(value, name) {
+            form.$setValidity(name, null, control);
+          });
+          forEach(form.$$success, function(value, name) {
+            form.$setValidity(name, null, control);
+          });
+          arrayRemove(controls, control);
+        };
+        addSetValidityMethod({
+          ctrl: this,
+          $element: element,
+          set: function(object, property, controller) {
+            var list = object[property];
+            if (!list) {
+              object[property] = [controller];
+            } else {
+              var index = list.indexOf(controller);
+              if (index === -1) {
+                list.push(controller);
+              }
+            }
+          },
+          unset: function(object, property, controller) {
+            var list = object[property];
+            if (!list) {
+              return ;
+            }
+            arrayRemove(list, controller);
+            if (list.length === 0) {
+              delete object[property];
+            }
+          },
+          parentForm: parentForm,
+          $animate: $animate
+        });
+        form.$setDirty = function() {
+          $animate.removeClass(element, PRISTINE_CLASS);
+          $animate.addClass(element, DIRTY_CLASS);
+          form.$dirty = true;
+          form.$pristine = false;
+          parentForm.$setDirty();
+        };
+        form.$setPristine = function() {
+          $animate.setClass(element, PRISTINE_CLASS, DIRTY_CLASS + ' ' + SUBMITTED_CLASS);
+          form.$dirty = false;
+          form.$pristine = true;
+          form.$submitted = false;
+          forEach(controls, function(control) {
+            control.$setPristine();
+          });
+        };
+        form.$setUntouched = function() {
+          forEach(controls, function(control) {
+            control.$setUntouched();
+          });
+        };
+        form.$setSubmitted = function() {
+          $animate.addClass(element, SUBMITTED_CLASS);
+          form.$submitted = true;
+          parentForm.$setSubmitted();
+        };
+      }
+      var formDirectiveFactory = function(isNgForm) {
+        return ['$timeout', function($timeout) {
+          var formDirective = {
+            name: 'form',
+            restrict: isNgForm ? 'EAC' : 'E',
+            controller: FormController,
+            compile: function ngFormCompile(formElement, attr) {
+              formElement.addClass(PRISTINE_CLASS).addClass(VALID_CLASS);
+              var nameAttr = attr.name ? 'name' : (isNgForm && attr.ngForm ? 'ngForm' : false);
+              return {pre: function ngFormPreLink(scope, formElement, attr, controller) {
+                  if (!('action' in attr)) {
+                    var handleFormSubmission = function(event) {
+                      scope.$apply(function() {
+                        controller.$commitViewValue();
+                        controller.$setSubmitted();
+                      });
+                      event.preventDefault();
+                    };
+                    addEventListenerFn(formElement[0], 'submit', handleFormSubmission);
+                    formElement.on('$destroy', function() {
+                      $timeout(function() {
+                        removeEventListenerFn(formElement[0], 'submit', handleFormSubmission);
+                      }, 0, false);
+                    });
+                  }
+                  var parentFormCtrl = controller.$$parentForm;
+                  if (nameAttr) {
+                    setter(scope, controller.$name, controller, controller.$name);
+                    attr.$observe(nameAttr, function(newValue) {
+                      if (controller.$name === newValue)
+                        return ;
+                      setter(scope, controller.$name, undefined, controller.$name);
+                      parentFormCtrl.$$renameControl(controller, newValue);
+                      setter(scope, controller.$name, controller, controller.$name);
+                    });
+                  }
+                  formElement.on('$destroy', function() {
+                    parentFormCtrl.$removeControl(controller);
+                    if (nameAttr) {
+                      setter(scope, attr[nameAttr], undefined, controller.$name);
+                    }
+                    extend(controller, nullFormCtrl);
+                  });
+                }};
+            }
+          };
+          return formDirective;
+        }];
+      };
+      var formDirective = formDirectiveFactory();
+      var ngFormDirective = formDirectiveFactory(true);
+      var ISO_DATE_REGEXP = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
+      var URL_REGEXP = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
+      var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+      var NUMBER_REGEXP = /^\s*(\-|\+)?(\d+|(\d*(\.\d*)))\s*$/;
+      var DATE_REGEXP = /^(\d{4})-(\d{2})-(\d{2})$/;
+      var DATETIMELOCAL_REGEXP = /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)(?::(\d\d)(\.\d{1,3})?)?$/;
+      var WEEK_REGEXP = /^(\d{4})-W(\d\d)$/;
+      var MONTH_REGEXP = /^(\d{4})-(\d\d)$/;
+      var TIME_REGEXP = /^(\d\d):(\d\d)(?::(\d\d)(\.\d{1,3})?)?$/;
+      var inputType = {
+        'text': textInputType,
+        'date': createDateInputType('date', DATE_REGEXP, createDateParser(DATE_REGEXP, ['yyyy', 'MM', 'dd']), 'yyyy-MM-dd'),
+        'datetime-local': createDateInputType('datetimelocal', DATETIMELOCAL_REGEXP, createDateParser(DATETIMELOCAL_REGEXP, ['yyyy', 'MM', 'dd', 'HH', 'mm', 'ss', 'sss']), 'yyyy-MM-ddTHH:mm:ss.sss'),
+        'time': createDateInputType('time', TIME_REGEXP, createDateParser(TIME_REGEXP, ['HH', 'mm', 'ss', 'sss']), 'HH:mm:ss.sss'),
+        'week': createDateInputType('week', WEEK_REGEXP, weekParser, 'yyyy-Www'),
+        'month': createDateInputType('month', MONTH_REGEXP, createDateParser(MONTH_REGEXP, ['yyyy', 'MM']), 'yyyy-MM'),
+        'number': numberInputType,
+        'url': urlInputType,
+        'email': emailInputType,
+        'radio': radioInputType,
+        'checkbox': checkboxInputType,
+        'hidden': noop,
+        'button': noop,
+        'submit': noop,
+        'reset': noop,
+        'file': noop
+      };
+      function stringBasedInputType(ctrl) {
+        ctrl.$formatters.push(function(value) {
+          return ctrl.$isEmpty(value) ? value : value.toString();
+        });
+      }
+      function textInputType(scope, element, attr, ctrl, $sniffer, $browser) {
+        baseInputType(scope, element, attr, ctrl, $sniffer, $browser);
+        stringBasedInputType(ctrl);
+      }
+      function baseInputType(scope, element, attr, ctrl, $sniffer, $browser) {
+        var type = lowercase(element[0].type);
+        if (!$sniffer.android) {
+          var composing = false;
+          element.on('compositionstart', function(data) {
+            composing = true;
+          });
+          element.on('compositionend', function() {
+            composing = false;
+            listener();
+          });
+        }
+        var listener = function(ev) {
+          if (timeout) {
+            $browser.defer.cancel(timeout);
+            timeout = null;
+          }
+          if (composing)
+            return ;
+          var value = element.val(),
+              event = ev && ev.type;
+          if (type !== 'password' && (!attr.ngTrim || attr.ngTrim !== 'false')) {
+            value = trim(value);
+          }
+          if (ctrl.$viewValue !== value || (value === '' && ctrl.$$hasNativeValidators)) {
+            ctrl.$setViewValue(value, event);
+          }
+        };
+        if ($sniffer.hasEvent('input')) {
+          element.on('input', listener);
+        } else {
+          var timeout;
+          var deferListener = function(ev, input, origValue) {
+            if (!timeout) {
+              timeout = $browser.defer(function() {
+                timeout = null;
+                if (!input || input.value !== origValue) {
+                  listener(ev);
+                }
+              });
+            }
+          };
+          element.on('keydown', function(event) {
+            var key = event.keyCode;
+            if (key === 91 || (15 < key && key < 19) || (37 <= key && key <= 40))
+              return ;
+            deferListener(event, this, this.value);
+          });
+          if ($sniffer.hasEvent('paste')) {
+            element.on('paste cut', deferListener);
+          }
+        }
+        element.on('change', listener);
+        ctrl.$render = function() {
+          element.val(ctrl.$isEmpty(ctrl.$viewValue) ? '' : ctrl.$viewValue);
+        };
+      }
+      function weekParser(isoWeek, existingDate) {
+        if (isDate(isoWeek)) {
+          return isoWeek;
+        }
+        if (isString(isoWeek)) {
+          WEEK_REGEXP.lastIndex = 0;
+          var parts = WEEK_REGEXP.exec(isoWeek);
+          if (parts) {
+            var year = +parts[1],
+                week = +parts[2],
+                hours = 0,
+                minutes = 0,
+                seconds = 0,
+                milliseconds = 0,
+                firstThurs = getFirstThursdayOfYear(year),
+                addDays = (week - 1) * 7;
+            if (existingDate) {
+              hours = existingDate.getHours();
+              minutes = existingDate.getMinutes();
+              seconds = existingDate.getSeconds();
+              milliseconds = existingDate.getMilliseconds();
+            }
+            return new Date(year, 0, firstThurs.getDate() + addDays, hours, minutes, seconds, milliseconds);
+          }
+        }
+        return NaN;
+      }
+      function createDateParser(regexp, mapping) {
+        return function(iso, date) {
+          var parts,
+              map;
+          if (isDate(iso)) {
+            return iso;
+          }
+          if (isString(iso)) {
+            if (iso.charAt(0) == '"' && iso.charAt(iso.length - 1) == '"') {
+              iso = iso.substring(1, iso.length - 1);
+            }
+            if (ISO_DATE_REGEXP.test(iso)) {
+              return new Date(iso);
+            }
+            regexp.lastIndex = 0;
+            parts = regexp.exec(iso);
+            if (parts) {
+              parts.shift();
+              if (date) {
+                map = {
+                  yyyy: date.getFullYear(),
+                  MM: date.getMonth() + 1,
+                  dd: date.getDate(),
+                  HH: date.getHours(),
+                  mm: date.getMinutes(),
+                  ss: date.getSeconds(),
+                  sss: date.getMilliseconds() / 1000
+                };
+              } else {
+                map = {
+                  yyyy: 1970,
+                  MM: 1,
+                  dd: 1,
+                  HH: 0,
+                  mm: 0,
+                  ss: 0,
+                  sss: 0
+                };
+              }
+              forEach(parts, function(part, index) {
+                if (index < mapping.length) {
+                  map[mapping[index]] = +part;
+                }
+              });
+              return new Date(map.yyyy, map.MM - 1, map.dd, map.HH, map.mm, map.ss || 0, map.sss * 1000 || 0);
+            }
+          }
+          return NaN;
+        };
+      }
+      function createDateInputType(type, regexp, parseDate, format) {
+        return function dynamicDateInputType(scope, element, attr, ctrl, $sniffer, $browser, $filter) {
+          badInputChecker(scope, element, attr, ctrl);
+          baseInputType(scope, element, attr, ctrl, $sniffer, $browser);
+          var timezone = ctrl && ctrl.$options && ctrl.$options.timezone;
+          var previousDate;
+          ctrl.$$parserName = type;
+          ctrl.$parsers.push(function(value) {
+            if (ctrl.$isEmpty(value))
+              return null;
+            if (regexp.test(value)) {
+              var parsedDate = parseDate(value, previousDate);
+              if (timezone) {
+                parsedDate = convertTimezoneToLocal(parsedDate, timezone);
+              }
+              return parsedDate;
+            }
+            return undefined;
+          });
+          ctrl.$formatters.push(function(value) {
+            if (value && !isDate(value)) {
+              throw $ngModelMinErr('datefmt', 'Expected `{0}` to be a date', value);
+            }
+            if (isValidDate(value)) {
+              previousDate = value;
+              if (previousDate && timezone) {
+                previousDate = convertTimezoneToLocal(previousDate, timezone, true);
+              }
+              return $filter('date')(value, format, timezone);
+            } else {
+              previousDate = null;
+              return '';
+            }
+          });
+          if (isDefined(attr.min) || attr.ngMin) {
+            var minVal;
+            ctrl.$validators.min = function(value) {
+              return !isValidDate(value) || isUndefined(minVal) || parseDate(value) >= minVal;
+            };
+            attr.$observe('min', function(val) {
+              minVal = parseObservedDateValue(val);
+              ctrl.$validate();
+            });
+          }
+          if (isDefined(attr.max) || attr.ngMax) {
+            var maxVal;
+            ctrl.$validators.max = function(value) {
+              return !isValidDate(value) || isUndefined(maxVal) || parseDate(value) <= maxVal;
+            };
+            attr.$observe('max', function(val) {
+              maxVal = parseObservedDateValue(val);
+              ctrl.$validate();
+            });
+          }
+          function isValidDate(value) {
+            return value && !(value.getTime && value.getTime() !== value.getTime());
+          }
+          function parseObservedDateValue(val) {
+            return isDefined(val) ? (isDate(val) ? val : parseDate(val)) : undefined;
+          }
+        };
+      }
+      function badInputChecker(scope, element, attr, ctrl) {
+        var node = element[0];
+        var nativeValidation = ctrl.$$hasNativeValidators = isObject(node.validity);
+        if (nativeValidation) {
+          ctrl.$parsers.push(function(value) {
+            var validity = element.prop(VALIDITY_STATE_PROPERTY) || {};
+            return validity.badInput && !validity.typeMismatch ? undefined : value;
+          });
+        }
+      }
+      function numberInputType(scope, element, attr, ctrl, $sniffer, $browser) {
+        badInputChecker(scope, element, attr, ctrl);
+        baseInputType(scope, element, attr, ctrl, $sniffer, $browser);
+        ctrl.$$parserName = 'number';
+        ctrl.$parsers.push(function(value) {
+          if (ctrl.$isEmpty(value))
+            return null;
+          if (NUMBER_REGEXP.test(value))
+            return parseFloat(value);
+          return undefined;
+        });
+        ctrl.$formatters.push(function(value) {
+          if (!ctrl.$isEmpty(value)) {
+            if (!isNumber(value)) {
+              throw $ngModelMinErr('numfmt', 'Expected `{0}` to be a number', value);
+            }
+            value = value.toString();
+          }
+          return value;
+        });
+        if (isDefined(attr.min) || attr.ngMin) {
+          var minVal;
+          ctrl.$validators.min = function(value) {
+            return ctrl.$isEmpty(value) || isUndefined(minVal) || value >= minVal;
+          };
+          attr.$observe('min', function(val) {
+            if (isDefined(val) && !isNumber(val)) {
+              val = parseFloat(val, 10);
+            }
+            minVal = isNumber(val) && !isNaN(val) ? val : undefined;
+            ctrl.$validate();
+          });
+        }
+        if (isDefined(attr.max) || attr.ngMax) {
+          var maxVal;
+          ctrl.$validators.max = function(value) {
+            return ctrl.$isEmpty(value) || isUndefined(maxVal) || value <= maxVal;
+          };
+          attr.$observe('max', function(val) {
+            if (isDefined(val) && !isNumber(val)) {
+              val = parseFloat(val, 10);
+            }
+            maxVal = isNumber(val) && !isNaN(val) ? val : undefined;
+            ctrl.$validate();
+          });
+        }
+      }
+      function urlInputType(scope, element, attr, ctrl, $sniffer, $browser) {
+        baseInputType(scope, element, attr, ctrl, $sniffer, $browser);
+        stringBasedInputType(ctrl);
+        ctrl.$$parserName = 'url';
+        ctrl.$validators.url = function(modelValue, viewValue) {
+          var value = modelValue || viewValue;
+          return ctrl.$isEmpty(value) || URL_REGEXP.test(value);
+        };
+      }
+      function emailInputType(scope, element, attr, ctrl, $sniffer, $browser) {
+        baseInputType(scope, element, attr, ctrl, $sniffer, $browser);
+        stringBasedInputType(ctrl);
+        ctrl.$$parserName = 'email';
+        ctrl.$validators.email = function(modelValue, viewValue) {
+          var value = modelValue || viewValue;
+          return ctrl.$isEmpty(value) || EMAIL_REGEXP.test(value);
+        };
+      }
+      function radioInputType(scope, element, attr, ctrl) {
+        if (isUndefined(attr.name)) {
+          element.attr('name', nextUid());
+        }
+        var listener = function(ev) {
+          if (element[0].checked) {
+            ctrl.$setViewValue(attr.value, ev && ev.type);
+          }
+        };
+        element.on('click', listener);
+        ctrl.$render = function() {
+          var value = attr.value;
+          element[0].checked = (value == ctrl.$viewValue);
+        };
+        attr.$observe('value', ctrl.$render);
+      }
+      function parseConstantExpr($parse, context, name, expression, fallback) {
+        var parseFn;
+        if (isDefined(expression)) {
+          parseFn = $parse(expression);
+          if (!parseFn.constant) {
+            throw minErr('ngModel')('constexpr', 'Expected constant expression for `{0}`, but saw ' + '`{1}`.', name, expression);
+          }
+          return parseFn(context);
+        }
+        return fallback;
+      }
+      function checkboxInputType(scope, element, attr, ctrl, $sniffer, $browser, $filter, $parse) {
+        var trueValue = parseConstantExpr($parse, scope, 'ngTrueValue', attr.ngTrueValue, true);
+        var falseValue = parseConstantExpr($parse, scope, 'ngFalseValue', attr.ngFalseValue, false);
+        var listener = function(ev) {
+          ctrl.$setViewValue(element[0].checked, ev && ev.type);
+        };
+        element.on('click', listener);
+        ctrl.$render = function() {
+          element[0].checked = ctrl.$viewValue;
+        };
+        ctrl.$isEmpty = function(value) {
+          return value === false;
+        };
+        ctrl.$formatters.push(function(value) {
+          return equals(value, trueValue);
+        });
+        ctrl.$parsers.push(function(value) {
+          return value ? trueValue : falseValue;
+        });
+      }
+      var inputDirective = ['$browser', '$sniffer', '$filter', '$parse', function($browser, $sniffer, $filter, $parse) {
+        return {
+          restrict: 'E',
+          require: ['?ngModel'],
+          link: {pre: function(scope, element, attr, ctrls) {
+              if (ctrls[0]) {
+                (inputType[lowercase(attr.type)] || inputType.text)(scope, element, attr, ctrls[0], $sniffer, $browser, $filter, $parse);
+              }
+            }}
+        };
+      }];
+      var CONSTANT_VALUE_REGEXP = /^(true|false|\d+)$/;
+      var ngValueDirective = function() {
+        return {
+          restrict: 'A',
+          priority: 100,
+          compile: function(tpl, tplAttr) {
+            if (CONSTANT_VALUE_REGEXP.test(tplAttr.ngValue)) {
+              return function ngValueConstantLink(scope, elm, attr) {
+                attr.$set('value', scope.$eval(attr.ngValue));
+              };
+            } else {
+              return function ngValueLink(scope, elm, attr) {
+                scope.$watch(attr.ngValue, function valueWatchAction(value) {
+                  attr.$set('value', value);
+                });
+              };
+            }
+          }
+        };
+      };
+      var ngBindDirective = ['$compile', function($compile) {
+        return {
+          restrict: 'AC',
+          compile: function ngBindCompile(templateElement) {
+            $compile.$$addBindingClass(templateElement);
+            return function ngBindLink(scope, element, attr) {
+              $compile.$$addBindingInfo(element, attr.ngBind);
+              element = element[0];
+              scope.$watch(attr.ngBind, function ngBindWatchAction(value) {
+                element.textContent = value === undefined ? '' : value;
+              });
+            };
+          }
+        };
+      }];
+      var ngBindTemplateDirective = ['$interpolate', '$compile', function($interpolate, $compile) {
+        return {compile: function ngBindTemplateCompile(templateElement) {
+            $compile.$$addBindingClass(templateElement);
+            return function ngBindTemplateLink(scope, element, attr) {
+              var interpolateFn = $interpolate(element.attr(attr.$attr.ngBindTemplate));
+              $compile.$$addBindingInfo(element, interpolateFn.expressions);
+              element = element[0];
+              attr.$observe('ngBindTemplate', function(value) {
+                element.textContent = value === undefined ? '' : value;
+              });
+            };
+          }};
+      }];
+      var ngBindHtmlDirective = ['$sce', '$parse', '$compile', function($sce, $parse, $compile) {
+        return {
+          restrict: 'A',
+          compile: function ngBindHtmlCompile(tElement, tAttrs) {
+            var ngBindHtmlGetter = $parse(tAttrs.ngBindHtml);
+            var ngBindHtmlWatch = $parse(tAttrs.ngBindHtml, function getStringValue(value) {
+              return (value || '').toString();
+            });
+            $compile.$$addBindingClass(tElement);
+            return function ngBindHtmlLink(scope, element, attr) {
+              $compile.$$addBindingInfo(element, attr.ngBindHtml);
+              scope.$watch(ngBindHtmlWatch, function ngBindHtmlWatchAction() {
+                element.html($sce.getTrustedHtml(ngBindHtmlGetter(scope)) || '');
+              });
+            };
+          }
+        };
+      }];
+      var ngChangeDirective = valueFn({
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attr, ctrl) {
+          ctrl.$viewChangeListeners.push(function() {
+            scope.$eval(attr.ngChange);
+          });
+        }
+      });
+      function classDirective(name, selector) {
+        name = 'ngClass' + name;
+        return ['$animate', function($animate) {
+          return {
+            restrict: 'AC',
+            link: function(scope, element, attr) {
+              var oldVal;
+              scope.$watch(attr[name], ngClassWatchAction, true);
+              attr.$observe('class', function(value) {
+                ngClassWatchAction(scope.$eval(attr[name]));
+              });
+              if (name !== 'ngClass') {
+                scope.$watch('$index', function($index, old$index) {
+                  var mod = $index & 1;
+                  if (mod !== (old$index & 1)) {
+                    var classes = arrayClasses(scope.$eval(attr[name]));
+                    mod === selector ? addClasses(classes) : removeClasses(classes);
+                  }
+                });
+              }
+              function addClasses(classes) {
+                var newClasses = digestClassCounts(classes, 1);
+                attr.$addClass(newClasses);
+              }
+              function removeClasses(classes) {
+                var newClasses = digestClassCounts(classes, -1);
+                attr.$removeClass(newClasses);
+              }
+              function digestClassCounts(classes, count) {
+                var classCounts = element.data('$classCounts') || createMap();
+                var classesToUpdate = [];
+                forEach(classes, function(className) {
+                  if (count > 0 || classCounts[className]) {
+                    classCounts[className] = (classCounts[className] || 0) + count;
+                    if (classCounts[className] === +(count > 0)) {
+                      classesToUpdate.push(className);
+                    }
+                  }
+                });
+                element.data('$classCounts', classCounts);
+                return classesToUpdate.join(' ');
+              }
+              function updateClasses(oldClasses, newClasses) {
+                var toAdd = arrayDifference(newClasses, oldClasses);
+                var toRemove = arrayDifference(oldClasses, newClasses);
+                toAdd = digestClassCounts(toAdd, 1);
+                toRemove = digestClassCounts(toRemove, -1);
+                if (toAdd && toAdd.length) {
+                  $animate.addClass(element, toAdd);
+                }
+                if (toRemove && toRemove.length) {
+                  $animate.removeClass(element, toRemove);
+                }
+              }
+              function ngClassWatchAction(newVal) {
+                if (selector === true || scope.$index % 2 === selector) {
+                  var newClasses = arrayClasses(newVal || []);
+                  if (!oldVal) {
+                    addClasses(newClasses);
+                  } else if (!equals(newVal, oldVal)) {
+                    var oldClasses = arrayClasses(oldVal);
+                    updateClasses(oldClasses, newClasses);
+                  }
+                }
+                oldVal = shallowCopy(newVal);
+              }
+            }
+          };
+          function arrayDifference(tokens1, tokens2) {
+            var values = [];
+            outer: for (var i = 0; i < tokens1.length; i++) {
+              var token = tokens1[i];
+              for (var j = 0; j < tokens2.length; j++) {
+                if (token == tokens2[j])
+                  continue outer;
+              }
+              values.push(token);
+            }
+            return values;
+          }
+          function arrayClasses(classVal) {
+            var classes = [];
+            if (isArray(classVal)) {
+              forEach(classVal, function(v) {
+                classes = classes.concat(arrayClasses(v));
+              });
+              return classes;
+            } else if (isString(classVal)) {
+              return classVal.split(' ');
+            } else if (isObject(classVal)) {
+              forEach(classVal, function(v, k) {
+                if (v) {
+                  classes = classes.concat(k.split(' '));
+                }
+              });
+              return classes;
+            }
+            return classVal;
+          }
+        }];
+      }
+      var ngClassDirective = classDirective('', true);
+      var ngClassOddDirective = classDirective('Odd', 0);
+      var ngClassEvenDirective = classDirective('Even', 1);
+      var ngCloakDirective = ngDirective({compile: function(element, attr) {
+          attr.$set('ngCloak', undefined);
+          element.removeClass('ng-cloak');
+        }});
+      var ngControllerDirective = [function() {
+        return {
+          restrict: 'A',
+          scope: true,
+          controller: '@',
+          priority: 500
+        };
+      }];
+      var ngEventDirectives = {};
+      var forceAsyncEvents = {
+        'blur': true,
+        'focus': true
+      };
+      forEach('click dblclick mousedown mouseup mouseover mouseout mousemove mouseenter mouseleave keydown keyup keypress submit focus blur copy cut paste'.split(' '), function(eventName) {
+        var directiveName = directiveNormalize('ng-' + eventName);
+        ngEventDirectives[directiveName] = ['$parse', '$rootScope', function($parse, $rootScope) {
+          return {
+            restrict: 'A',
+            compile: function($element, attr) {
+              var fn = $parse(attr[directiveName], null, true);
+              return function ngEventHandler(scope, element) {
+                element.on(eventName, function(event) {
+                  var callback = function() {
+                    fn(scope, {$event: event});
+                  };
+                  if (forceAsyncEvents[eventName] && $rootScope.$$phase) {
+                    scope.$evalAsync(callback);
+                  } else {
+                    scope.$apply(callback);
+                  }
+                });
+              };
+            }
+          };
+        }];
+      });
+      var ngIfDirective = ['$animate', function($animate) {
+        return {
+          multiElement: true,
+          transclude: 'element',
+          priority: 600,
+          terminal: true,
+          restrict: 'A',
+          $$tlb: true,
+          link: function($scope, $element, $attr, ctrl, $transclude) {
+            var block,
+                childScope,
+                previousElements;
+            $scope.$watch($attr.ngIf, function ngIfWatchAction(value) {
+              if (value) {
+                if (!childScope) {
+                  $transclude(function(clone, newScope) {
+                    childScope = newScope;
+                    clone[clone.length++] = document.createComment(' end ngIf: ' + $attr.ngIf + ' ');
+                    block = {clone: clone};
+                    $animate.enter(clone, $element.parent(), $element);
+                  });
+                }
+              } else {
+                if (previousElements) {
+                  previousElements.remove();
+                  previousElements = null;
+                }
+                if (childScope) {
+                  childScope.$destroy();
+                  childScope = null;
+                }
+                if (block) {
+                  previousElements = getBlockNodes(block.clone);
+                  $animate.leave(previousElements).then(function() {
+                    previousElements = null;
+                  });
+                  block = null;
+                }
+              }
+            });
+          }
+        };
+      }];
+      var ngIncludeDirective = ['$templateRequest', '$anchorScroll', '$animate', '$sce', function($templateRequest, $anchorScroll, $animate, $sce) {
+        return {
+          restrict: 'ECA',
+          priority: 400,
+          terminal: true,
+          transclude: 'element',
+          controller: angular.noop,
+          compile: function(element, attr) {
+            var srcExp = attr.ngInclude || attr.src,
+                onloadExp = attr.onload || '',
+                autoScrollExp = attr.autoscroll;
+            return function(scope, $element, $attr, ctrl, $transclude) {
+              var changeCounter = 0,
+                  currentScope,
+                  previousElement,
+                  currentElement;
+              var cleanupLastIncludeContent = function() {
+                if (previousElement) {
+                  previousElement.remove();
+                  previousElement = null;
+                }
+                if (currentScope) {
+                  currentScope.$destroy();
+                  currentScope = null;
+                }
+                if (currentElement) {
+                  $animate.leave(currentElement).then(function() {
+                    previousElement = null;
+                  });
+                  previousElement = currentElement;
+                  currentElement = null;
+                }
+              };
+              scope.$watch($sce.parseAsResourceUrl(srcExp), function ngIncludeWatchAction(src) {
+                var afterAnimation = function() {
+                  if (isDefined(autoScrollExp) && (!autoScrollExp || scope.$eval(autoScrollExp))) {
+                    $anchorScroll();
+                  }
+                };
+                var thisChangeId = ++changeCounter;
+                if (src) {
+                  $templateRequest(src, true).then(function(response) {
+                    if (thisChangeId !== changeCounter)
+                      return ;
+                    var newScope = scope.$new();
+                    ctrl.template = response;
+                    var clone = $transclude(newScope, function(clone) {
+                      cleanupLastIncludeContent();
+                      $animate.enter(clone, null, $element).then(afterAnimation);
+                    });
+                    currentScope = newScope;
+                    currentElement = clone;
+                    currentScope.$emit('$includeContentLoaded', src);
+                    scope.$eval(onloadExp);
+                  }, function() {
+                    if (thisChangeId === changeCounter) {
+                      cleanupLastIncludeContent();
+                      scope.$emit('$includeContentError', src);
+                    }
+                  });
+                  scope.$emit('$includeContentRequested', src);
+                } else {
+                  cleanupLastIncludeContent();
+                  ctrl.template = null;
+                }
+              });
+            };
+          }
+        };
+      }];
+      var ngIncludeFillContentDirective = ['$compile', function($compile) {
+        return {
+          restrict: 'ECA',
+          priority: -400,
+          require: 'ngInclude',
+          link: function(scope, $element, $attr, ctrl) {
+            if (/SVG/.test($element[0].toString())) {
+              $element.empty();
+              $compile(jqLiteBuildFragment(ctrl.template, document).childNodes)(scope, function namespaceAdaptedClone(clone) {
+                $element.append(clone);
+              }, {futureParentElement: $element});
+              return ;
+            }
+            $element.html(ctrl.template);
+            $compile($element.contents())(scope);
+          }
+        };
+      }];
+      var ngInitDirective = ngDirective({
+        priority: 450,
+        compile: function() {
+          return {pre: function(scope, element, attrs) {
+              scope.$eval(attrs.ngInit);
+            }};
+        }
+      });
+      var ngListDirective = function() {
+        return {
+          restrict: 'A',
+          priority: 100,
+          require: 'ngModel',
+          link: function(scope, element, attr, ctrl) {
+            var ngList = element.attr(attr.$attr.ngList) || ', ';
+            var trimValues = attr.ngTrim !== 'false';
+            var separator = trimValues ? trim(ngList) : ngList;
+            var parse = function(viewValue) {
+              if (isUndefined(viewValue))
+                return ;
+              var list = [];
+              if (viewValue) {
+                forEach(viewValue.split(separator), function(value) {
+                  if (value)
+                    list.push(trimValues ? trim(value) : value);
+                });
+              }
+              return list;
+            };
+            ctrl.$parsers.push(parse);
+            ctrl.$formatters.push(function(value) {
+              if (isArray(value)) {
+                return value.join(ngList);
+              }
+              return undefined;
+            });
+            ctrl.$isEmpty = function(value) {
+              return !value || !value.length;
+            };
+          }
+        };
+      };
+      var VALID_CLASS = 'ng-valid',
+          INVALID_CLASS = 'ng-invalid',
+          PRISTINE_CLASS = 'ng-pristine',
+          DIRTY_CLASS = 'ng-dirty',
+          UNTOUCHED_CLASS = 'ng-untouched',
+          TOUCHED_CLASS = 'ng-touched',
+          PENDING_CLASS = 'ng-pending';
+      var $ngModelMinErr = new minErr('ngModel');
+      var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$parse', '$animate', '$timeout', '$rootScope', '$q', '$interpolate', function($scope, $exceptionHandler, $attr, $element, $parse, $animate, $timeout, $rootScope, $q, $interpolate) {
+        this.$viewValue = Number.NaN;
+        this.$modelValue = Number.NaN;
+        this.$$rawModelValue = undefined;
+        this.$validators = {};
+        this.$asyncValidators = {};
+        this.$parsers = [];
+        this.$formatters = [];
+        this.$viewChangeListeners = [];
+        this.$untouched = true;
+        this.$touched = false;
+        this.$pristine = true;
+        this.$dirty = false;
+        this.$valid = true;
+        this.$invalid = false;
+        this.$error = {};
+        this.$$success = {};
+        this.$pending = undefined;
+        this.$name = $interpolate($attr.name || '', false)($scope);
+        var parsedNgModel = $parse($attr.ngModel),
+            parsedNgModelAssign = parsedNgModel.assign,
+            ngModelGet = parsedNgModel,
+            ngModelSet = parsedNgModelAssign,
+            pendingDebounce = null,
+            parserValid,
+            ctrl = this;
+        this.$$setOptions = function(options) {
+          ctrl.$options = options;
+          if (options && options.getterSetter) {
+            var invokeModelGetter = $parse($attr.ngModel + '()'),
+                invokeModelSetter = $parse($attr.ngModel + '($$$p)');
+            ngModelGet = function($scope) {
+              var modelValue = parsedNgModel($scope);
+              if (isFunction(modelValue)) {
+                modelValue = invokeModelGetter($scope);
+              }
+              return modelValue;
+            };
+            ngModelSet = function($scope, newValue) {
+              if (isFunction(parsedNgModel($scope))) {
+                invokeModelSetter($scope, {$$$p: ctrl.$modelValue});
+              } else {
+                parsedNgModelAssign($scope, ctrl.$modelValue);
+              }
+            };
+          } else if (!parsedNgModel.assign) {
+            throw $ngModelMinErr('nonassign', "Expression '{0}' is non-assignable. Element: {1}", $attr.ngModel, startingTag($element));
+          }
+        };
+        this.$render = noop;
+        this.$isEmpty = function(value) {
+          return isUndefined(value) || value === '' || value === null || value !== value;
+        };
+        var parentForm = $element.inheritedData('$formController') || nullFormCtrl,
+            currentValidationRunId = 0;
+        addSetValidityMethod({
+          ctrl: this,
+          $element: $element,
+          set: function(object, property) {
+            object[property] = true;
+          },
+          unset: function(object, property) {
+            delete object[property];
+          },
+          parentForm: parentForm,
+          $animate: $animate
+        });
+        this.$setPristine = function() {
+          ctrl.$dirty = false;
+          ctrl.$pristine = true;
+          $animate.removeClass($element, DIRTY_CLASS);
+          $animate.addClass($element, PRISTINE_CLASS);
+        };
+        this.$setDirty = function() {
+          ctrl.$dirty = true;
+          ctrl.$pristine = false;
+          $animate.removeClass($element, PRISTINE_CLASS);
+          $animate.addClass($element, DIRTY_CLASS);
+          parentForm.$setDirty();
+        };
+        this.$setUntouched = function() {
+          ctrl.$touched = false;
+          ctrl.$untouched = true;
+          $animate.setClass($element, UNTOUCHED_CLASS, TOUCHED_CLASS);
+        };
+        this.$setTouched = function() {
+          ctrl.$touched = true;
+          ctrl.$untouched = false;
+          $animate.setClass($element, TOUCHED_CLASS, UNTOUCHED_CLASS);
+        };
+        this.$rollbackViewValue = function() {
+          $timeout.cancel(pendingDebounce);
+          ctrl.$viewValue = ctrl.$$lastCommittedViewValue;
+          ctrl.$render();
+        };
+        this.$validate = function() {
+          if (isNumber(ctrl.$modelValue) && isNaN(ctrl.$modelValue)) {
+            return ;
+          }
+          var viewValue = ctrl.$$lastCommittedViewValue;
+          var modelValue = ctrl.$$rawModelValue;
+          var prevValid = ctrl.$valid;
+          var prevModelValue = ctrl.$modelValue;
+          var allowInvalid = ctrl.$options && ctrl.$options.allowInvalid;
+          ctrl.$$runValidators(modelValue, viewValue, function(allValid) {
+            if (!allowInvalid && prevValid !== allValid) {
+              ctrl.$modelValue = allValid ? modelValue : undefined;
+              if (ctrl.$modelValue !== prevModelValue) {
+                ctrl.$$writeModelToScope();
+              }
+            }
+          });
+        };
+        this.$$runValidators = function(modelValue, viewValue, doneCallback) {
+          currentValidationRunId++;
+          var localValidationRunId = currentValidationRunId;
+          if (!processParseErrors()) {
+            validationDone(false);
+            return ;
+          }
+          if (!processSyncValidators()) {
+            validationDone(false);
+            return ;
+          }
+          processAsyncValidators();
+          function processParseErrors() {
+            var errorKey = ctrl.$$parserName || 'parse';
+            if (parserValid === undefined) {
+              setValidity(errorKey, null);
+            } else {
+              if (!parserValid) {
+                forEach(ctrl.$validators, function(v, name) {
+                  setValidity(name, null);
+                });
+                forEach(ctrl.$asyncValidators, function(v, name) {
+                  setValidity(name, null);
+                });
+              }
+              setValidity(errorKey, parserValid);
+              return parserValid;
+            }
+            return true;
+          }
+          function processSyncValidators() {
+            var syncValidatorsValid = true;
+            forEach(ctrl.$validators, function(validator, name) {
+              var result = validator(modelValue, viewValue);
+              syncValidatorsValid = syncValidatorsValid && result;
+              setValidity(name, result);
+            });
+            if (!syncValidatorsValid) {
+              forEach(ctrl.$asyncValidators, function(v, name) {
+                setValidity(name, null);
+              });
+              return false;
+            }
+            return true;
+          }
+          function processAsyncValidators() {
+            var validatorPromises = [];
+            var allValid = true;
+            forEach(ctrl.$asyncValidators, function(validator, name) {
+              var promise = validator(modelValue, viewValue);
+              if (!isPromiseLike(promise)) {
+                throw $ngModelMinErr("$asyncValidators", "Expected asynchronous validator to return a promise but got '{0}' instead.", promise);
+              }
+              setValidity(name, undefined);
+              validatorPromises.push(promise.then(function() {
+                setValidity(name, true);
+              }, function(error) {
+                allValid = false;
+                setValidity(name, false);
+              }));
+            });
+            if (!validatorPromises.length) {
+              validationDone(true);
+            } else {
+              $q.all(validatorPromises).then(function() {
+                validationDone(allValid);
+              }, noop);
+            }
+          }
+          function setValidity(name, isValid) {
+            if (localValidationRunId === currentValidationRunId) {
+              ctrl.$setValidity(name, isValid);
+            }
+          }
+          function validationDone(allValid) {
+            if (localValidationRunId === currentValidationRunId) {
+              doneCallback(allValid);
+            }
+          }
+        };
+        this.$commitViewValue = function() {
+          var viewValue = ctrl.$viewValue;
+          $timeout.cancel(pendingDebounce);
+          if (ctrl.$$lastCommittedViewValue === viewValue && (viewValue !== '' || !ctrl.$$hasNativeValidators)) {
+            return ;
+          }
+          ctrl.$$lastCommittedViewValue = viewValue;
+          if (ctrl.$pristine) {
+            this.$setDirty();
+          }
+          this.$$parseAndValidate();
+        };
+        this.$$parseAndValidate = function() {
+          var viewValue = ctrl.$$lastCommittedViewValue;
+          var modelValue = viewValue;
+          parserValid = isUndefined(modelValue) ? undefined : true;
+          if (parserValid) {
+            for (var i = 0; i < ctrl.$parsers.length; i++) {
+              modelValue = ctrl.$parsers[i](modelValue);
+              if (isUndefined(modelValue)) {
+                parserValid = false;
+                break;
+              }
+            }
+          }
+          if (isNumber(ctrl.$modelValue) && isNaN(ctrl.$modelValue)) {
+            ctrl.$modelValue = ngModelGet($scope);
+          }
+          var prevModelValue = ctrl.$modelValue;
+          var allowInvalid = ctrl.$options && ctrl.$options.allowInvalid;
+          ctrl.$$rawModelValue = modelValue;
+          if (allowInvalid) {
+            ctrl.$modelValue = modelValue;
+            writeToModelIfNeeded();
+          }
+          ctrl.$$runValidators(modelValue, ctrl.$$lastCommittedViewValue, function(allValid) {
+            if (!allowInvalid) {
+              ctrl.$modelValue = allValid ? modelValue : undefined;
+              writeToModelIfNeeded();
+            }
+          });
+          function writeToModelIfNeeded() {
+            if (ctrl.$modelValue !== prevModelValue) {
+              ctrl.$$writeModelToScope();
+            }
+          }
+        };
+        this.$$writeModelToScope = function() {
+          ngModelSet($scope, ctrl.$modelValue);
+          forEach(ctrl.$viewChangeListeners, function(listener) {
+            try {
+              listener();
+            } catch (e) {
+              $exceptionHandler(e);
+            }
+          });
+        };
+        this.$setViewValue = function(value, trigger) {
+          ctrl.$viewValue = value;
+          if (!ctrl.$options || ctrl.$options.updateOnDefault) {
+            ctrl.$$debounceViewValueCommit(trigger);
+          }
+        };
+        this.$$debounceViewValueCommit = function(trigger) {
+          var debounceDelay = 0,
+              options = ctrl.$options,
+              debounce;
+          if (options && isDefined(options.debounce)) {
+            debounce = options.debounce;
+            if (isNumber(debounce)) {
+              debounceDelay = debounce;
+            } else if (isNumber(debounce[trigger])) {
+              debounceDelay = debounce[trigger];
+            } else if (isNumber(debounce['default'])) {
+              debounceDelay = debounce['default'];
+            }
+          }
+          $timeout.cancel(pendingDebounce);
+          if (debounceDelay) {
+            pendingDebounce = $timeout(function() {
+              ctrl.$commitViewValue();
+            }, debounceDelay);
+          } else if ($rootScope.$$phase) {
+            ctrl.$commitViewValue();
+          } else {
+            $scope.$apply(function() {
+              ctrl.$commitViewValue();
+            });
+          }
+        };
+        $scope.$watch(function ngModelWatch() {
+          var modelValue = ngModelGet($scope);
+          if (modelValue !== ctrl.$modelValue && (ctrl.$modelValue === ctrl.$modelValue || modelValue === modelValue)) {
+            ctrl.$modelValue = ctrl.$$rawModelValue = modelValue;
+            parserValid = undefined;
+            var formatters = ctrl.$formatters,
+                idx = formatters.length;
+            var viewValue = modelValue;
+            while (idx--) {
+              viewValue = formatters[idx](viewValue);
+            }
+            if (ctrl.$viewValue !== viewValue) {
+              ctrl.$viewValue = ctrl.$$lastCommittedViewValue = viewValue;
+              ctrl.$render();
+              ctrl.$$runValidators(modelValue, viewValue, noop);
+            }
+          }
+          return modelValue;
+        });
+      }];
+      var ngModelDirective = ['$rootScope', function($rootScope) {
+        return {
+          restrict: 'A',
+          require: ['ngModel', '^?form', '^?ngModelOptions'],
+          controller: NgModelController,
+          priority: 1,
+          compile: function ngModelCompile(element) {
+            element.addClass(PRISTINE_CLASS).addClass(UNTOUCHED_CLASS).addClass(VALID_CLASS);
+            return {
+              pre: function ngModelPreLink(scope, element, attr, ctrls) {
+                var modelCtrl = ctrls[0],
+                    formCtrl = ctrls[1] || nullFormCtrl;
+                modelCtrl.$$setOptions(ctrls[2] && ctrls[2].$options);
+                formCtrl.$addControl(modelCtrl);
+                attr.$observe('name', function(newValue) {
+                  if (modelCtrl.$name !== newValue) {
+                    formCtrl.$$renameControl(modelCtrl, newValue);
+                  }
+                });
+                scope.$on('$destroy', function() {
+                  formCtrl.$removeControl(modelCtrl);
+                });
+              },
+              post: function ngModelPostLink(scope, element, attr, ctrls) {
+                var modelCtrl = ctrls[0];
+                if (modelCtrl.$options && modelCtrl.$options.updateOn) {
+                  element.on(modelCtrl.$options.updateOn, function(ev) {
+                    modelCtrl.$$debounceViewValueCommit(ev && ev.type);
+                  });
+                }
+                element.on('blur', function(ev) {
+                  if (modelCtrl.$touched)
+                    return ;
+                  if ($rootScope.$$phase) {
+                    scope.$evalAsync(modelCtrl.$setTouched);
+                  } else {
+                    scope.$apply(modelCtrl.$setTouched);
+                  }
+                });
+              }
+            };
+          }
+        };
+      }];
+      var DEFAULT_REGEXP = /(\s+|^)default(\s+|$)/;
+      var ngModelOptionsDirective = function() {
+        return {
+          restrict: 'A',
+          controller: ['$scope', '$attrs', function($scope, $attrs) {
+            var that = this;
+            this.$options = copy($scope.$eval($attrs.ngModelOptions));
+            if (this.$options.updateOn !== undefined) {
+              this.$options.updateOnDefault = false;
+              this.$options.updateOn = trim(this.$options.updateOn.replace(DEFAULT_REGEXP, function() {
+                that.$options.updateOnDefault = true;
+                return ' ';
+              }));
+            } else {
+              this.$options.updateOnDefault = true;
+            }
+          }]
+        };
+      };
+      function addSetValidityMethod(context) {
+        var ctrl = context.ctrl,
+            $element = context.$element,
+            classCache = {},
+            set = context.set,
+            unset = context.unset,
+            parentForm = context.parentForm,
+            $animate = context.$animate;
+        classCache[INVALID_CLASS] = !(classCache[VALID_CLASS] = $element.hasClass(VALID_CLASS));
+        ctrl.$setValidity = setValidity;
+        function setValidity(validationErrorKey, state, controller) {
+          if (state === undefined) {
+            createAndSet('$pending', validationErrorKey, controller);
+          } else {
+            unsetAndCleanup('$pending', validationErrorKey, controller);
+          }
+          if (!isBoolean(state)) {
+            unset(ctrl.$error, validationErrorKey, controller);
+            unset(ctrl.$$success, validationErrorKey, controller);
+          } else {
+            if (state) {
+              unset(ctrl.$error, validationErrorKey, controller);
+              set(ctrl.$$success, validationErrorKey, controller);
+            } else {
+              set(ctrl.$error, validationErrorKey, controller);
+              unset(ctrl.$$success, validationErrorKey, controller);
+            }
+          }
+          if (ctrl.$pending) {
+            cachedToggleClass(PENDING_CLASS, true);
+            ctrl.$valid = ctrl.$invalid = undefined;
+            toggleValidationCss('', null);
+          } else {
+            cachedToggleClass(PENDING_CLASS, false);
+            ctrl.$valid = isObjectEmpty(ctrl.$error);
+            ctrl.$invalid = !ctrl.$valid;
+            toggleValidationCss('', ctrl.$valid);
+          }
+          var combinedState;
+          if (ctrl.$pending && ctrl.$pending[validationErrorKey]) {
+            combinedState = undefined;
+          } else if (ctrl.$error[validationErrorKey]) {
+            combinedState = false;
+          } else if (ctrl.$$success[validationErrorKey]) {
+            combinedState = true;
+          } else {
+            combinedState = null;
+          }
+          toggleValidationCss(validationErrorKey, combinedState);
+          parentForm.$setValidity(validationErrorKey, combinedState, ctrl);
+        }
+        function createAndSet(name, value, controller) {
+          if (!ctrl[name]) {
+            ctrl[name] = {};
+          }
+          set(ctrl[name], value, controller);
+        }
+        function unsetAndCleanup(name, value, controller) {
+          if (ctrl[name]) {
+            unset(ctrl[name], value, controller);
+          }
+          if (isObjectEmpty(ctrl[name])) {
+            ctrl[name] = undefined;
+          }
+        }
+        function cachedToggleClass(className, switchValue) {
+          if (switchValue && !classCache[className]) {
+            $animate.addClass($element, className);
+            classCache[className] = true;
+          } else if (!switchValue && classCache[className]) {
+            $animate.removeClass($element, className);
+            classCache[className] = false;
+          }
+        }
+        function toggleValidationCss(validationErrorKey, isValid) {
+          validationErrorKey = validationErrorKey ? '-' + snake_case(validationErrorKey, '-') : '';
+          cachedToggleClass(VALID_CLASS + validationErrorKey, isValid === true);
+          cachedToggleClass(INVALID_CLASS + validationErrorKey, isValid === false);
+        }
+      }
+      function isObjectEmpty(obj) {
+        if (obj) {
+          for (var prop in obj) {
+            return false;
+          }
+        }
+        return true;
+      }
+      var ngNonBindableDirective = ngDirective({
+        terminal: true,
+        priority: 1000
+      });
+      var ngOptionsMinErr = minErr('ngOptions');
+      var NG_OPTIONS_REGEXP = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s+([\s\S]+?))?(?:\s+disable\s+when\s+([\s\S]+?))?\s+for\s+(?:([\$\w][\$\w]*)|(?:\(\s*([\$\w][\$\w]*)\s*,\s*([\$\w][\$\w]*)\s*\)))\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?$/;
+      var ngOptionsDirective = ['$compile', '$parse', function($compile, $parse) {
+        function parseOptionsExpression(optionsExp, selectElement, scope) {
+          var match = optionsExp.match(NG_OPTIONS_REGEXP);
+          if (!(match)) {
+            throw ngOptionsMinErr('iexp', "Expected expression in form of " + "'_select_ (as _label_)? for (_key_,)?_value_ in _collection_'" + " but got '{0}'. Element: {1}", optionsExp, startingTag(selectElement));
+          }
+          var valueName = match[5] || match[7];
+          var keyName = match[6];
+          var selectAs = / as /.test(match[0]) && match[1];
+          var trackBy = match[9];
+          var valueFn = $parse(match[2] ? match[1] : valueName);
+          var selectAsFn = selectAs && $parse(selectAs);
+          var viewValueFn = selectAsFn || valueFn;
+          var trackByFn = trackBy && $parse(trackBy);
+          var getTrackByValueFn = trackBy ? function(value, locals) {
+            return trackByFn(scope, locals);
+          } : function getHashOfValue(value) {
+            return hashKey(value);
+          };
+          var getTrackByValue = function(value, key) {
+            return getTrackByValueFn(value, getLocals(value, key));
+          };
+          var displayFn = $parse(match[2] || match[1]);
+          var groupByFn = $parse(match[3] || '');
+          var disableWhenFn = $parse(match[4] || '');
+          var valuesFn = $parse(match[8]);
+          var locals = {};
+          var getLocals = keyName ? function(value, key) {
+            locals[keyName] = key;
+            locals[valueName] = value;
+            return locals;
+          } : function(value) {
+            locals[valueName] = value;
+            return locals;
+          };
+          function Option(selectValue, viewValue, label, group, disabled) {
+            this.selectValue = selectValue;
+            this.viewValue = viewValue;
+            this.label = label;
+            this.group = group;
+            this.disabled = disabled;
+          }
+          return {
+            trackBy: trackBy,
+            getTrackByValue: getTrackByValue,
+            getWatchables: $parse(valuesFn, function(values) {
+              var watchedArray = [];
+              values = values || [];
+              Object.keys(values).forEach(function getWatchable(key) {
+                var locals = getLocals(values[key], key);
+                var selectValue = getTrackByValueFn(values[key], locals);
+                watchedArray.push(selectValue);
+                if (match[2] || match[1]) {
+                  var label = displayFn(scope, locals);
+                  watchedArray.push(label);
+                }
+                if (match[4]) {
+                  var disableWhen = disableWhenFn(scope, locals);
+                  watchedArray.push(disableWhen);
+                }
+              });
+              return watchedArray;
+            }),
+            getOptions: function() {
+              var optionItems = [];
+              var selectValueMap = {};
+              var optionValues = valuesFn(scope) || [];
+              var optionValuesKeys;
+              if (!keyName && isArrayLike(optionValues)) {
+                optionValuesKeys = optionValues;
+              } else {
+                optionValuesKeys = [];
+                for (var itemKey in optionValues) {
+                  if (optionValues.hasOwnProperty(itemKey) && itemKey.charAt(0) !== '$') {
+                    optionValuesKeys.push(itemKey);
+                  }
+                }
+              }
+              var optionValuesLength = optionValuesKeys.length;
+              for (var index = 0; index < optionValuesLength; index++) {
+                var key = (optionValues === optionValuesKeys) ? index : optionValuesKeys[index];
+                var value = optionValues[key];
+                var locals = getLocals(value, key);
+                var viewValue = viewValueFn(scope, locals);
+                var selectValue = getTrackByValueFn(viewValue, locals);
+                var label = displayFn(scope, locals);
+                var group = groupByFn(scope, locals);
+                var disabled = disableWhenFn(scope, locals);
+                var optionItem = new Option(selectValue, viewValue, label, group, disabled);
+                optionItems.push(optionItem);
+                selectValueMap[selectValue] = optionItem;
+              }
+              return {
+                items: optionItems,
+                selectValueMap: selectValueMap,
+                getOptionFromViewValue: function(value) {
+                  return selectValueMap[getTrackByValue(value)];
+                },
+                getViewValueFromOption: function(option) {
+                  return trackBy ? angular.copy(option.viewValue) : option.viewValue;
+                }
+              };
+            }
+          };
+        }
+        var optionTemplate = document.createElement('option'),
+            optGroupTemplate = document.createElement('optgroup');
+        return {
+          restrict: 'A',
+          terminal: true,
+          require: ['select', '?ngModel'],
+          link: function(scope, selectElement, attr, ctrls) {
+            var ngModelCtrl = ctrls[1];
+            if (!ngModelCtrl)
+              return ;
+            var selectCtrl = ctrls[0];
+            var multiple = attr.multiple;
+            var emptyOption;
+            for (var i = 0,
+                children = selectElement.children(),
+                ii = children.length; i < ii; i++) {
+              if (children[i].value === '') {
+                emptyOption = children.eq(i);
+                break;
+              }
+            }
+            var providedEmptyOption = !!emptyOption;
+            var unknownOption = jqLite(optionTemplate.cloneNode(false));
+            unknownOption.val('?');
+            var options;
+            var ngOptions = parseOptionsExpression(attr.ngOptions, selectElement, scope);
+            var renderEmptyOption = function() {
+              if (!providedEmptyOption) {
+                selectElement.prepend(emptyOption);
+              }
+              selectElement.val('');
+              emptyOption.prop('selected', true);
+              emptyOption.attr('selected', true);
+            };
+            var removeEmptyOption = function() {
+              if (!providedEmptyOption) {
+                emptyOption.remove();
+              }
+            };
+            var renderUnknownOption = function() {
+              selectElement.prepend(unknownOption);
+              selectElement.val('?');
+              unknownOption.prop('selected', true);
+              unknownOption.attr('selected', true);
+            };
+            var removeUnknownOption = function() {
+              unknownOption.remove();
+            };
+            if (!multiple) {
+              selectCtrl.writeValue = function writeNgOptionsValue(value) {
+                var option = options.getOptionFromViewValue(value);
+                if (option && !option.disabled) {
+                  if (selectElement[0].value !== option.selectValue) {
+                    removeUnknownOption();
+                    removeEmptyOption();
+                    selectElement[0].value = option.selectValue;
+                    option.element.selected = true;
+                    option.element.setAttribute('selected', 'selected');
+                  }
+                } else {
+                  if (value === null || providedEmptyOption) {
+                    removeUnknownOption();
+                    renderEmptyOption();
+                  } else {
+                    removeEmptyOption();
+                    renderUnknownOption();
+                  }
+                }
+              };
+              selectCtrl.readValue = function readNgOptionsValue() {
+                var selectedOption = options.selectValueMap[selectElement.val()];
+                if (selectedOption && !selectedOption.disabled) {
+                  removeEmptyOption();
+                  removeUnknownOption();
+                  return options.getViewValueFromOption(selectedOption);
+                }
+                return null;
+              };
+              if (ngOptions.trackBy) {
+                scope.$watch(function() {
+                  return ngOptions.getTrackByValue(ngModelCtrl.$viewValue);
+                }, function() {
+                  ngModelCtrl.$render();
+                });
+              }
+            } else {
+              ngModelCtrl.$isEmpty = function(value) {
+                return !value || value.length === 0;
+              };
+              selectCtrl.writeValue = function writeNgOptionsMultiple(value) {
+                options.items.forEach(function(option) {
+                  option.element.selected = false;
+                });
+                if (value) {
+                  value.forEach(function(item) {
+                    var option = options.getOptionFromViewValue(item);
+                    if (option && !option.disabled)
+                      option.element.selected = true;
+                  });
+                }
+              };
+              selectCtrl.readValue = function readNgOptionsMultiple() {
+                var selectedValues = selectElement.val() || [],
+                    selections = [];
+                forEach(selectedValues, function(value) {
+                  var option = options.selectValueMap[value];
+                  if (!option.disabled)
+                    selections.push(options.getViewValueFromOption(option));
+                });
+                return selections;
+              };
+              if (ngOptions.trackBy) {
+                scope.$watchCollection(function() {
+                  if (isArray(ngModelCtrl.$viewValue)) {
+                    return ngModelCtrl.$viewValue.map(function(value) {
+                      return ngOptions.getTrackByValue(value);
+                    });
+                  }
+                }, function() {
+                  ngModelCtrl.$render();
+                });
+              }
+            }
+            if (providedEmptyOption) {
+              emptyOption.remove();
+              $compile(emptyOption)(scope);
+              emptyOption.removeClass('ng-scope');
+            } else {
+              emptyOption = jqLite(optionTemplate.cloneNode(false));
+            }
+            updateOptions();
+            scope.$watchCollection(ngOptions.getWatchables, updateOptions);
+            function updateOptionElement(option, element) {
+              option.element = element;
+              element.disabled = option.disabled;
+              if (option.value !== element.value)
+                element.value = option.selectValue;
+              if (option.label !== element.label) {
+                element.label = option.label;
+                element.textContent = option.label;
+              }
+            }
+            function addOrReuseElement(parent, current, type, templateElement) {
+              var element;
+              if (current && lowercase(current.nodeName) === type) {
+                element = current;
+              } else {
+                element = templateElement.cloneNode(false);
+                if (!current) {
+                  parent.appendChild(element);
+                } else {
+                  parent.insertBefore(element, current);
+                }
+              }
+              return element;
+            }
+            function removeExcessElements(current) {
+              var next;
+              while (current) {
+                next = current.nextSibling;
+                jqLiteRemove(current);
+                current = next;
+              }
+            }
+            function skipEmptyAndUnknownOptions(current) {
+              var emptyOption_ = emptyOption && emptyOption[0];
+              var unknownOption_ = unknownOption && unknownOption[0];
+              if (emptyOption_ || unknownOption_) {
+                while (current && (current === emptyOption_ || current === unknownOption_)) {
+                  current = current.nextSibling;
+                }
+              }
+              return current;
+            }
+            function updateOptions() {
+              var previousValue = options && selectCtrl.readValue();
+              options = ngOptions.getOptions();
+              var groupMap = {};
+              var currentElement = selectElement[0].firstChild;
+              if (providedEmptyOption) {
+                selectElement.prepend(emptyOption);
+              }
+              currentElement = skipEmptyAndUnknownOptions(currentElement);
+              options.items.forEach(function updateOption(option) {
+                var group;
+                var groupElement;
+                var optionElement;
+                if (option.group) {
+                  group = groupMap[option.group];
+                  if (!group) {
+                    groupElement = addOrReuseElement(selectElement[0], currentElement, 'optgroup', optGroupTemplate);
+                    currentElement = groupElement.nextSibling;
+                    groupElement.label = option.group;
+                    group = groupMap[option.group] = {
+                      groupElement: groupElement,
+                      currentOptionElement: groupElement.firstChild
+                    };
+                  }
+                  optionElement = addOrReuseElement(group.groupElement, group.currentOptionElement, 'option', optionTemplate);
+                  updateOptionElement(option, optionElement);
+                  group.currentOptionElement = optionElement.nextSibling;
+                } else {
+                  optionElement = addOrReuseElement(selectElement[0], currentElement, 'option', optionTemplate);
+                  updateOptionElement(option, optionElement);
+                  currentElement = optionElement.nextSibling;
+                }
+              });
+              Object.keys(groupMap).forEach(function(key) {
+                removeExcessElements(groupMap[key].currentOptionElement);
+              });
+              removeExcessElements(currentElement);
+              ngModelCtrl.$render();
+              if (!ngModelCtrl.$isEmpty(previousValue)) {
+                var nextValue = selectCtrl.readValue();
+                if (ngOptions.trackBy && !equals(previousValue, nextValue) || previousValue !== nextValue) {
+                  ngModelCtrl.$setViewValue(nextValue);
+                  ngModelCtrl.$render();
+                }
+              }
+            }
+          }
+        };
+      }];
+      var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale, $interpolate, $log) {
+        var BRACE = /{}/g,
+            IS_WHEN = /^when(Minus)?(.+)$/;
+        return {link: function(scope, element, attr) {
+            var numberExp = attr.count,
+                whenExp = attr.$attr.when && element.attr(attr.$attr.when),
+                offset = attr.offset || 0,
+                whens = scope.$eval(whenExp) || {},
+                whensExpFns = {},
+                startSymbol = $interpolate.startSymbol(),
+                endSymbol = $interpolate.endSymbol(),
+                braceReplacement = startSymbol + numberExp + '-' + offset + endSymbol,
+                watchRemover = angular.noop,
+                lastCount;
+            forEach(attr, function(expression, attributeName) {
+              var tmpMatch = IS_WHEN.exec(attributeName);
+              if (tmpMatch) {
+                var whenKey = (tmpMatch[1] ? '-' : '') + lowercase(tmpMatch[2]);
+                whens[whenKey] = element.attr(attr.$attr[attributeName]);
+              }
+            });
+            forEach(whens, function(expression, key) {
+              whensExpFns[key] = $interpolate(expression.replace(BRACE, braceReplacement));
+            });
+            scope.$watch(numberExp, function ngPluralizeWatchAction(newVal) {
+              var count = parseFloat(newVal);
+              var countIsNaN = isNaN(count);
+              if (!countIsNaN && !(count in whens)) {
+                count = $locale.pluralCat(count - offset);
+              }
+              if ((count !== lastCount) && !(countIsNaN && isNumber(lastCount) && isNaN(lastCount))) {
+                watchRemover();
+                var whenExpFn = whensExpFns[count];
+                if (isUndefined(whenExpFn)) {
+                  if (newVal != null) {
+                    $log.debug("ngPluralize: no rule defined for '" + count + "' in " + whenExp);
+                  }
+                  watchRemover = noop;
+                  updateElementText();
+                } else {
+                  watchRemover = scope.$watch(whenExpFn, updateElementText);
+                }
+                lastCount = count;
+              }
+            });
+            function updateElementText(newText) {
+              element.text(newText || '');
+            }
+          }};
+      }];
+      var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
+        var NG_REMOVED = '$$NG_REMOVED';
+        var ngRepeatMinErr = minErr('ngRepeat');
+        var updateScope = function(scope, index, valueIdentifier, value, keyIdentifier, key, arrayLength) {
+          scope[valueIdentifier] = value;
+          if (keyIdentifier)
+            scope[keyIdentifier] = key;
+          scope.$index = index;
+          scope.$first = (index === 0);
+          scope.$last = (index === (arrayLength - 1));
+          scope.$middle = !(scope.$first || scope.$last);
+          scope.$odd = !(scope.$even = (index & 1) === 0);
+        };
+        var getBlockStart = function(block) {
+          return block.clone[0];
+        };
+        var getBlockEnd = function(block) {
+          return block.clone[block.clone.length - 1];
+        };
+        return {
+          restrict: 'A',
+          multiElement: true,
+          transclude: 'element',
+          priority: 1000,
+          terminal: true,
+          $$tlb: true,
+          compile: function ngRepeatCompile($element, $attr) {
+            var expression = $attr.ngRepeat;
+            var ngRepeatEndComment = document.createComment(' end ngRepeat: ' + expression + ' ');
+            var match = expression.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
+            if (!match) {
+              throw ngRepeatMinErr('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.", expression);
+            }
+            var lhs = match[1];
+            var rhs = match[2];
+            var aliasAs = match[3];
+            var trackByExp = match[4];
+            match = lhs.match(/^(?:(\s*[\$\w]+)|\(\s*([\$\w]+)\s*,\s*([\$\w]+)\s*\))$/);
+            if (!match) {
+              throw ngRepeatMinErr('iidexp', "'_item_' in '_item_ in _collection_' should be an identifier or '(_key_, _value_)' expression, but got '{0}'.", lhs);
+            }
+            var valueIdentifier = match[3] || match[1];
+            var keyIdentifier = match[2];
+            if (aliasAs && (!/^[$a-zA-Z_][$a-zA-Z0-9_]*$/.test(aliasAs) || /^(null|undefined|this|\$index|\$first|\$middle|\$last|\$even|\$odd|\$parent|\$root|\$id)$/.test(aliasAs))) {
+              throw ngRepeatMinErr('badident', "alias '{0}' is invalid --- must be a valid JS identifier which is not a reserved name.", aliasAs);
+            }
+            var trackByExpGetter,
+                trackByIdExpFn,
+                trackByIdArrayFn,
+                trackByIdObjFn;
+            var hashFnLocals = {$id: hashKey};
+            if (trackByExp) {
+              trackByExpGetter = $parse(trackByExp);
+            } else {
+              trackByIdArrayFn = function(key, value) {
+                return hashKey(value);
+              };
+              trackByIdObjFn = function(key) {
+                return key;
+              };
+            }
+            return function ngRepeatLink($scope, $element, $attr, ctrl, $transclude) {
+              if (trackByExpGetter) {
+                trackByIdExpFn = function(key, value, index) {
+                  if (keyIdentifier)
+                    hashFnLocals[keyIdentifier] = key;
+                  hashFnLocals[valueIdentifier] = value;
+                  hashFnLocals.$index = index;
+                  return trackByExpGetter($scope, hashFnLocals);
+                };
+              }
+              var lastBlockMap = createMap();
+              $scope.$watchCollection(rhs, function ngRepeatAction(collection) {
+                var index,
+                    length,
+                    previousNode = $element[0],
+                    nextNode,
+                    nextBlockMap = createMap(),
+                    collectionLength,
+                    key,
+                    value,
+                    trackById,
+                    trackByIdFn,
+                    collectionKeys,
+                    block,
+                    nextBlockOrder,
+                    elementsToRemove;
+                if (aliasAs) {
+                  $scope[aliasAs] = collection;
+                }
+                if (isArrayLike(collection)) {
+                  collectionKeys = collection;
+                  trackByIdFn = trackByIdExpFn || trackByIdArrayFn;
+                } else {
+                  trackByIdFn = trackByIdExpFn || trackByIdObjFn;
+                  collectionKeys = [];
+                  for (var itemKey in collection) {
+                    if (collection.hasOwnProperty(itemKey) && itemKey.charAt(0) !== '$') {
+                      collectionKeys.push(itemKey);
+                    }
+                  }
+                }
+                collectionLength = collectionKeys.length;
+                nextBlockOrder = new Array(collectionLength);
+                for (index = 0; index < collectionLength; index++) {
+                  key = (collection === collectionKeys) ? index : collectionKeys[index];
+                  value = collection[key];
+                  trackById = trackByIdFn(key, value, index);
+                  if (lastBlockMap[trackById]) {
+                    block = lastBlockMap[trackById];
+                    delete lastBlockMap[trackById];
+                    nextBlockMap[trackById] = block;
+                    nextBlockOrder[index] = block;
+                  } else if (nextBlockMap[trackById]) {
+                    forEach(nextBlockOrder, function(block) {
+                      if (block && block.scope)
+                        lastBlockMap[block.id] = block;
+                    });
+                    throw ngRepeatMinErr('dupes', "Duplicates in a repeater are not allowed. Use 'track by' expression to specify unique keys. Repeater: {0}, Duplicate key: {1}, Duplicate value: {2}", expression, trackById, value);
+                  } else {
+                    nextBlockOrder[index] = {
+                      id: trackById,
+                      scope: undefined,
+                      clone: undefined
+                    };
+                    nextBlockMap[trackById] = true;
+                  }
+                }
+                for (var blockKey in lastBlockMap) {
+                  block = lastBlockMap[blockKey];
+                  elementsToRemove = getBlockNodes(block.clone);
+                  $animate.leave(elementsToRemove);
+                  if (elementsToRemove[0].parentNode) {
+                    for (index = 0, length = elementsToRemove.length; index < length; index++) {
+                      elementsToRemove[index][NG_REMOVED] = true;
+                    }
+                  }
+                  block.scope.$destroy();
+                }
+                for (index = 0; index < collectionLength; index++) {
+                  key = (collection === collectionKeys) ? index : collectionKeys[index];
+                  value = collection[key];
+                  block = nextBlockOrder[index];
+                  if (block.scope) {
+                    nextNode = previousNode;
+                    do {
+                      nextNode = nextNode.nextSibling;
+                    } while (nextNode && nextNode[NG_REMOVED]);
+                    if (getBlockStart(block) != nextNode) {
+                      $animate.move(getBlockNodes(block.clone), null, jqLite(previousNode));
+                    }
+                    previousNode = getBlockEnd(block);
+                    updateScope(block.scope, index, valueIdentifier, value, keyIdentifier, key, collectionLength);
+                  } else {
+                    $transclude(function ngRepeatTransclude(clone, scope) {
+                      block.scope = scope;
+                      var endNode = ngRepeatEndComment.cloneNode(false);
+                      clone[clone.length++] = endNode;
+                      $animate.enter(clone, null, jqLite(previousNode));
+                      previousNode = endNode;
+                      block.clone = clone;
+                      nextBlockMap[block.id] = block;
+                      updateScope(block.scope, index, valueIdentifier, value, keyIdentifier, key, collectionLength);
+                    });
+                  }
+                }
+                lastBlockMap = nextBlockMap;
+              });
+            };
+          }
+        };
+      }];
+      var NG_HIDE_CLASS = 'ng-hide';
+      var NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
+      var ngShowDirective = ['$animate', function($animate) {
+        return {
+          restrict: 'A',
+          multiElement: true,
+          link: function(scope, element, attr) {
+            scope.$watch(attr.ngShow, function ngShowWatchAction(value) {
+              $animate[value ? 'removeClass' : 'addClass'](element, NG_HIDE_CLASS, {tempClasses: NG_HIDE_IN_PROGRESS_CLASS});
+            });
+          }
+        };
+      }];
+      var ngHideDirective = ['$animate', function($animate) {
+        return {
+          restrict: 'A',
+          multiElement: true,
+          link: function(scope, element, attr) {
+            scope.$watch(attr.ngHide, function ngHideWatchAction(value) {
+              $animate[value ? 'addClass' : 'removeClass'](element, NG_HIDE_CLASS, {tempClasses: NG_HIDE_IN_PROGRESS_CLASS});
+            });
+          }
+        };
+      }];
+      var ngStyleDirective = ngDirective(function(scope, element, attr) {
+        scope.$watch(attr.ngStyle, function ngStyleWatchAction(newStyles, oldStyles) {
+          if (oldStyles && (newStyles !== oldStyles)) {
+            forEach(oldStyles, function(val, style) {
+              element.css(style, '');
+            });
+          }
+          if (newStyles)
+            element.css(newStyles);
+        }, true);
+      });
+      var ngSwitchDirective = ['$animate', function($animate) {
+        return {
+          require: 'ngSwitch',
+          controller: ['$scope', function ngSwitchController() {
+            this.cases = {};
+          }],
+          link: function(scope, element, attr, ngSwitchController) {
+            var watchExpr = attr.ngSwitch || attr.on,
+                selectedTranscludes = [],
+                selectedElements = [],
+                previousLeaveAnimations = [],
+                selectedScopes = [];
+            var spliceFactory = function(array, index) {
+              return function() {
+                array.splice(index, 1);
+              };
+            };
+            scope.$watch(watchExpr, function ngSwitchWatchAction(value) {
+              var i,
+                  ii;
+              for (i = 0, ii = previousLeaveAnimations.length; i < ii; ++i) {
+                $animate.cancel(previousLeaveAnimations[i]);
+              }
+              previousLeaveAnimations.length = 0;
+              for (i = 0, ii = selectedScopes.length; i < ii; ++i) {
+                var selected = getBlockNodes(selectedElements[i].clone);
+                selectedScopes[i].$destroy();
+                var promise = previousLeaveAnimations[i] = $animate.leave(selected);
+                promise.then(spliceFactory(previousLeaveAnimations, i));
+              }
+              selectedElements.length = 0;
+              selectedScopes.length = 0;
+              if ((selectedTranscludes = ngSwitchController.cases['!' + value] || ngSwitchController.cases['?'])) {
+                forEach(selectedTranscludes, function(selectedTransclude) {
+                  selectedTransclude.transclude(function(caseElement, selectedScope) {
+                    selectedScopes.push(selectedScope);
+                    var anchor = selectedTransclude.element;
+                    caseElement[caseElement.length++] = document.createComment(' end ngSwitchWhen: ');
+                    var block = {clone: caseElement};
+                    selectedElements.push(block);
+                    $animate.enter(caseElement, anchor.parent(), anchor);
+                  });
+                });
+              }
+            });
+          }
+        };
+      }];
+      var ngSwitchWhenDirective = ngDirective({
+        transclude: 'element',
+        priority: 1200,
+        require: '^ngSwitch',
+        multiElement: true,
+        link: function(scope, element, attrs, ctrl, $transclude) {
+          ctrl.cases['!' + attrs.ngSwitchWhen] = (ctrl.cases['!' + attrs.ngSwitchWhen] || []);
+          ctrl.cases['!' + attrs.ngSwitchWhen].push({
+            transclude: $transclude,
+            element: element
+          });
+        }
+      });
+      var ngSwitchDefaultDirective = ngDirective({
+        transclude: 'element',
+        priority: 1200,
+        require: '^ngSwitch',
+        multiElement: true,
+        link: function(scope, element, attr, ctrl, $transclude) {
+          ctrl.cases['?'] = (ctrl.cases['?'] || []);
+          ctrl.cases['?'].push({
+            transclude: $transclude,
+            element: element
+          });
+        }
+      });
+      var ngTranscludeDirective = ngDirective({
+        restrict: 'EAC',
+        link: function($scope, $element, $attrs, controller, $transclude) {
+          if (!$transclude) {
+            throw minErr('ngTransclude')('orphan', 'Illegal use of ngTransclude directive in the template! ' + 'No parent directive that requires a transclusion found. ' + 'Element: {0}', startingTag($element));
+          }
+          $transclude(function(clone) {
+            $element.empty();
+            $element.append(clone);
+          });
+        }
+      });
+      var scriptDirective = ['$templateCache', function($templateCache) {
+        return {
+          restrict: 'E',
+          terminal: true,
+          compile: function(element, attr) {
+            if (attr.type == 'text/ng-template') {
+              var templateUrl = attr.id,
+                  text = element[0].text;
+              $templateCache.put(templateUrl, text);
+            }
+          }
+        };
+      }];
+      var noopNgModelController = {
+        $setViewValue: noop,
+        $render: noop
+      };
+      var SelectController = ['$element', '$scope', '$attrs', function($element, $scope, $attrs) {
+        var self = this,
+            optionsMap = new HashMap();
+        self.ngModelCtrl = noopNgModelController;
+        self.unknownOption = jqLite(document.createElement('option'));
+        self.renderUnknownOption = function(val) {
+          var unknownVal = '? ' + hashKey(val) + ' ?';
+          self.unknownOption.val(unknownVal);
+          $element.prepend(self.unknownOption);
+          $element.val(unknownVal);
+        };
+        $scope.$on('$destroy', function() {
+          self.renderUnknownOption = noop;
+        });
+        self.removeUnknownOption = function() {
+          if (self.unknownOption.parent())
+            self.unknownOption.remove();
+        };
+        self.readValue = function readSingleValue() {
+          self.removeUnknownOption();
+          return $element.val();
+        };
+        self.writeValue = function writeSingleValue(value) {
+          if (self.hasOption(value)) {
+            self.removeUnknownOption();
+            $element.val(value);
+            if (value === '')
+              self.emptyOption.prop('selected', true);
+          } else {
+            if (value == null && self.emptyOption) {
+              self.removeUnknownOption();
+              $element.val('');
+            } else {
+              self.renderUnknownOption(value);
+            }
+          }
+        };
+        self.addOption = function(value, element) {
+          assertNotHasOwnProperty(value, '"option value"');
+          if (value === '') {
+            self.emptyOption = element;
+          }
+          var count = optionsMap.get(value) || 0;
+          optionsMap.put(value, count + 1);
+        };
+        self.removeOption = function(value) {
+          var count = optionsMap.get(value);
+          if (count) {
+            if (count === 1) {
+              optionsMap.remove(value);
+              if (value === '') {
+                self.emptyOption = undefined;
+              }
+            } else {
+              optionsMap.put(value, count - 1);
+            }
+          }
+        };
+        self.hasOption = function(value) {
+          return !!optionsMap.get(value);
+        };
+      }];
+      var selectDirective = function() {
+        return {
+          restrict: 'E',
+          require: ['select', '?ngModel'],
+          controller: SelectController,
+          link: function(scope, element, attr, ctrls) {
+            var ngModelCtrl = ctrls[1];
+            if (!ngModelCtrl)
+              return ;
+            var selectCtrl = ctrls[0];
+            selectCtrl.ngModelCtrl = ngModelCtrl;
+            ngModelCtrl.$render = function() {
+              selectCtrl.writeValue(ngModelCtrl.$viewValue);
+            };
+            element.on('change', function() {
+              scope.$apply(function() {
+                ngModelCtrl.$setViewValue(selectCtrl.readValue());
+              });
+            });
+            if (attr.multiple) {
+              selectCtrl.readValue = function readMultipleValue() {
+                var array = [];
+                forEach(element.find('option'), function(option) {
+                  if (option.selected) {
+                    array.push(option.value);
+                  }
+                });
+                return array;
+              };
+              selectCtrl.writeValue = function writeMultipleValue(value) {
+                var items = new HashMap(value);
+                forEach(element.find('option'), function(option) {
+                  option.selected = isDefined(items.get(option.value));
+                });
+              };
+              var lastView,
+                  lastViewRef = NaN;
+              scope.$watch(function selectMultipleWatch() {
+                if (lastViewRef === ngModelCtrl.$viewValue && !equals(lastView, ngModelCtrl.$viewValue)) {
+                  lastView = shallowCopy(ngModelCtrl.$viewValue);
+                  ngModelCtrl.$render();
+                }
+                lastViewRef = ngModelCtrl.$viewValue;
+              });
+              ngModelCtrl.$isEmpty = function(value) {
+                return !value || value.length === 0;
+              };
+            }
+          }
+        };
+      };
+      var optionDirective = ['$interpolate', function($interpolate) {
+        function chromeHack(optionElement) {
+          if (optionElement[0].hasAttribute('selected')) {
+            optionElement[0].selected = true;
+          }
+        }
+        return {
+          restrict: 'E',
+          priority: 100,
+          compile: function(element, attr) {
+            if (isUndefined(attr.value)) {
+              var interpolateFn = $interpolate(element.text(), true);
+              if (!interpolateFn) {
+                attr.$set('value', element.text());
+              }
+            }
+            return function(scope, element, attr) {
+              var selectCtrlName = '$selectController',
+                  parent = element.parent(),
+                  selectCtrl = parent.data(selectCtrlName) || parent.parent().data(selectCtrlName);
+              if (selectCtrl && selectCtrl.ngModelCtrl) {
+                if (interpolateFn) {
+                  scope.$watch(interpolateFn, function interpolateWatchAction(newVal, oldVal) {
+                    attr.$set('value', newVal);
+                    if (oldVal !== newVal) {
+                      selectCtrl.removeOption(oldVal);
+                    }
+                    selectCtrl.addOption(newVal, element);
+                    selectCtrl.ngModelCtrl.$render();
+                    chromeHack(element);
+                  });
+                } else {
+                  selectCtrl.addOption(attr.value, element);
+                  selectCtrl.ngModelCtrl.$render();
+                  chromeHack(element);
+                }
+                element.on('$destroy', function() {
+                  selectCtrl.removeOption(attr.value);
+                  selectCtrl.ngModelCtrl.$render();
+                });
+              }
+            };
+          }
+        };
+      }];
+      var styleDirective = valueFn({
+        restrict: 'E',
+        terminal: false
+      });
+      var requiredDirective = function() {
+        return {
+          restrict: 'A',
+          require: '?ngModel',
+          link: function(scope, elm, attr, ctrl) {
+            if (!ctrl)
+              return ;
+            attr.required = true;
+            ctrl.$validators.required = function(modelValue, viewValue) {
+              return !attr.required || !ctrl.$isEmpty(viewValue);
+            };
+            attr.$observe('required', function() {
+              ctrl.$validate();
+            });
+          }
+        };
+      };
+      var patternDirective = function() {
+        return {
+          restrict: 'A',
+          require: '?ngModel',
+          link: function(scope, elm, attr, ctrl) {
+            if (!ctrl)
+              return ;
+            var regexp,
+                patternExp = attr.ngPattern || attr.pattern;
+            attr.$observe('pattern', function(regex) {
+              if (isString(regex) && regex.length > 0) {
+                regex = new RegExp('^' + regex + '$');
+              }
+              if (regex && !regex.test) {
+                throw minErr('ngPattern')('noregexp', 'Expected {0} to be a RegExp but was {1}. Element: {2}', patternExp, regex, startingTag(elm));
+              }
+              regexp = regex || undefined;
+              ctrl.$validate();
+            });
+            ctrl.$validators.pattern = function(value) {
+              return ctrl.$isEmpty(value) || isUndefined(regexp) || regexp.test(value);
+            };
+          }
+        };
+      };
+      var maxlengthDirective = function() {
+        return {
+          restrict: 'A',
+          require: '?ngModel',
+          link: function(scope, elm, attr, ctrl) {
+            if (!ctrl)
+              return ;
+            var maxlength = -1;
+            attr.$observe('maxlength', function(value) {
+              var intVal = toInt(value);
+              maxlength = isNaN(intVal) ? -1 : intVal;
+              ctrl.$validate();
+            });
+            ctrl.$validators.maxlength = function(modelValue, viewValue) {
+              return (maxlength < 0) || ctrl.$isEmpty(viewValue) || (viewValue.length <= maxlength);
+            };
+          }
+        };
+      };
+      var minlengthDirective = function() {
+        return {
+          restrict: 'A',
+          require: '?ngModel',
+          link: function(scope, elm, attr, ctrl) {
+            if (!ctrl)
+              return ;
+            var minlength = 0;
+            attr.$observe('minlength', function(value) {
+              minlength = toInt(value) || 0;
+              ctrl.$validate();
+            });
+            ctrl.$validators.minlength = function(modelValue, viewValue) {
+              return ctrl.$isEmpty(viewValue) || viewValue.length >= minlength;
+            };
+          }
+        };
+      };
+      if (window.angular.bootstrap) {
+        console.log('WARNING: Tried to load angular more than once.');
+        return ;
+      }
+      bindJQuery();
+      publishExternalAPI(angular);
+      jqLite(document).ready(function() {
+        angularInit(document, bootstrap);
+      });
+    })(window, document);
+    !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
+  })(require("github:jspm/nodelibs-process@0.1.1"));
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:angular@1.4.0/index", ["npm:angular@1.4.0/angular"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  require("npm:angular@1.4.0/angular");
+  module.exports = angular;
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:angular@1.4.0", ["npm:angular@1.4.0/index"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = require("npm:angular@1.4.0/index");
   global.define = __define;
   return module.exports;
 });
@@ -8559,14 +11610,14 @@ System.register("lib/hello", [], function($__export) {
   };
 });
 
-System.register("lib/main", ["npm:angular@1.4.0/angular.min", "lib/hello"], function($__export) {
+System.register("lib/main", ["npm:angular@1.4.0", "lib/hello"], function($__export) {
   "use strict";
   var __moduleName = "lib/main";
   var angular,
       hellomsg,
       msg;
   function sayHello() {
-    console.log((msg + " and bye bye nether"));
+    console.log((msg + " and bye bye obviously 22"));
   }
   return {
     setters: [function($__m) {
@@ -8583,3 +11634,4 @@ System.register("lib/main", ["npm:angular@1.4.0/angular.min", "lib/hello"], func
 });
 
 });
+//# sourceMappingURL=app.js.map
